@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>欧卡2 · 全球组合地图模组工具 | 状态筛选及跳转定位</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a1219;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar-nav {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 215, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-nav::-webkit-scrollbar { width: 5px; }
+        .sidebar-nav::-webkit-scrollbar-track { background: #14262c; border-radius: 10px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: #f5b042; border-radius: 10px; }
+
+        .nav-menu-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .nav-menu { display: flex; flex-direction: column; gap: 12px; padding: 0 20px 20px 20px; }
+        .nav-menu-bottom { padding: 20px 20px 32px 20px; border-top: 1px solid rgba(255, 200, 100, 0.2); margin-top: 10px; }
+
+        .nav-item {
+            background: rgba(25, 50, 58, 0.6);
+            border: 1px solid rgba(255, 200, 100, 0.25);
+            padding: 12px 20px;
+            border-radius: 44px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #eef3f5;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            backdrop-filter: blur(2px);
+        }
+        .nav-item i { width: 28px; font-size: 1.2rem; color: #ffcf7a; }
+        .nav-item:hover { background: #2f626e; transform: translateX(6px); border-color: #ffcd7e; }
+        .nav-item.active { background: #e6a017; color: #121f23; border-color: #ffeaaf; }
+        .nav-item.active i { color: #262216; }
+        .nav-item.download-btn { background: linear-gradient(135deg, #1f5e4a, #0f3e30); border-color: #4cd964; }
+        .nav-item.download-btn i { color: #4cd964; }
+        .nav-item.download-btn.active { background: #2dc653; color: #0a1a12; }
+
+        .nav-stats-badge {
+            background: rgba(45, 198, 83, 0.2);
+            border: 1px solid rgba(45, 198, 83, 0.5);
+            border-radius: 30px;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #8affaa;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+        .nav-item.active .nav-stats-badge {
+            background: rgba(18, 30, 18, 0.6);
+            border-color: #0a1a12;
+            color: #0a1a12;
+        }
+
+        .brand-area {
+            padding: 32px 24px 28px 24px;
+            border-bottom: 2px solid rgba(255, 200, 100, 0.5);
+            background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,140,0,0.02));
+            border-radius: 0 0 32px 32px;
+        }
+        .main-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6A0 0%, #FFC857 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 200, 50, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .main-title i { background: none; color: #ffbc3c; font-size: 2rem; text-shadow: 0 0 6px #ffb347; }
+        .subtitle-line { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 22px; gap: 14px; }
+        .author-badge, .date-badge {
+            background: linear-gradient(120deg, #0f2f46, #07212e);
+            padding: 8px 18px;
+            border-radius: 48px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            backdrop-filter: blur(2px);
+        }
+        .author-badge { color: #9bc5ff; border: 1px solid #3a86ff; }
+        .date-badge { color: #b3ffcf; border: 1px solid #2dc653; }
+
+        .content-main { flex: 1; margin-left: 300px; background: rgba(8, 20, 24, 0.3); min-height: 100vh; }
+        .content-header { padding: 32px 40px 16px 40px; border-bottom: 1px solid rgba(255, 200, 100, 0.3); }
+        .content-header h2 { font-size: 1.7rem; font-weight: 700; background: linear-gradient(135deg, #ffde9e, #ffc057); -webkit-background-clip: text; background-clip: text; color: transparent; display: flex; align-items: center; gap: 14px; }
+        .dynamic-area { padding: 20px 40px 40px 40px; }
+
+        /* 筛选栏样式 */
+        .filter-bar {
+            background: rgba(16, 34, 40, 0.85);
+            border-radius: 60px;
+            padding: 6px 12px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+        }
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffdf9e;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 16px;
+            border-radius: 40px;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-chip {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 200, 100, 0.35);
+            color: #cde5ea;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-chip i { font-size: 0.7rem; }
+        .filter-chip.active {
+            background: #e6a017;
+            color: #121f23;
+            border-color: #ffeaaf;
+        }
+        .filter-chip.active i { color: #121f23; }
+        .filter-chip:hover:not(.active) {
+            background: #2f626e;
+            transform: translateY(-1px);
+        }
+        .filter-count {
+            background: rgba(0,0,0,0.5);
+            border-radius: 30px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+        }
+
+        /* 加载顺序卡片样式 */
+        .mods-grid { display: flex; flex-direction: column; gap: 20px; }
+        .mod-card {
+            background: linear-gradient(135deg, rgba(18, 38, 44, 0.95), rgba(12, 28, 34, 0.95));
+            border-radius: 28px;
+            transition: all 0.25s ease;
+            overflow: hidden;
+            border-left: 8px solid;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+        }
+        .mod-card.status-new { border-left-color: #2dc653; }
+        .mod-card.status-updated { border-left-color: #3a86ff; }
+        .mod-card.status-moved { border-left-color: #ffbc3c; }
+        .mod-card.status-deleted { border-left-color: #dc3545; background: rgba(30, 30, 40, 0.7); }
+        .mod-card.status-normal { border-left-color: #5a6e78; }
+        .mod-card:hover { transform: translateX(6px); background: linear-gradient(135deg, rgba(28, 48, 54, 0.95), rgba(18, 34, 40, 0.95)); }
+        .mod-card-inner { padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; }
+        .mod-status-area { flex-shrink: 0; width: 100px; }
+        .status-badge-large {
+            display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 40px;
+            font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(2px);
+        }
+        .status-new-large { background: rgba(45, 198, 83, 0.2); color: #8affaa; border: 1px solid rgba(45, 198, 83, 0.5); }
+        .status-updated-large { background: rgba(58, 134, 255, 0.2); color: #8bbfff; border: 1px solid rgba(58, 134, 255, 0.5); }
+        .status-moved-large { background: rgba(255, 188, 60, 0.2); color: #ffdf7e; border: 1px solid rgba(255, 188, 60, 0.5); }
+        .status-deleted-large { background: rgba(220, 53, 69, 0.2); color: #ff8a9e; border: 1px solid rgba(220, 53, 69, 0.5); }
+        .status-normal-large { background: rgba(90, 110, 120, 0.3); color: #b8d0d8; border: 1px solid rgba(90, 110, 120, 0.5); }
+        .mod-content-area { flex: 2; min-width: 200px; }
+        .mod-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+        .mod-order { background: rgba(0, 0, 0, 0.5); padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; color: #ffdd99; }
+        .mod-order.deleted-order { background: #333355; color: #888; }
+        .mod-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fef2da;
+            cursor: pointer;
+            transition: color 0.2s, text-shadow 0.2s;
+            display: inline-block;
+        }
+        .mod-title:hover {
+            color: #ffcf7a;
+            text-shadow: 0 0 4px rgba(255,200,100,0.5);
+            text-decoration: underline;
+        }
+        .mod-card.status-deleted .mod-title { text-decoration: line-through; cursor: default; pointer-events: none; color: #9aaeb5; }
+        .mod-description { font-size: 0.8rem; color: #cde5ea; line-height: 1.45; margin-top: 6px; }
+        .mod-action-area { flex-shrink: 0; display: flex; align-items: center; }
+        .download-button {
+            background: linear-gradient(135deg, #2dc653, #1a8f3a); border: none; padding: 10px 22px;
+            border-radius: 44px; font-size: 0.8rem; font-weight: 700; color: #0a1a12; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .download-button.disabled { background: #555; cursor: not-allowed; opacity: 0.6; }
+        .download-button:not(.disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,198,83,0.4); }
+        .no-mod-message {
+            background: rgba(16, 34, 40, 0.85);
+            border-radius: 36px;
+            padding: 48px 28px;
+            text-align: center;
+            border-left: 6px solid #f5b042;
+            color: #bcd7df;
+        }
+        .no-mod-message i {
+            font-size: 3rem;
+            color: #ffcf7a;
+            margin-bottom: 16px;
+            display: block;
+        }
+        /* 高亮闪动效果 */
+        .highlight-mod {
+            animation: pulseHighlight 3s ease-in-out;
+            box-shadow: 0 0 0 4px #ffbc3c, 0 0 0 8px rgba(255,188,60,0.4);
+            border-radius: 28px;
+            transition: box-shadow 0.2s;
+            position: relative;
+            z-index: 10;
+        }
+        @keyframes pulseHighlight {
+            0% { box-shadow: 0 0 0 0px #ffbc3c, 0 0 0 0px rgba(255,188,60,0.6); background: rgba(255,188,60,0.05); }
+            15% { box-shadow: 0 0 0 6px #ffbc3c, 0 0 0 12px rgba(255,188,60,0.3); background: rgba(255,188,60,0.12); }
+            30% { box-shadow: 0 0 0 3px #ffbc3c, 0 0 0 6px rgba(255,188,60,0.2); background: rgba(255,188,60,0.08); }
+            45% { box-shadow: 0 0 0 6px #ffbc3c, 0 0 0 12px rgba(255,188,60,0.3); background: rgba(255,188,60,0.12); }
+            60% { box-shadow: 0 0 0 2px #ffbc3c, 0 0 0 5px rgba(255,188,60,0.15); background: rgba(255,188,60,0.05); }
+            75% { box-shadow: 0 0 0 5px #ffbc3c, 0 0 0 10px rgba(255,188,60,0.25); background: rgba(255,188,60,0.1); }
+            100% { box-shadow: 0 0 0 0px #ffbc3c, 0 0 0 0px rgba(255,188,60,0); background: transparent; }
+        }
+
+        /* 其他样式 */
+        .changelog-wrapper {
+            background: rgba(16, 34, 40, 0.85);
+            border-radius: 36px;
+            padding: 28px 34px;
+            border-left: 6px solid #f5b042;
+        }
+        .changelog-version-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 200, 100, 0.3);
+        }
+        .changelog-version-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6A0, #FFC857);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .changelog-date {
+            font-size: 0.85rem;
+            color: #9bb7bf;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .changelog-categories { display: flex; flex-direction: column; gap: 16px; }
+        .changelog-category {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .category-header {
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .category-header:hover { background: rgba(255, 255, 255, 0.05); }
+        .category-header i:first-child { width: 20px; }
+        .toggle-icon-cat { margin-left: auto; transition: transform 0.2s; }
+        .category-header.collapsed .toggle-icon-cat { transform: rotate(-90deg); }
+        .category-items { padding: 16px 22px; display: flex; flex-direction: column; gap: 12px; }
+        .category-items.collapsed { display: none; }
+        .category-header.new { background: rgba(45, 198, 83, 0.15); color: #8affaa; border-bottom: 1px solid rgba(45, 198, 83, 0.3); }
+        .category-header.updated { background: rgba(58, 134, 255, 0.15); color: #8bbfff; border-bottom: 1px solid rgba(58, 134, 255, 0.3); }
+        .category-header.moved { background: rgba(255, 188, 60, 0.15); color: #ffdf7e; border-bottom: 1px solid rgba(255, 188, 60, 0.3); }
+        .category-header.deleted { background: rgba(220, 53, 69, 0.15); color: #ff8a9e; border-bottom: 1px solid rgba(220, 53, 69, 0.3); }
+        .changelog-mod-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .changelog-mod-name { font-size: 0.95rem; font-weight: 600; color: #fef2da; }
+        .changelog-mod-desc { font-size: 0.7rem; color: #b0ced6; margin-left: auto; }
+        .changelog-note { margin-top: 24px; padding: 14px 20px; background: rgba(230, 160, 23, 0.1); border-radius: 20px; border-left: 3px solid #e6a017; color: #FFE3B0; font-size: 0.85rem; }
+        .info-card {
+            background: rgba(16, 34, 40, 0.85);
+            border-radius: 36px;
+            padding: 28px 34px;
+            border-left: 6px solid #f5b042;
+        }
+        .guide-title { color: #ffcf7a; font-size: 1.2rem; margin-bottom: 16px; }
+        .step-list { list-style: none; }
+        .step-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; color: #E0ECF0; }
+        .step-number { width: 32px; height: 32px; background: rgba(230, 160, 23, 0.2); border-radius: 40px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #ffcf7a; }
+        .optimize-card { background: rgba(0, 0, 0, 0.25); border-radius: 24px; padding: 18px 22px; margin-bottom: 16px; }
+        .priority-item { background: rgba(0, 0, 0, 0.35); border-radius: 20px; padding: 16px 22px; display: flex; align-items: center; flex-wrap: wrap; gap: 18px; border-left: 4px solid #ffbc4a; margin-bottom: 12px; }
+        .priority-badge { background: #e6a017; color: #121f23; padding: 5px 16px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; }
+        .version-accordion { margin-bottom: 16px; border-radius: 20px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 200, 100, 0.25); }
+        .accordion-header { background: linear-gradient(135deg, #1a3a3a, #0e2a2a); padding: 18px 24px; cursor: pointer; display: flex; justify-content: space-between; }
+        .accordion-title { font-size: 1.3rem; font-weight: 700; color: #FFE6B3; display: flex; align-items: center; gap: 12px; }
+        .toggle-icon { color: #ffcf7a; transition: transform 0.2s; }
+        .accordion-header.expanded .toggle-icon { transform: rotate(180deg); }
+        .accordion-content { display: none; padding: 20px 24px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 200, 100, 0.15); }
+        .accordion-content.show { display: block; }
+        .sub-version-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+        .sub-version-card { background: rgba(20, 45, 50, 0.7); border-radius: 20px; padding: 16px 20px; min-width: 160px; border: 1px solid rgba(255, 200, 100, 0.3); }
+        .download-btn-sm { background: linear-gradient(135deg, #2dc653, #1a8f3a); padding: 6px 16px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; color: #0a1a12; cursor: pointer; display: inline-block; border: none; font-family: inherit; transition: 0.2s; }
+        .download-btn-sm:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .save-path { background: rgba(0, 0, 0, 0.4); padding: 16px 20px; border-radius: 20px; margin-top: 24px; }
+        footer { text-align: center; font-size: 0.7rem; padding: 20px 40px 32px; color: #bdd7df; border-top: 1px solid rgba(255, 200, 100, 0.2); }
+        .highlight { color: #FFD966 !important; font-weight: 700; }
+        .feature-highlight { background: rgba(230, 160, 23, 0.15); border-radius: 20px; padding: 14px 20px; margin-top: 20px; border-left: 3px solid #e6a017; color: #FEF7E0; }
+
+        /* 存档分组样式 */
+        .save-group {
+            margin-bottom: 28px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 200, 100, 0.2);
+        }
+        .save-group-header {
+            background: linear-gradient(135deg, #1f4e3f, #0f3a2e);
+            padding: 16px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+        .save-group-header:hover { background: linear-gradient(135deg, #2c6e57, #1a523f); }
+        .save-group-title { font-size: 1.25rem; font-weight: 800; color: #FFE9B6; display: flex; align-items: center; gap: 12px; }
+        .save-group-title i { color: #4cd964; font-size: 1.2rem; }
+        .group-toggle-icon { color: #ffcf7a; transition: transform 0.2s; font-size: 1rem; }
+        .save-group-header.collapsed .group-toggle-icon { transform: rotate(-90deg); }
+        .save-subversions { padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px; background: rgba(8, 20, 24, 0.6); }
+        .save-subversions.collapsed { display: none; }
+        .save-version-btn {
+            background: linear-gradient(135deg, #2a5a4a, #1e4638);
+            border: 1px solid rgba(77, 217, 100, 0.5);
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #D4FFD4;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .save-version-btn i { font-size: 0.8rem; color: #4cd964; }
+        .save-version-btn:hover { background: #3a7a62; transform: translateY(-2px); border-color: #7eff9e; }
+
+        /* 安装指南样式 */
+        .install-guide {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .install-step {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 28px;
+            padding: 24px 28px;
+            border-left: 6px solid #f5b042;
+            transition: background 0.2s;
+        }
+        .install-step:hover { background: rgba(0, 0, 0, 0.45); }
+        .install-step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .install-step-number {
+            background: #e6a017;
+            color: #121f23;
+            font-weight: 800;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .install-step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffdf9e;
+        }
+        .install-step-content {
+            color: #d4e8ed;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding-left: 56px;
+        }
+        .install-step-content .highlight {
+            color: #FFD966 !important;
+            font-weight: 700;
+        }
+        .install-step-content code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 10px;
+            border-radius: 8px;
+            font-family: 'Inter', monospace;
+            color: #ffcf7a;
+            font-size: 0.85rem;
+        }
+
+        /* 优化设置表格样式 */
+        .optimize-wrapper {
+            overflow-x: auto;
+        }
+        .optimize-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+        .optimize-table th,
+        .optimize-table td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 200, 100, 0.15);
+        }
+        .optimize-table th {
+            background: rgba(230, 160, 23, 0.2);
+            color: #ffdf9e;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .optimize-table td {
+            color: #d4e8ed;
+            font-size: 0.9rem;
+        }
+        .optimize-table tr:last-child td {
+            border-bottom: none;
+        }
+        .optimize-table .memory-cell {
+            font-weight: 600;
+            color: #ffcf7a;
+        }
+        .optimize-table .options-cell {
+            font-family: 'Inter', monospace;
+            color: #8affaa;
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+        .optimize-table .recommend-badge {
+            background: #2dc653;
+            color: #0a1a12;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 30px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .optimize-note {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+            border-radius: 16px;
+            color: #ff8a9e;
+            font-size: 0.9rem;
+        }
+        .optimize-note i {
+            margin-right: 10px;
+        }
+
+        /* 其他模组加载顺序 - 新边框风格：渐变发光边框 */
+        .othermods-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            width: 100%;
+            padding: 10px 0;
+        }
+        .othermods-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 520px;
+            padding: 10px 0;
+        }
+        .othermods-list .mod-order-item {
+            background: rgba(12, 28, 36, 0.7);
+            padding: 14px 24px;
+            margin: 4px 0;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #d4e8ed;
+            width: 100%;
+            text-align: center;
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+        .othermods-list .mod-order-item::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 18px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255, 200, 100, 0.3), rgba(255, 200, 100, 0.05), rgba(255, 200, 100, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        .othermods-list .mod-order-item:hover::before {
+            opacity: 1;
+        }
+        .othermods-list .mod-order-item:hover {
+            background: rgba(20, 48, 58, 0.8);
+            transform: scale(1.01);
+        }
+        .othermods-list .mod-order-item.top-label {
+            background: rgba(45, 198, 83, 0.08);
+            color: #8affaa;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            padding: 10px 20px;
+            border-radius: 12px;
+        }
+        .othermods-list .mod-order-item.top-label::before {
+            background: linear-gradient(135deg, rgba(45, 198, 83, 0.4), rgba(45, 198, 83, 0.1), rgba(45, 198, 83, 0.4));
+        }
+        .othermods-list .mod-order-item.bottom-label {
+            background: rgba(220, 53, 69, 0.08);
+            color: #ff8a9e;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            padding: 10px 20px;
+            border-radius: 12px;
+        }
+        .othermods-list .mod-order-item.bottom-label::before {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.4), rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.4));
+        }
+        .othermods-list .mod-order-item.highlight-item {
+            color: #ffcf7a;
+            font-weight: 600;
+            background: rgba(255, 200, 100, 0.06);
+        }
+        .othermods-list .mod-order-item.highlight-item::before {
+            background: linear-gradient(135deg, rgba(255, 200, 100, 0.5), rgba(255, 200, 100, 0.1), rgba(255, 200, 100, 0.5));
+            opacity: 0.8;
+        }
+        .othermods-list .mod-order-item .item-icon {
+            margin-right: 12px;
+            opacity: 0.4;
+            font-size: 0.85rem;
+            color: #8aa8b0;
+        }
+        .othermods-list .mod-order-item.highlight-item .item-icon {
+            opacity: 0.8;
+            color: #ffcf7a;
+        }
+
+        @media (max-width: 880px) {
+            .sidebar-nav { width: 260px; }
+            .content-main { margin-left: 260px; }
+            .content-header, .dynamic-area { padding-left: 24px; padding-right: 24px; }
+            .mod-card-inner { flex-direction: column; }
+            .mod-status-area { width: auto; }
+            .mod-action-area { align-self: flex-end; }
+            .install-step-content { padding-left: 0; }
+            .optimize-table th,
+            .optimize-table td {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+            .optimize-table .options-cell {
+                font-size: 0.7rem;
+            }
+            .othermods-list .mod-order-item {
+                padding: 12px 18px;
+                font-size: 0.95rem;
+            }
+            .othermods-list {
+                max-width: 440px;
+            }
+        }
+        @media (max-width: 700px) {
+            .sidebar-nav { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 100; }
+            .sidebar-nav.mobile-open { transform: translateX(0); }
+            .content-main { margin-left: 0; }
+            .filter-bar { border-radius: 28px; padding: 8px 12px; }
+            .install-step { padding: 18px 20px; }
+            .install-step-number { width: 34px; height: 34px; font-size: 1rem; }
+            .othermods-list .mod-order-item {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+                border-radius: 12px;
+            }
+            .othermods-list {
+                max-width: 340px;
+            }
+            .othermods-wrapper {
+                min-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="sidebar-nav" id="sidebarNav">
+        <div class="brand-area">
+            <div class="main-title"><i class="fas fa-globe-americas"></i> 欧洲卡车模拟2<br>全球组合地图</div>
+            <div class="subtitle-line">
+                <span class="author-badge"><i class="fas fa-feather-alt"></i> 作者：瑆泽</span>
+                <span class="date-badge" id="globalDateBadge"><i class="far fa-calendar-alt"></i> 更新日期：2026.06.16</span>
+            </div>
+        </div>
+        <div class="nav-menu-container">
+            <div class="nav-menu">
+                <button class="nav-item active" data-nav="loadorder"><i class="fas fa-list-ol"></i> 加载顺序<span id="navStatsBadge" class="nav-stats-badge"><i class="fas fa-cubes"></i> <strong>0</strong></span></button>
+                <button class="nav-item" data-nav="install"><i class="fas fa-download"></i> 安装指南</button>
+                <button class="nav-item" data-nav="optimize"><i class="fas fa-tachometer-alt"></i> 优化设置</button>
+                <button class="nav-item" data-nav="othermods"><i class="fas fa-layer-group"></i> 其他模组加载顺序</button>
+                <button class="nav-item" data-nav="changelog"><i class="fas fa-history"></i> 更新日志</button>
+            </div>
+            <div class="nav-menu-bottom">
+                <button class="nav-item download-btn" data-nav="downloadsave"><i class="fas fa-cloud-download-alt"></i> 下载存档</button>
+            </div>
+        </div>
+    </div>
+    <div class="content-main">
+        <div class="content-header"><h2 id="panelTitle"><i class="fas fa-list-ol"></i> 推荐加载顺序</h2></div>
+        <div id="dynamicContent" class="dynamic-area"></div>
+        <footer>💡 推荐严格遵守「加载顺序」从上到下激活模组，道路连接补丁与修复包置于列表底部，确保全球地图稳定运行。<br>✨ 点击「新增」或「移动」状态模组的名称，自动跳转并高亮其在完整列表中的位置（高亮持续3秒）</footer>
+    </div>
+</div>
+
+<script>
+    // 全局统一日期变量
+    const GLOBAL_UPDATE_DATE = "2026.06.16";
+    
+    // ========== 数据变量（从外部加载） ==========
+    let MODS_LIST = [];
+    let SAVE_GROUPS = [];
+
+    // ========== 数据加载函数 ==========
+    async function loadData() {
+        try {
+            const response = await fetch('mods-data.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            MODS_LIST = data.mods || [];
+            SAVE_GROUPS = data.saveGroups || [];
+            return true;
+        } catch (error) {
+            console.error('数据加载失败:', error);
+            return false;
+        }
+    }
+    
+    // 移动端菜单
+    if (window.innerWidth <= 700) {
+        const btn = document.createElement('button');
+        btn.innerHTML = '<i class="fas fa-bars"></i>';
+        btn.style.cssText = 'position:fixed;top:16px;left:16px;z-index:101;background:#e6a017;border:none;padding:10px 14px;border-radius:30px;color:#121f23;font-size:1.2rem;cursor:pointer';
+        btn.onclick = () => document.getElementById('sidebarNav').classList.toggle('mobile-open');
+        document.body.appendChild(btn);
+    }
+
+    function getActiveModsCount() { return MODS_LIST.filter(mod => mod.status !== 'deleted').length; }
+    let currentFilter = 'all';
+    let pendingJumpModId = null;
+    function getFilteredMods() { return currentFilter === 'all' ? MODS_LIST : MODS_LIST.filter(mod => mod.status === currentFilter); }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+    function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.innerText = msg;
+        toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1f2c;color:#ffdd99;padding:10px 20px;border-radius:40px;z-index:9999;font-size:0.8rem;border-left:4px solid #4cd964;box-shadow:0 4px 12px black;pointer-events:none;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+    function handleModDownload(modId, modName, downloadUrl) {
+        if (!downloadUrl || downloadUrl.trim() === "") { alert(`“${modName}” 暂无可用下载链接。`); return; }
+        window.open(downloadUrl, '_blank');
+        showToast(`正在打开: ${modName}`);
+    }
+
+    function renderLoadOrder() {
+        const filtered = getFilteredMods();
+        if (filtered.length === 0) return `<div class="no-mod-message"><i class="fas fa-filter"></i> 暂无符合条件的模组</div>`;
+        let html = `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> 状态筛选</div><div class="filter-buttons" id="filterButtonsContainer">
+                <div class="filter-chip ${currentFilter === 'all' ? 'active' : ''}" data-filter="all"><i class="fas fa-globe"></i> 全部模组 <span class="filter-count">${MODS_LIST.length}</span></div>
+                <div class="filter-chip ${currentFilter === 'new' ? 'active' : ''}" data-filter="new"><i class="fas fa-plus-circle"></i> 新增 <span class="filter-count">${MODS_LIST.filter(m => m.status === 'new').length}</span></div>
+                <div class="filter-chip ${currentFilter === 'updated' ? 'active' : ''}" data-filter="updated"><i class="fas fa-sync-alt"></i> 更新 <span class="filter-count">${MODS_LIST.filter(m => m.status === 'updated').length}</span></div>
+                <div class="filter-chip ${currentFilter === 'moved' ? 'active' : ''}" data-filter="moved"><i class="fas fa-arrows-alt"></i> 移动 <span class="filter-count">${MODS_LIST.filter(m => m.status === 'moved').length}</span></div>
+                <div class="filter-chip ${currentFilter === 'deleted' ? 'active' : ''}" data-filter="deleted"><i class="fas fa-trash-alt"></i> 已删除 <span class="filter-count">${MODS_LIST.filter(m => m.status === 'deleted').length}</span></div>
+            </div></div><div class="mods-grid">`;
+        let seqCounter = 0;
+        filtered.forEach(mod => {
+            const isDeleted = mod.status === 'deleted';
+            let statusClass = '', statusLabel = '', statusIcon = '';
+            switch(mod.status) {
+                case 'new': statusClass = 'status-new-large'; statusLabel = '新增'; statusIcon = 'fa-plus-circle'; break;
+                case 'updated': statusClass = 'status-updated-large'; statusLabel = '更新'; statusIcon = 'fa-sync-alt'; break;
+                case 'moved': statusClass = 'status-moved-large'; statusLabel = '移动'; statusIcon = 'fa-arrows-alt'; break;
+                case 'deleted': statusClass = 'status-deleted-large'; statusLabel = '已删除'; statusIcon = 'fa-trash-alt'; break;
+                default: statusClass = 'status-normal-large'; statusLabel = '稳定'; statusIcon = 'fa-check-circle';
+            }
+            let seqDisplay = '', seqClass = 'mod-order';
+            if (!isDeleted) { seqCounter++; seqDisplay = `#${seqCounter.toString().padStart(2, '0')}`; } else { seqDisplay = '—'; seqClass += ' deleted-order'; }
+            const descHtml = isDeleted ? '' : `<div class="mod-description">${escapeHtml(mod.desc)}</div>`;
+            const isClickable = (mod.status === 'new' || mod.status === 'moved') && !isDeleted;
+            const clickAttr = isClickable ? `style="cursor:pointer;" data-mod-id="${mod.id}" data-mod-status="${mod.status}"` : `style="cursor:default;" data-mod-id="${mod.id}"`;
+            const hasValidUrl = mod.downloadUrl && mod.downloadUrl.trim() !== "";
+            const downloadDisabled = isDeleted || !hasValidUrl;
+            const downloadDataAttr = `data-mod-id="${mod.id}" data-mod-name="${escapeHtml(mod.name)}" data-download-url="${escapeHtml(mod.downloadUrl || '')}"`;
+            html += `<div class="mod-card ${mod.status}" data-mod-id="${mod.id}"><div class="mod-card-inner">
+                <div class="mod-status-area"><span class="status-badge-large ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span></div>
+                <div class="mod-content-area"><div class="mod-header"><span class="${seqClass}">${seqDisplay}</span><span class="mod-title" ${clickAttr}>${escapeHtml(mod.name)}</span></div>${descHtml}</div>
+                <div class="mod-action-area"><button class="download-button ${downloadDisabled ? 'disabled' : ''}" ${downloadDataAttr} ${downloadDisabled ? 'disabled' : ''}><i class="fas fa-download"></i> 下载</button></div>
+            </div></div>`;
+        });
+        html += `</div>`;
+        return html;
+    }
+
+    // 更新日志
+    function renderChangelog() {
+        const newMods = MODS_LIST.filter(m => m.status === 'new');
+        const updatedMods = MODS_LIST.filter(m => m.status === 'updated');
+        const movedMods = MODS_LIST.filter(m => m.status === 'moved');
+        const deletedMods = MODS_LIST.filter(m => m.status === 'deleted');
+        
+        let html = `<div class="changelog-wrapper"><div class="changelog-version-header"><div class="changelog-version-title"><i class="fas fa-tag"></i> 更新日志 v1.59<span class="changelog-date">${GLOBAL_UPDATE_DATE}</span></div></div><div class="changelog-categories">`;
+        
+        if (newMods.length) {
+            html += `<div class="changelog-category"><div class="category-header new collapsed" data-cat-toggle="new"><i class="fas fa-plus-circle"></i> 新增模组 (${newMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-new">`;
+            newMods.forEach(m => { html += `<div class="changelog-mod-item"><span class="changelog-mod-name">${escapeHtml(m.name)}</span><span class="changelog-mod-desc">${escapeHtml(m.desc.substring(0, 60))}</span></div>`; });
+            html += `</div></div>`;
+        }
+        if (updatedMods.length) {
+            html += `<div class="changelog-category"><div class="category-header updated collapsed" data-cat-toggle="updated"><i class="fas fa-sync-alt"></i> 更新模组 (${updatedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-updated">`;
+            updatedMods.forEach(m => { html += `<div class="changelog-mod-item"><span class="changelog-mod-name">${escapeHtml(m.name)}</span><span class="changelog-mod-desc">${escapeHtml(m.desc.substring(0, 60))}</span></div>`; });
+            html += `</div></div>`;
+        }
+        if (movedMods.length) {
+            html += `<div class="changelog-category"><div class="category-header moved collapsed" data-cat-toggle="moved"><i class="fas fa-arrows-alt"></i> 移动/调整顺序 (${movedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-moved">`;
+            movedMods.forEach(m => { html += `<div class="changelog-mod-item"><span class="changelog-mod-name">${escapeHtml(m.name)}</span><span class="changelog-mod-desc">${escapeHtml(m.desc.substring(0, 60))}</span></div>`; });
+            html += `</div></div>`;
+        }
+        if (deletedMods.length) {
+            html += `<div class="changelog-category"><div class="category-header deleted collapsed" data-cat-toggle="deleted"><i class="fas fa-trash-alt"></i> 已删除/废弃 (${deletedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-deleted">`;
+            deletedMods.forEach(m => { html += `<div class="changelog-mod-item"><span class="changelog-mod-name">${escapeHtml(m.name)}</span><span class="changelog-mod-desc">${escapeHtml(m.desc.substring(0, 60))}</span></div>`; });
+            html += `</div></div>`;
+        }
+        html += `</div><div class="changelog-note"><i class="fas fa-info-circle"></i> 点击分类标题可展开/折叠，稳定状态模组无变化不在此列表。</div></div>`;
+        return html;
+    }
+
+    function bindCategoryToggle() {
+        document.querySelectorAll('[data-cat-toggle]').forEach(toggle => {
+            const newToggle = toggle.cloneNode(true);
+            toggle.parentNode.replaceChild(newToggle, toggle);
+            newToggle.onclick = () => {
+                const key = newToggle.getAttribute('data-cat-toggle');
+                const itemsContainer = document.getElementById(`cat-${key}`);
+                if (itemsContainer) {
+                    itemsContainer.classList.toggle('collapsed');
+                    newToggle.classList.toggle('collapsed');
+                }
+            };
+        });
+    }
+
+    function renderDownloadSave() {
+        let html = `<div class="info-card download-card"><div style="text-align:center"><i class="fas fa-cloud-download-alt" style="font-size:3rem; color:#4cd964;"></i></div>
+        <h2 style="text-align:center; color:#FFE9B6; margin-bottom:24px;">全球组合地图配套存档</h2>`;
+        SAVE_GROUPS.forEach((group, idx) => {
+            html += `<div class="save-group" data-group-idx="${idx}">
+                <div class="save-group-header" data-group-toggle="${idx}">
+                    <div class="save-group-title"><i class="fas ${group.icon}"></i> ${group.versionLabel}</div>
+                    <i class="fas fa-chevron-down group-toggle-icon"></i>
+                </div>
+                <div class="save-subversions" id="saveSubs-${idx}">
+                    ${group.subVersions.map(sub => `<button class="save-version-btn" data-url="${sub.url}" data-ver="${sub.verNum}"><i class="fas fa-download"></i> ${sub.verNum}</button>`).join('')}
+                </div>
+            </div>`;
+        });
+        html += `<div class="save-path"><i class="fas fa-folder-open"></i> 安装位置：<br><code>Documents\\Euro Truck Simulator 2\\profiles\\</code></div>
+        <div class="feature-highlight">点击版本号即可下载对应存档文件。使用前请备份原存档。</div></div>`;
+        return html;
+    }
+
+    function bindSaveGroupEvents() {
+        SAVE_GROUPS.forEach((_, idx) => {
+            const header = document.querySelector(`.save-group-header[data-group-toggle="${idx}"]`);
+            const subsContainer = document.getElementById(`saveSubs-${idx}`);
+            if (header && subsContainer) {
+                const newHeader = header.cloneNode(true);
+                header.parentNode.replaceChild(newHeader, header);
+                newHeader.onclick = () => {
+                    subsContainer.classList.toggle('collapsed');
+                    newHeader.classList.toggle('collapsed');
+                };
+                subsContainer.classList.remove('collapsed');
+            }
+        });
+        document.querySelectorAll('.save-version-btn').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.onclick = (e) => {
+                e.stopPropagation();
+                const url = newBtn.getAttribute('data-url');
+                const ver = newBtn.getAttribute('data-ver');
+                if (url) { window.open(url, '_blank'); showToast(`下载存档: ${ver}`); }
+                else alert(`存档 ${ver} 链接暂不可用`);
+            };
+        });
+    }
+
+    // 跳转相关
+    function jumpToModInFullList(modId) {
+        pendingJumpModId = modId;
+        if (currentFilter !== 'all') { 
+            currentFilter = 'all'; 
+            refreshLoadOrderAndJump(); 
+        }
+        else { performScrollToMod(modId); pendingJumpModId = null; }
+    }
+    function refreshLoadOrderAndJump() {
+        const newHtml = renderLoadOrder(); 
+        container.innerHTML = newHtml;
+        bindFilterEvents(); 
+        bindDownloadButtons(); 
+        bindModTitleClick();
+        document.querySelectorAll('.filter-chip').forEach(ch => { 
+            if(ch.getAttribute('data-filter') === 'all') ch.classList.add('active'); 
+            else ch.classList.remove('active'); 
+        });
+        setTimeout(() => { performScrollToMod(pendingJumpModId); pendingJumpModId = null; }, 150);
+    }
+    function performScrollToMod(modId) {
+        const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
+        if(targetCard) { targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); targetCard.classList.add('highlight-mod'); setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000); }
+    }
+    function bindModTitleClick() { document.querySelectorAll('.mod-title').forEach(t => { t.removeEventListener('click', titleClickHandler); t.addEventListener('click', titleClickHandler); }); }
+    function titleClickHandler(e) { e.stopPropagation(); const mid = parseInt(this.getAttribute('data-mod-id')); const status = this.getAttribute('data-mod-status'); if(status === 'new' || status === 'moved') jumpToModInFullList(mid); }
+    function bindFilterEvents() { document.querySelectorAll('.filter-chip').forEach(ch => { ch.removeEventListener('click', filterClickHandler); ch.addEventListener('click', filterClickHandler); }); }
+    function filterClickHandler(e) { const fv = this.getAttribute('data-filter'); if(!fv || fv === currentFilter) return; currentFilter = fv; if(currentNav === 'loadorder'){ const newHtml = renderLoadOrder(); container.innerHTML = newHtml; bindFilterEvents(); bindDownloadButtons(); bindModTitleClick(); } document.querySelectorAll('.filter-chip').forEach(ch => { if(ch.getAttribute('data-filter') === currentFilter) ch.classList.add('active'); else ch.classList.remove('active'); }); }
+    function bindDownloadButtons() { document.querySelectorAll('.download-button:not(.disabled)').forEach(btn => { const nb = btn.cloneNode(true); btn.parentNode.replaceChild(nb, btn); nb.onclick = (e) => { e.preventDefault(); const mid = parseInt(nb.getAttribute('data-mod-id')); const mname = nb.getAttribute('data-mod-name'); let url = nb.getAttribute('data-download-url'); if(!url){ const md = MODS_LIST.find(m => m.id === mid); if(md) url = md.downloadUrl; } handleModDownload(mid, mname, url); }; }); }
+
+    // 安装指南
+    function renderInstall() {
+        return `
+        <div class="info-card">
+            <div class="install-guide">
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">1</div>
+                        <div class="install-step-title">所有地图DLC都必须</div>
+                    </div>
+                    <div class="install-step-content">
+                        所有官方地图DLC都是必备的：<span class="highlight">伊比利亚、通往黑海之路、波罗的海以北、意大利、法国万岁、斯堪的纳维亚、向东进发！、西巴尔干、北欧地平线</span>。
+                    </div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">2</div>
+                        <div class="install-step-title">Config.cfg 设置</div>
+                    </div>
+                    <div class="install-step-content">
+                        去 <code>Documents\\Euro Truck Simulator 2\\config.cfg</code>，把 <code>uset r_buffer_page_size</code> 改成 <span class="highlight">30</span>（之前是10）。
+                    </div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">3</div>
+                        <div class="install-step-title">精确加载顺序匹配</div>
+                    </div>
+                    <div class="install-step-content">
+                        模组管理器中的模组顺序必须完全符合下面显示的顺序。任何偏差都可能导致崩溃。
+                    </div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">4</div>
+                        <div class="install-step-title">测试配置文件</div>
+                    </div>
+                    <div class="install-step-content">
+                        使用单独的测试配置文件进行测试。
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
+    // 优化设置
+    function renderOptimize() {
+        return `
+        <div class="info-card">
+            <p style="color: #ffdf9e; font-weight: 600; margin-bottom: 8px;">建议在Steam中设置以下启动选项（属性 → 通用 → 启动选项）：</p>
+            <div class="optimize-wrapper">
+                <table class="optimize-table">
+                    <thead>
+                        <tr>
+                            <th>内存</th>
+                            <th>启动选项</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="memory-cell">8GB 内存</td>
+                            <td class="options-cell">-nointro -unlimitedlog -mm_pool_size 4096 -mm_max_tmp_buffers_size 1000</td>
+                        </tr>
+                        <tr>
+                            <td class="memory-cell">12GB 内存</td>
+                            <td class="options-cell">-nointro -unlimitedlog -mm_pool_size 6144 -mm_max_tmp_buffers_size 1000</td>
+                        </tr>
+                        <tr>
+                            <td class="memory-cell">16GB 内存 <span class="recommend-badge">推荐最低配置</span></td>
+                            <td class="options-cell">-nointro -unlimitedlog -mm_pool_size 8192 -mm_max_tmp_buffers_size 1000</td>
+                        </tr>
+                        <tr>
+                            <td class="memory-cell">32GB 内存</td>
+                            <td class="options-cell">-nointro -unlimitedlog -mm_pool_size 16384 -mm_max_tmp_buffers_size 1000</td>
+                        </tr>
+                        <tr>
+                            <td class="memory-cell">64GB 内存</td>
+                            <td class="options-cell">-nointro -unlimitedlog -mm_pool_size 32768 -mm_max_tmp_buffers_size 1000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="optimize-note">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>重要提示：</strong>mm_pool_size内存不应超过总内存的80%。16GB内存最大12800，但为了稳定性建议8192。
+            </div>
+        </div>
+        `;
+    }
+
+    // 其他模组加载顺序
+    function renderOtherMods() {
+        const items = [
+            "背景地图",
+            "加载画面",
+            "天气设置",
+            "画质模组",
+            "声音模组",
+            "物理模组",
+            "功能类模组",
+            "UI界面模组",
+            "改装配件",
+            "内饰模组",
+            "交通流量",
+            "货物模组",
+            "涂装模组",
+            "挂车模组",
+            "卡车模组",
+            "地图模组"
+        ];
+        
+        let itemsHtml = items.map(item => {
+            let cls = "mod-order-item";
+            if (item === "地图模组") cls += " highlight-item";
+            return `<div class="${cls}"><i class="fas fa-cube item-icon"></i>${item}</div>`;
+        }).join('');
+        
+        return `
+        <div class="info-card" style="display: flex; justify-content: center; align-items: center; padding: 20px 20px; background: rgba(12, 28, 36, 0.4); border-left: 6px solid rgba(255, 200, 100, 0.4);">
+            <div class="othermods-wrapper">
+                <div class="othermods-list">
+                    <div class="mod-order-item top-label"><i class="fas fa-arrow-up" style="margin-right: 8px;"></i> 顶 部 <i class="fas fa-arrow-up" style="margin-left: 8px;"></i></div>
+                    <div style="width: 60%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.15), transparent); margin: 4px 0;"></div>
+                    ${itemsHtml}
+                    <div style="width: 60%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.15), transparent); margin: 4px 0;"></div>
+                    <div class="mod-order-item bottom-label"><i class="fas fa-arrow-down" style="margin-right: 8px;"></i> 底 部 <i class="fas fa-arrow-down" style="margin-left: 8px;"></i></div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
+    const contentMap = {
+        loadorder: { title: '<i class="fas fa-list-ol"></i> 推荐加载顺序', body: renderLoadOrder },
+        install: { title: '<i class="fas fa-download"></i> 安装指南', body: renderInstall },
+        optimize: { title: '<i class="fas fa-tachometer-alt"></i> 优化设置', body: renderOptimize },
+        othermods: { title: '<i class="fas fa-layer-group"></i> 其他模组加载顺序', body: renderOtherMods },
+        changelog: { title: '<i class="fas fa-history"></i> 更新日志', body: renderChangelog },
+        downloadsave: { title: '<i class="fas fa-cloud-download-alt"></i> 下载存档', body: renderDownloadSave }
+    };
+    const container = document.getElementById('dynamicContent');
+    const titleEl = document.getElementById('panelTitle');
+    const navStatsBadge = document.getElementById('navStatsBadge');
+    let currentNav = 'loadorder';
+    function updateNavStatsBadge() { if(navStatsBadge) navStatsBadge.innerHTML = `<i class="fas fa-cubes"></i> <strong>${getActiveModsCount()}</strong>`; }
+    
+    function renderPage(navId) {
+        const data = contentMap[navId]; if(!data) return;
+        titleEl.innerHTML = data.title;
+        if(navId === 'loadorder'){ 
+            currentFilter = 'all';
+            container.innerHTML = renderLoadOrder(); 
+            bindFilterEvents(); 
+            bindDownloadButtons(); 
+            bindModTitleClick();
+            document.querySelectorAll('.filter-chip').forEach(ch => {
+                if(ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
+                else ch.classList.remove('active');
+            });
+        }
+        else if(navId === 'changelog'){ container.innerHTML = renderChangelog(); setTimeout(bindCategoryToggle,30); }
+        else if(navId === 'downloadsave'){ container.innerHTML = renderDownloadSave(); setTimeout(bindSaveGroupEvents,30); }
+        else { container.innerHTML = data.body(); }
+        window.scrollTo({ top: 0, behavior: 'smooth' }); updateNavStatsBadge();
+    }
+    function setActiveNav(navId){ document.querySelectorAll('.nav-item').forEach(btn=>btn.classList.toggle('active', btn.getAttribute('data-nav')===navId)); }
+    document.querySelectorAll('.nav-item').forEach(btn=>{ btn.addEventListener('click',()=>{ const target=btn.getAttribute('data-nav'); if(target===currentNav) return; currentNav=target; renderPage(target); setActiveNav(target); }); });
+    
+    const dateBadge = document.getElementById('globalDateBadge');
+    if (dateBadge) {
+        dateBadge.innerHTML = `<i class="far fa-calendar-alt"></i> 更新日期：${GLOBAL_UPDATE_DATE}`;
+    }
+    
+    // ========== 页面初始化 ==========
+    async function initApp() {
+        const loaded = await loadData();
+        
+        if (loaded && MODS_LIST.length > 0) {
+            updateNavStatsBadge();
+            renderPage('loadorder');
+            setActiveNav('loadorder');
+        } else {
+            // 显示错误信息
+            container.innerHTML = `
+                <div class="no-mod-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    数据加载失败，请检查网络连接后刷新页面<br>
+                    <span style="font-size:0.8rem; color:#8a9ea8;">请确保 mods-data.json 文件存在于当前目录</span>
+                </div>
+            `;
+            titleEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 数据加载失败';
+        }
+    }
+    
+    // 启动应用
+    initApp();
+</script>
+</body>
+</html>
