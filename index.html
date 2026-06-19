@@ -26,7 +26,7 @@
             overflow:hidden;
         }
         
-        /* ===== 顶部标题栏（跨左右两侧，水平居中） ===== */
+        /* ===== 顶部标题栏 ===== */
         .global-header {
             background:linear-gradient(135deg,rgba(0,0,0,0.7),rgba(10,25,35,0.9));
             border-bottom:2px solid rgba(255,200,100,0.4);
@@ -196,7 +196,7 @@
             margin-left:8px;
         }
 
-        /* ===== 主体：侧边栏 + 内容区（flex row，独立滚动） ===== */
+        /* ===== 主体：侧边栏 + 内容区 ===== */
         .app-body {
             display:flex;
             flex:1;
@@ -204,7 +204,7 @@
             overflow:hidden;
         }
 
-        /* ===== 侧边栏（独立滚动） ===== */
+        /* ===== 侧边栏 ===== */
         .sidebar-nav {
             width:380px;
             background:rgba(0,0,0,0.55);
@@ -226,7 +226,6 @@
         .nav-menu { display:flex; flex-direction:column; gap:10px; }
         .nav-menu-bottom { padding-top:16px; border-top:1px solid rgba(255,200,100,0.15); margin-top:8px; }
         
-        /* ===== 所有导航按钮统一尺寸 ===== */
         .nav-item,
         .changelog-toggle-btn {
             background:rgba(25,50,58,0.6);
@@ -291,7 +290,7 @@
             color:#0a1a12;
         }
         
-        /* ===== 侧边栏内更新日志折叠 ===== */
+        /* ===== 侧边栏内更新日志 ===== */
         .changelog-sidebar-wrapper {
             margin-bottom:4px;
             flex-shrink:0;
@@ -344,9 +343,7 @@
             border-radius:20px;
             font-weight:400;
         }
-        .changelog-sidebar-inner .cl-cat { 
-            margin-bottom:8px; 
-        }
+        .changelog-sidebar-inner .cl-cat { margin-bottom:8px; }
         .changelog-sidebar-inner .cl-cat-header {
             font-size:0.9rem;
             font-weight:700;
@@ -359,17 +356,13 @@
             border-radius:8px;
             transition:background 0.15s;
         }
-        .changelog-sidebar-inner .cl-cat-header:hover { 
-            background:rgba(255,255,255,0.06); 
-        }
+        .changelog-sidebar-inner .cl-cat-header:hover { background:rgba(255,255,255,0.06); }
         .changelog-sidebar-inner .cl-cat-header .cl-toggle {
             margin-left:auto;
             transition:transform 0.2s;
             font-size:0.7rem;
         }
-        .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { 
-            transform:rotate(-90deg); 
-        }
+        .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
         .changelog-sidebar-inner .cl-cat-items {
             overflow:hidden;
             max-height:400px;
@@ -420,7 +413,7 @@
             font-style:italic; 
         }
 
-        /* ===== 主内容区（右侧，独立滚动） ===== */
+        /* ===== 主内容区 ===== */
         .content-main {
             flex:1;
             min-width:0;
@@ -566,23 +559,143 @@
         .othermods-list .mod-order-item.highlight-item .item-icon { opacity:0.8; color:#ffcf7a; }
         .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:4px 0; }
 
-        /* ===== 下载存档 ===== */
-        .save-group { margin-bottom:24px; background:rgba(0,0,0,0.25); border-radius:28px; overflow:hidden; border:1px solid rgba(255,200,100,0.18); }
-        .save-group-header { background:linear-gradient(135deg,#1f4e3f,#0f3a2e); padding:16px 24px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background 0.2s; }
-        .save-group-header:hover { background:linear-gradient(135deg,#2c6e57,#1a523f); }
-        .save-group-title { font-size:1.2rem; font-weight:800; color:#FFE9B6; display:flex; align-items:center; gap:12px; }
-        .save-group-title i { color:#4cd964; font-size:1.1rem; }
-        .group-toggle-icon { color:#ffcf7a; transition:transform 0.2s; font-size:1rem; }
-        .save-group-header.collapsed .group-toggle-icon { transform:rotate(-90deg); }
-        .save-subversions { padding:18px 24px; display:flex; flex-wrap:wrap; gap:12px; background:rgba(8,20,24,0.6); }
-        .save-subversions.collapsed { display:none; }
-        .save-version-btn { background:linear-gradient(135deg,#2a5a4a,#1e4638); border:1px solid rgba(77,217,100,0.5); border-radius:40px; padding:10px 22px; font-size:0.9rem; font-weight:700; color:#D4FFD4; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
-        .save-version-btn i { font-size:0.8rem; color:#4cd964; }
-        .save-version-btn:hover { background:#3a7a62; transform:translateY(-2px); border-color:#7eff9e; }
-        .save-path { background:rgba(0,0,0,0.4); padding:16px 22px; border-radius:16px; margin-top:22px; font-size:0.95rem; }
-        .feature-highlight { background:rgba(230,160,23,0.12); border-radius:16px; padding:14px 20px; margin-top:18px; border-left:3px solid #e6a017; color:#FEF7E0; font-size:0.95rem; }
+        /* ===== 下载存档（增强可读性） ===== */
+        .download-card {
+            background:rgba(16,34,40,0.92);
+            border-left-color:#4cd964;
+        }
+        .download-card .download-card-title {
+            text-align:center;
+            color:#FFE9B6;
+            margin-bottom:22px;
+            font-size:1.5rem;
+            font-weight:700;
+            text-shadow:0 2px 8px rgba(0,0,0,0.5);
+        }
+        .download-card .download-icon-wrap {
+            text-align:center;
+            margin-bottom:10px;
+        }
+        .download-card .download-icon-wrap i {
+            font-size:3rem;
+            color:#4cd964;
+            text-shadow:0 0 20px rgba(76,217,100,0.3);
+        }
+        .save-group { 
+            margin-bottom:24px; 
+            background:rgba(0,0,0,0.35); 
+            border-radius:28px; 
+            overflow:hidden; 
+            border:1px solid rgba(76,217,100,0.2);
+        }
+        .save-group-header { 
+            background:linear-gradient(135deg,#1a4a3a,#0f3328); 
+            padding:16px 24px; 
+            cursor:pointer; 
+            display:flex; 
+            align-items:center; 
+            justify-content:space-between; 
+            transition:background 0.2s; 
+        }
+        .save-group-header:hover { 
+            background:linear-gradient(135deg,#2a6a52,#1a4a3a); 
+        }
+        .save-group-title { 
+            font-size:1.2rem; 
+            font-weight:800; 
+            color:#FFE9B6; 
+            display:flex; 
+            align-items:center; 
+            gap:12px; 
+            text-shadow:0 1px 4px rgba(0,0,0,0.4);
+        }
+        .save-group-title i { 
+            color:#4cd964; 
+            font-size:1.2rem; 
+        }
+        .group-toggle-icon { 
+            color:#ffcf7a; 
+            transition:transform 0.2s; 
+            font-size:1rem; 
+        }
+        .save-group-header.collapsed .group-toggle-icon { 
+            transform:rotate(-90deg); 
+        }
+        .save-subversions { 
+            padding:18px 24px; 
+            display:flex; 
+            flex-wrap:wrap; 
+            gap:12px; 
+            background:rgba(8,20,24,0.5); 
+        }
+        .save-subversions.collapsed { 
+            display:none; 
+        }
+        .save-version-btn { 
+            background:linear-gradient(135deg,#2a6a52,#1a4a3a); 
+            border:1px solid rgba(76,217,100,0.4); 
+            border-radius:40px; 
+            padding:10px 24px; 
+            font-size:0.95rem; 
+            font-weight:700; 
+            color:#D4FFD4; 
+            cursor:pointer; 
+            transition:all 0.2s; 
+            display:inline-flex; 
+            align-items:center; 
+            gap:8px; 
+            text-shadow:0 1px 3px rgba(0,0,0,0.3);
+        }
+        .save-version-btn i { 
+            font-size:0.85rem; 
+            color:#4cd964; 
+        }
+        .save-version-btn:hover { 
+            background:#3a8a72; 
+            transform:translateY(-2px); 
+            border-color:#7eff9e; 
+            box-shadow:0 4px 16px rgba(76,217,100,0.2);
+        }
+        .save-path { 
+            background:rgba(0,0,0,0.45); 
+            padding:16px 22px; 
+            border-radius:16px; 
+            margin-top:22px; 
+            font-size:0.95rem; 
+            border:1px solid rgba(255,200,100,0.1);
+        }
+        .save-path .path-label {
+            color:#8aa8b0;
+            font-weight:600;
+            display:block;
+            margin-bottom:4px;
+        }
+        .save-path code { 
+            background:rgba(0,0,0,0.5); 
+            padding:4px 14px; 
+            border-radius:8px; 
+            color:#ffcf7a; 
+            font-size:0.9rem; 
+            display:inline-block;
+            font-family:'Inter',monospace;
+            word-break:break-all;
+            border:1px solid rgba(255,200,100,0.1);
+        }
+        .feature-highlight { 
+            background:rgba(230,160,23,0.12); 
+            border-radius:16px; 
+            padding:14px 20px; 
+            margin-top:18px; 
+            border-left:3px solid #e6a017; 
+            color:#FEF7E0; 
+            font-size:0.95rem; 
+            line-height:1.6;
+        }
+        .feature-highlight strong {
+            color:#ffcf7a;
+        }
 
-        /* ===== 返回顶部按钮 ===== */
+        /* ===== 返回顶部 ===== */
         .back-to-top { position:fixed; bottom:36px; right:36px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#e6a017,#c4870f); border:2px solid rgba(255,215,0,0.5); color:#121f23; font-size:1.3rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(230,160,23,0.4); transition:all 0.3s ease; z-index:999; backdrop-filter:blur(4px); }
         .back-to-top:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 8px 24px rgba(230,160,23,0.5); background:linear-gradient(135deg,#f5b82e,#d49214); }
         .back-to-top.visible { display:flex; }
@@ -632,6 +745,9 @@
             .download-button { padding:8px 18px; font-size:0.8rem; }
             .mod-card-inner { padding:14px 16px; }
             .status-badge-large { font-size:0.7rem; padding:4px 12px; }
+            .download-card .download-card-title { font-size:1.2rem; }
+            .save-group-title { font-size:1rem; }
+            .save-version-btn { font-size:0.85rem; padding:8px 18px; }
         }
         @media (max-width:480px){
             .sidebar-nav { max-height:35vh; }
@@ -651,12 +767,17 @@
             .install-step-title { font-size:0.95rem; }
             .install-step-content { font-size:0.85rem; }
             .othermods-list .mod-order-item { font-size:0.8rem; padding:8px 12px; }
+            .download-card .download-card-title { font-size:1rem; }
+            .save-group-title { font-size:0.9rem; }
+            .save-version-btn { font-size:0.75rem; padding:6px 14px; }
+            .save-path code { font-size:0.75rem; padding:3px 10px; }
+            .feature-highlight { font-size:0.85rem; }
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- ===== 顶部标题栏（跨左右两侧，水平居中） ===== -->
+    <!-- ===== 顶部标题栏 ===== -->
     <header class="global-header">
         <div class="brand-area">
             <div class="main-title">
@@ -671,7 +792,6 @@
             </div>
         </div>
         <div class="header-controls">
-            <!-- 版本下拉 -->
             <span class="version-dropdown-wrapper" id="versionDropdownWrapper">
                 <button class="version-dropdown-btn" id="versionDropdownBtn">
                     <span id="currentVersionLabel">v1.59</span>
@@ -682,7 +802,6 @@
                     <button class="version-opt" data-version="1.58">1.58</button>
                 </div>
             </span>
-            <!-- 语言下拉 -->
             <span class="lang-dropdown-wrapper" id="langDropdownWrapper">
                 <button class="lang-dropdown-btn" id="langDropdownBtn">
                     <span id="currentLangLabel">中文</span>
@@ -697,12 +816,10 @@
         </div>
     </header>
 
-    <!-- ===== 主体：侧边栏 + 内容区（独立滚动） ===== -->
+    <!-- ===== 主体 ===== -->
     <div class="app-body">
-        <!-- 侧边栏（独立滚动） -->
         <nav class="sidebar-nav" id="sidebarNav">
             <div class="nav-menu">
-                <!-- 更新日志折叠按钮 -->
                 <div class="changelog-sidebar-wrapper">
                     <div class="changelog-toggle-btn" id="changelogToggleBtn">
                         <i class="fas fa-history"></i>
@@ -710,12 +827,9 @@
                         <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
                     </div>
                     <div class="changelog-sidebar-content" id="changelogSidebarContent">
-                        <div class="changelog-sidebar-inner" id="changelogSidebarInner">
-                            <!-- 由 js 动态渲染 -->
-                        </div>
+                        <div class="changelog-sidebar-inner" id="changelogSidebarInner"></div>
                     </div>
                 </div>
-
                 <button class="nav-item active" data-nav="loadorder">
                     <i class="fas fa-list-ol"></i>
                     <span data-i18n="nav_loadorder">加载顺序</span>
@@ -742,7 +856,6 @@
             </div>
         </nav>
 
-        <!-- 主内容区（独立滚动） -->
         <main class="content-main" id="contentMain">
             <div class="content-header">
                 <h2 id="panelTitle"><i class="fas fa-list-ol"></i> <span data-i18n="panel_loadorder">推荐加载顺序</span></h2>
@@ -762,7 +875,6 @@
     </div>
 </div>
 
-<!-- ===== 返回顶部按钮 ===== -->
 <button class="back-to-top" id="backToTop" aria-label="返回顶部">
     <i class="fas fa-chevron-up"></i>
 </button>
@@ -857,33 +969,26 @@
     }
 
     // ================================================================
-    //  跳转函数：从更新日志跳转到模组列表（保持分类展开）
+    //  跳转函数
     // ================================================================
     function jumpToModFromChangelog(modId) {
-        // 切换到加载顺序页面
         if (currentNav !== 'loadorder') {
             currentNav = 'loadorder';
             document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-nav') === 'loadorder');
             });
         }
-        // 重置筛选为全部
         currentFilter = 'all';
-        // 重新渲染加载顺序页面
         renderPage('loadorder');
-        // 延迟执行滚动和高亮
         setTimeout(() => {
             performScrollToMod(modId);
         }, 200);
-        // 确保更新日志分类保持展开状态（在渲染后重新展开）
         setTimeout(() => {
-            // 展开更新日志内容
             const changelogContent = document.getElementById('changelogSidebarContent');
             const toggleBtn = document.getElementById('changelogToggleBtn');
             if (changelogContent && toggleBtn) {
                 changelogContent.classList.add('open');
                 toggleBtn.classList.add('open');
-                // 渲染更新日志内容
                 renderSidebarChangelog();
             }
         }, 250);
@@ -942,13 +1047,8 @@
             { key: 'deleted', label: t('changelog_deleted'), items: deletedMods, cls: 'cat-deleted', icon: 'fa-trash-alt' }
         ];
 
-        // 检查是否有任何分类有内容，用于决定是否默认展开
-        let hasItems = false;
-
         categories.forEach(cat => {
-            // 默认展开有内容的分类
             const shouldExpand = cat.items.length > 0;
-            if (cat.items.length > 0) hasItems = true;
             html += `<div class="cl-cat">`;
             html += `<div class="cl-cat-header ${cat.cls} ${shouldExpand ? '' : 'collapsed'}" data-cl-toggle="${cat.key}">
                 <i class="fas ${cat.icon}"></i> ${cat.label} (${cat.items.length})
@@ -971,7 +1071,6 @@
 
         container.innerHTML = html;
 
-        // 绑定分类折叠
         document.querySelectorAll('[data-cl-toggle]').forEach(toggle => {
             toggle.onclick = () => {
                 const key = toggle.getAttribute('data-cl-toggle');
@@ -983,7 +1082,6 @@
             };
         });
 
-        // 绑定条目点击跳转
         document.querySelectorAll('.cl-item').forEach(item => {
             item.onclick = () => {
                 const modId = parseInt(item.getAttribute('data-mod-id'));
@@ -997,13 +1095,12 @@
     }
 
     // ================================================================
-    //  滚动到指定模组并高亮（在主内容区域内滚动）
+    //  滚动到指定模组
     // ================================================================
     function performScrollToMod(modId) {
         const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
         const contentMain = document.getElementById('contentMain');
         if (targetCard && contentMain) {
-            // 计算目标卡片相对于主内容区的位置
             const cardRect = targetCard.getBoundingClientRect();
             const containerRect = contentMain.getBoundingClientRect();
             const scrollOffset = cardRect.top - containerRect.top + contentMain.scrollTop - 80;
@@ -1117,8 +1214,9 @@
 
     function renderDownloadSave() {
         const groups = getCurrentSaveGroups();
-        let html = `<div class="info-card download-card"><div style="text-align:center"><i class="fas fa-cloud-download-alt" style="font-size:2.8rem; color:#4cd964;"></i></div>
-        <h2 style="text-align:center; color:#FFE9B6; margin-bottom:22px; font-size:1.4rem;">${t('download_save_title')} (v${currentVersion})</h2>`;
+        let html = `<div class="info-card download-card">
+            <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
+            <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>`;
         groups.forEach((group, idx) => {
             const label = t(group.versionLabel);
             html += `<div class="save-group" data-group-idx="${idx}">
@@ -1131,8 +1229,11 @@
                 </div>
             </div>`;
         });
-        html += `<div class="save-path"><i class="fas fa-folder-open"></i> ${t('download_save_path')}<br><code style="font-size:0.9rem;">${t('download_save_path_code')}</code></div>
-        <div class="feature-highlight">${t('download_save_note')}</div></div>`;
+        html += `<div class="save-path">
+            <span class="path-label"><i class="fas fa-folder-open"></i> ${t('download_save_path')}</span>
+            <code>${t('download_save_path_code')}</code>
+        </div>
+        <div class="feature-highlight"><strong>💡 ${t('download_save_note')}</strong></div></div>`;
         return html;
     }
 
@@ -1269,7 +1370,6 @@
         } else {
             container.innerHTML = data.render();
         }
-        // 不滚动整个页面，只滚动主内容区
         const contentMain = document.getElementById('contentMain');
         if (contentMain) {
             contentMain.scrollTop = 0;
