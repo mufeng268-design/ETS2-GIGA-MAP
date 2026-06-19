@@ -9,10 +9,15 @@
     <style>
         /* ===== 全局重置与基础样式 ===== */
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { background:#0a1219; font-family:'Inter','Segoe UI',system-ui,sans-serif; }
+        body { 
+            background:#0a1219; 
+            font-family:'Inter','Segoe UI',system-ui,sans-serif; 
+            font-size:17px;
+            line-height:1.5;
+        }
         .app-wrapper { display:flex; flex-direction:column; min-height:100vh; }
         
-        /* ===== 顶部标题栏（跨左右两侧，垂直居中） ===== */
+        /* ===== 顶部标题栏（跨左右两侧，水平居中） ===== */
         .global-header {
             background:linear-gradient(135deg,rgba(0,0,0,0.7),rgba(10,25,35,0.9));
             border-bottom:2px solid rgba(255,200,100,0.4);
@@ -20,22 +25,24 @@
             display:flex;
             flex-wrap:wrap;
             align-items:center;
-            justify-content:space-between;
-            gap:12px 20px;
+            justify-content:center;
+            gap:12px 30px;
             flex-shrink:0;
             backdrop-filter:blur(6px);
             position:sticky;
             top:0;
             z-index:50;
-            min-height:72px;
+            min-height:76px;
         }
         .global-header .brand-area {
             display:flex;
             flex-direction:column;
+            align-items:center;
             gap:2px;
+            text-align:center;
         }
         .global-header .brand-area .main-title {
-            font-size:1.6rem;
+            font-size:1.8rem;
             font-weight:800;
             background:linear-gradient(135deg,#FFE6A0 0%,#FFC857 100%);
             -webkit-background-clip:text;
@@ -49,22 +56,22 @@
         }
         .global-header .brand-area .main-title i {
             color:#ffbc3c;
-            font-size:1.6rem;
+            font-size:1.8rem;
             text-shadow:0 0 6px #ffb347;
         }
         .global-header .brand-area .subtitle-row {
             display:flex;
             flex-wrap:wrap;
             align-items:center;
-            gap:10px 16px;
-            padding-left:2px;
+            justify-content:center;
+            gap:8px 16px;
         }
         .global-header .brand-area .subtitle-row .author-badge,
         .global-header .brand-area .subtitle-row .date-badge {
             background:linear-gradient(120deg,#0f2f46,#07212e);
-            padding:4px 14px;
+            padding:4px 16px;
             border-radius:48px;
-            font-size:0.75rem;
+            font-size:0.85rem;
             font-weight:700;
             backdrop-filter:blur(2px);
             display:flex;
@@ -90,9 +97,9 @@
             background:rgba(0,0,0,0.5);
             border:1px solid rgba(255,200,100,0.4);
             border-radius:30px;
-            padding:5px 16px 5px 14px;
+            padding:6px 18px 6px 16px;
             color:#ffdf9e;
-            font-size:0.8rem;
+            font-size:0.9rem;
             font-weight:700;
             cursor:pointer;
             display:flex;
@@ -100,8 +107,8 @@
             gap:6px;
             transition:all 0.2s;
             font-family:inherit;
-            height:34px;
-            min-width:70px;
+            height:38px;
+            min-width:76px;
         }
         .global-header .header-controls .lang-dropdown-btn:hover,
         .global-header .header-controls .version-dropdown-btn:hover {
@@ -110,7 +117,7 @@
         }
         .global-header .header-controls .lang-dropdown-btn i,
         .global-header .header-controls .version-dropdown-btn i {
-            font-size:0.65rem;
+            font-size:0.7rem;
             transition:transform 0.25s;
             color:#ffcf7a;
         }
@@ -128,7 +135,7 @@
             border:1px solid rgba(255,200,100,0.3);
             border-radius:14px;
             padding:4px 0;
-            min-width:90px;
+            min-width:100px;
             box-shadow:0 12px 40px rgba(0,0,0,0.6);
             display:none;
             z-index:200;
@@ -144,11 +151,11 @@
         .global-header .header-controls .version-dropdown-menu .version-opt {
             display:block;
             width:100%;
-            padding:6px 16px;
+            padding:8px 18px;
             background:transparent;
             border:none;
             color:#cde5ea;
-            font-size:0.8rem;
+            font-size:0.85rem;
             font-weight:600;
             text-align:left;
             cursor:pointer;
@@ -173,7 +180,7 @@
         }
         .global-header .header-controls .version-dropdown-menu .version-opt .opt-badge {
             float:right;
-            font-size:0.55rem;
+            font-size:0.6rem;
             background:rgba(45,198,83,0.2);
             color:#8affaa;
             padding:1px 8px;
@@ -190,7 +197,7 @@
 
         /* ===== 侧边栏（加宽至 380px） ===== */
         .sidebar-nav {
-            width:420px;
+            width:380px;
             background:rgba(0,0,0,0.55);
             backdrop-filter:blur(10px);
             border-right:1px solid rgba(255,215,0,0.25);
@@ -199,41 +206,41 @@
             display:flex;
             flex-direction:column;
             flex-shrink:0;
-            padding:12px 20px 20px 20px;
+            padding:16px 22px 24px 22px;
         }
         .sidebar-nav::-webkit-scrollbar { width:4px; }
         .sidebar-nav::-webkit-scrollbar-track { background:#14262c; border-radius:10px; }
         .sidebar-nav::-webkit-scrollbar-thumb { background:#f5b042; border-radius:10px; }
         
-        .nav-menu { display:flex; flex-direction:column; gap:8px; }
-        .nav-menu-bottom { padding-top:14px; border-top:1px solid rgba(255,200,100,0.15); margin-top:6px; }
+        .nav-menu { display:flex; flex-direction:column; gap:10px; }
+        .nav-menu-bottom { padding-top:16px; border-top:1px solid rgba(255,200,100,0.15); margin-top:8px; }
         
         /* ===== 所有导航按钮统一尺寸 ===== */
         .nav-item,
         .changelog-toggle-btn {
             background:rgba(25,50,58,0.6);
             border:1px solid rgba(255,200,100,0.25);
-            padding:12px 18px;
+            padding:14px 20px;
             border-radius:44px;
-            font-size:0.9rem;
+            font-size:1rem;
             font-weight:600;
             color:#eef3f5;
             display:flex;
             align-items:center;
-            gap:14px;
+            gap:16px;
             cursor:pointer;
             transition:all 0.25s;
             width:100%;
             text-align:left;
             font-family:inherit;
             backdrop-filter:blur(2px);
-            min-height:52px;
-            line-height:1.2;
+            min-height:56px;
+            line-height:1.3;
         }
         .nav-item i,
         .changelog-toggle-btn i {
-            width:26px;
-            font-size:1.1rem;
+            width:28px;
+            font-size:1.2rem;
             color:#ffcf7a;
             flex-shrink:0;
             text-align:center;
@@ -259,8 +266,8 @@
             background:rgba(45,198,83,0.2);
             border:1px solid rgba(45,198,83,0.5);
             border-radius:30px;
-            padding:2px 10px;
-            font-size:0.65rem;
+            padding:2px 12px;
+            font-size:0.75rem;
             font-weight:700;
             color:#8affaa;
             margin-left:auto;
@@ -293,9 +300,9 @@
             margin-top:0;
         }
         .changelog-sidebar-content.open {
-            max-height:500px;
+            max-height:550px;
             opacity:1;
-            margin-top:8px;
+            margin-top:10px;
             overflow-y:auto;
         }
         .changelog-sidebar-content::-webkit-scrollbar { width:3px; }
@@ -304,32 +311,32 @@
         .changelog-sidebar-inner {
             background:rgba(10,25,35,0.7);
             border-radius:16px;
-            padding:14px 16px;
+            padding:16px 18px;
             border:1px solid rgba(255,200,100,0.12);
         }
         .changelog-sidebar-inner .changelog-version-title-sm {
-            font-size:0.85rem;
+            font-size:0.95rem;
             font-weight:700;
             color:#FFE6A0;
-            margin-bottom:8px;
+            margin-bottom:10px;
             display:flex;
             align-items:center;
             gap:8px;
             flex-wrap:wrap;
         }
         .changelog-sidebar-inner .changelog-version-title-sm .date-sm {
-            font-size:0.6rem;
+            font-size:0.7rem;
             color:#9bb7bf;
             background:rgba(0,0,0,0.3);
             padding:2px 10px;
             border-radius:20px;
             font-weight:400;
         }
-        .changelog-sidebar-inner .cl-cat { margin-bottom:4px; }
+        .changelog-sidebar-inner .cl-cat { margin-bottom:6px; }
         .changelog-sidebar-inner .cl-cat-header {
-            font-size:0.7rem;
+            font-size:0.8rem;
             font-weight:700;
-            padding:4px 0 4px 6px;
+            padding:5px 0 5px 6px;
             display:flex;
             align-items:center;
             gap:6px;
@@ -342,12 +349,12 @@
         .changelog-sidebar-inner .cl-cat-header .cl-toggle {
             margin-left:auto;
             transition:transform 0.2s;
-            font-size:0.55rem;
+            font-size:0.6rem;
         }
         .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
         .changelog-sidebar-inner .cl-cat-items {
             overflow:hidden;
-            max-height:200px;
+            max-height:300px;
             transition:max-height 0.25s ease, opacity 0.2s ease;
             opacity:1;
         }
@@ -356,33 +363,33 @@
             opacity:0;
         }
         .changelog-sidebar-inner .cl-item {
-            font-size:0.7rem;
+            font-size:0.8rem;
             color:#d4e8ed;
-            padding:2px 0 2px 16px;
+            padding:3px 0 3px 16px;
             border-left:2px solid rgba(255,200,100,0.12);
             margin-left:6px;
-            padding-left:12px;
-            margin-bottom:1px;
+            padding-left:14px;
+            margin-bottom:2px;
         }
         .changelog-sidebar-inner .cl-item .cl-file {
-            font-size:0.55rem;
+            font-size:0.65rem;
             color:#8aa8b0;
             font-family:monospace;
             display:block;
-            margin-top:0px;
+            margin-top:1px;
         }
         .changelog-sidebar-inner .cl-cat-header.cat-new { color:#8affaa; }
         .changelog-sidebar-inner .cl-cat-header.cat-updated { color:#8bbfff; }
         .changelog-sidebar-inner .cl-cat-header.cat-moved { color:#ffdf7e; }
         .changelog-sidebar-inner .cl-cat-header.cat-deleted { color:#ff8a9e; }
-        .changelog-sidebar-inner .cl-empty { color:#6a8a92; font-size:0.7rem; padding:4px 12px; font-style:italic; }
+        .changelog-sidebar-inner .cl-empty { color:#6a8a92; font-size:0.8rem; padding:4px 12px; font-style:italic; }
 
-        /* ===== 主内容区（右侧，自适应填充剩余宽度） ===== */
+        /* ===== 主内容区（右侧，自适应填充） ===== */
         .content-main {
             flex:1;
             min-width:0;
             background:rgba(8,20,24,0.25);
-            padding:16px 28px 32px 28px;
+            padding:20px 36px 36px 36px;
             overflow-y:auto;
         }
         .content-main .content-header {
@@ -391,12 +398,12 @@
             justify-content:space-between;
             flex-wrap:wrap;
             gap:12px;
-            padding-bottom:12px;
+            padding-bottom:14px;
             border-bottom:1px solid rgba(255,200,100,0.2);
-            margin-bottom:20px;
+            margin-bottom:24px;
         }
         .content-main .content-header h2 {
-            font-size:1.4rem;
+            font-size:1.6rem;
             font-weight:700;
             background:linear-gradient(135deg,#ffde9e,#ffc057);
             -webkit-background-clip:text;
@@ -404,191 +411,199 @@
             color:transparent;
             display:flex;
             align-items:center;
-            gap:12px;
+            gap:14px;
         }
         .content-main .content-header h2 i {
             color:#ffbc3c;
-            font-size:1.3rem;
+            font-size:1.5rem;
         }
         .content-main .dynamic-area {
             min-height:300px;
-            max-width:900px;
+            width:100%;
         }
 
         /* ===== 筛选栏 ===== */
-        .filter-bar { background:rgba(16,34,40,0.85); border-radius:60px; padding:6px 12px; margin-bottom:24px; display:flex; flex-wrap:wrap; align-items:center; gap:10px; backdrop-filter:blur(4px); border:1px solid rgba(255,200,100,0.3); }
-        .filter-label { display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; color:#ffdf9e; background:rgba(0,0,0,0.4); padding:4px 14px; border-radius:40px; }
-        .filter-buttons { display:flex; flex-wrap:wrap; gap:6px; }
-        .filter-chip { background:rgba(0,0,0,0.5); border:1px solid rgba(255,200,100,0.35); color:#cde5ea; padding:5px 14px; border-radius:40px; font-size:0.7rem; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
-        .filter-chip i { font-size:0.65rem; }
+        .filter-bar { background:rgba(16,34,40,0.85); border-radius:60px; padding:8px 16px; margin-bottom:28px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; backdrop-filter:blur(4px); border:1px solid rgba(255,200,100,0.3); }
+        .filter-label { display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#ffdf9e; background:rgba(0,0,0,0.4); padding:6px 18px; border-radius:40px; }
+        .filter-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+        .filter-chip { background:rgba(0,0,0,0.5); border:1px solid rgba(255,200,100,0.35); color:#cde5ea; padding:6px 18px; border-radius:40px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .filter-chip i { font-size:0.75rem; }
         .filter-chip.active { background:#e6a017; color:#121f23; border-color:#ffeaaf; }
         .filter-chip.active i { color:#121f23; }
         .filter-chip:hover:not(.active):not(.filter-zero) { background:#2f626e; transform:translateY(-1px); }
         .filter-chip.filter-zero { opacity:0.5; cursor:default; }
         .filter-chip.filter-zero:hover { background:rgba(0,0,0,0.5); transform:none; }
-        .filter-count { background:rgba(0,0,0,0.5); border-radius:30px; padding:1px 8px; font-size:0.65rem; margin-left:4px; }
+        .filter-count { background:rgba(0,0,0,0.5); border-radius:30px; padding:1px 10px; font-size:0.7rem; margin-left:6px; }
 
         /* ===== 模组卡片 ===== */
-        .mods-grid { display:flex; flex-direction:column; gap:16px; }
-        .mod-card { background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95)); border-radius:24px; transition:all 0.25s ease; overflow:hidden; border-left:6px solid; box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+        .mods-grid { display:flex; flex-direction:column; gap:18px; width:100%; }
+        .mod-card { background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95)); border-radius:24px; transition:all 0.25s ease; overflow:hidden; border-left:6px solid; box-shadow:0 4px 12px rgba(0,0,0,0.3); width:100%; }
         .mod-card.status-new { border-left-color:#2dc653; }
         .mod-card.status-updated { border-left-color:#3a86ff; }
         .mod-card.status-moved { border-left-color:#ffbc3c; }
         .mod-card.status-deleted { border-left-color:#dc3545; background:rgba(30,30,40,0.7); }
         .mod-card.status-normal { border-left-color:#5a6e78; }
         .mod-card:hover { transform:translateX(4px); background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95)); }
-        .mod-card-inner { padding:16px 20px; display:flex; flex-wrap:wrap; align-items:center; gap:14px; }
-        .mod-status-area { flex-shrink:0; width:90px; }
-        .status-badge-large { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:40px; font-size:0.7rem; font-weight:700; backdrop-filter:blur(2px); }
+        .mod-card-inner { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
+        .mod-status-area { flex-shrink:0; width:100px; }
+        .status-badge-large { display:inline-flex; align-items:center; gap:8px; padding:5px 16px; border-radius:40px; font-size:0.8rem; font-weight:700; backdrop-filter:blur(2px); }
         .status-new-large { background:rgba(45,198,83,0.2); color:#8affaa; border:1px solid rgba(45,198,83,0.5); }
         .status-updated-large { background:rgba(58,134,255,0.2); color:#8bbfff; border:1px solid rgba(58,134,255,0.5); }
         .status-moved-large { background:rgba(255,188,60,0.2); color:#ffdf7e; border:1px solid rgba(255,188,60,0.5); }
         .status-deleted-large { background:rgba(220,53,69,0.2); color:#ff8a9e; border:1px solid rgba(220,53,69,0.5); }
         .status-normal-large { background:rgba(90,110,120,0.3); color:#b8d0d8; border:1px solid rgba(90,110,120,0.5); }
-        .mod-content-area { flex:2; min-width:160px; }
-        .mod-header { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
-        .mod-order { background:rgba(0,0,0,0.5); padding:2px 10px; border-radius:30px; font-size:0.65rem; font-weight:600; color:#ffdd99; }
+        .mod-content-area { flex:1; min-width:180px; }
+        .mod-header { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+        .mod-order { background:rgba(0,0,0,0.5); padding:3px 12px; border-radius:30px; font-size:0.7rem; font-weight:600; color:#ffdd99; }
         .mod-order.deleted-order { background:#333355; color:#888; }
-        .mod-title { font-size:1.05rem; font-weight:700; color:#fef2da; cursor:pointer; transition:color 0.2s,text-shadow 0.2s; display:inline-block; }
+        .mod-title { font-size:1.15rem; font-weight:700; color:#fef2da; cursor:pointer; transition:color 0.2s,text-shadow 0.2s; display:inline-block; }
         .mod-title:hover { color:#ffcf7a; text-shadow:0 0 4px rgba(255,200,100,0.5); text-decoration:underline; }
         .mod-card.status-deleted .mod-title { text-decoration:line-through; cursor:default; pointer-events:none; color:#9aaeb5; }
-        .mod-file { font-size:0.65rem; color:#8aa8b0; background:rgba(0,0,0,0.3); padding:1px 10px; border-radius:20px; border:1px solid rgba(255,200,100,0.12); font-family:'Inter',monospace; display:inline-block; margin-top:2px; }
+        .mod-file { font-size:0.75rem; color:#8aa8b0; background:rgba(0,0,0,0.3); padding:2px 12px; border-radius:20px; border:1px solid rgba(255,200,100,0.12); font-family:'Inter',monospace; display:inline-block; margin-top:4px; }
         .mod-card.status-deleted .mod-file { color:#6a7a7f; border-color:rgba(220,53,69,0.3); }
-        .mod-file i { margin-right:4px; font-size:0.55rem; color:#4cd964; }
+        .mod-file i { margin-right:4px; font-size:0.6rem; color:#4cd964; }
         .mod-card.status-deleted .mod-file i { color:#dc3545; }
         .mod-action-area { flex-shrink:0; display:flex; align-items:center; }
-        .download-button { background:linear-gradient(135deg,#2dc653,#1a8f3a); border:none; padding:8px 18px; border-radius:44px; font-size:0.75rem; font-weight:700; color:#0a1a12; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .download-button { background:linear-gradient(135deg,#2dc653,#1a8f3a); border:none; padding:10px 22px; border-radius:44px; font-size:0.85rem; font-weight:700; color:#0a1a12; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:10px; }
         .download-button.disabled { background:#555; cursor:not-allowed; opacity:0.6; }
         .download-button:not(.disabled):hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(45,198,83,0.4); }
-        .no-mod-message { background:rgba(16,34,40,0.85); border-radius:32px; padding:40px 24px; text-align:center; border-left:6px solid #f5b042; color:#bcd7df; }
-        .no-mod-message i { font-size:2.5rem; color:#ffcf7a; margin-bottom:12px; display:block; }
+        .no-mod-message { background:rgba(16,34,40,0.85); border-radius:32px; padding:48px 32px; text-align:center; border-left:6px solid #f5b042; color:#bcd7df; font-size:1rem; }
+        .no-mod-message i { font-size:2.8rem; color:#ffcf7a; margin-bottom:14px; display:block; }
         .highlight-mod { animation:pulseHighlight 3s ease-in-out; box-shadow:0 0 0 4px #ffbc3c, 0 0 0 8px rgba(255,188,60,0.4); border-radius:24px; transition:box-shadow 0.2s; position:relative; z-index:10; }
         @keyframes pulseHighlight { 0%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0.6);background:rgba(255,188,60,0.05);}15%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}30%{box-shadow:0 0 0 3px #ffbc3c,0 0 0 6px rgba(255,188,60,0.2);background:rgba(255,188,60,0.08);}45%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}60%{box-shadow:0 0 0 2px #ffbc3c,0 0 0 5px rgba(255,188,60,0.15);background:rgba(255,188,60,0.05);}75%{box-shadow:0 0 0 5px #ffbc3c,0 0 0 10px rgba(255,188,60,0.25);background:rgba(255,188,60,0.1);}100%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0);background:transparent;} }
 
         /* ===== 信息卡片 ===== */
-        .info-card { background:rgba(16,34,40,0.85); border-radius:32px; padding:24px 28px; border-left:6px solid #f5b042; }
-        .install-guide { display:flex; flex-direction:column; gap:18px; }
-        .install-step { background:rgba(0,0,0,0.3); border-radius:24px; padding:20px 24px; border-left:6px solid #f5b042; transition:background 0.2s; }
+        .info-card { background:rgba(16,34,40,0.85); border-radius:32px; padding:28px 34px; border-left:6px solid #f5b042; font-size:1rem; }
+        .install-guide { display:flex; flex-direction:column; gap:20px; }
+        .install-step { background:rgba(0,0,0,0.3); border-radius:24px; padding:24px 28px; border-left:6px solid #f5b042; transition:background 0.2s; }
         .install-step:hover { background:rgba(0,0,0,0.45); }
-        .install-step-header { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
-        .install-step-number { background:#e6a017; color:#121f23; font-weight:800; font-size:1.1rem; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .install-step-title { font-size:1.05rem; font-weight:700; color:#ffdf9e; }
-        .install-step-content { color:#d4e8ed; font-size:0.9rem; line-height:1.6; padding-left:50px; }
+        .install-step-header { display:flex; align-items:center; gap:16px; margin-bottom:12px; }
+        .install-step-number { background:#e6a017; color:#121f23; font-weight:800; font-size:1.2rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .install-step-title { font-size:1.15rem; font-weight:700; color:#ffdf9e; }
+        .install-step-content { color:#d4e8ed; font-size:0.95rem; line-height:1.7; padding-left:56px; }
         .install-step-content .highlight { color:#FFD966 !important; font-weight:700; }
-        .install-step-content code { background:rgba(0,0,0,0.4); padding:2px 10px; border-radius:8px; font-family:'Inter',monospace; color:#ffcf7a; font-size:0.8rem; }
+        .install-step-content code { background:rgba(0,0,0,0.4); padding:2px 12px; border-radius:8px; font-family:'Inter',monospace; color:#ffcf7a; font-size:0.9rem; }
 
         .optimize-wrapper { overflow-x:auto; }
-        .optimize-table { width:100%; border-collapse:collapse; background:rgba(0,0,0,0.3); border-radius:16px; overflow:hidden; margin-top:12px; }
-        .optimize-table th, .optimize-table td { padding:12px 16px; text-align:left; border-bottom:1px solid rgba(255,200,100,0.12); }
-        .optimize-table th { background:rgba(230,160,23,0.2); color:#ffdf9e; font-weight:700; font-size:0.85rem; }
-        .optimize-table td { color:#d4e8ed; font-size:0.85rem; }
+        .optimize-table { width:100%; border-collapse:collapse; background:rgba(0,0,0,0.3); border-radius:16px; overflow:hidden; margin-top:14px; font-size:0.95rem; }
+        .optimize-table th, .optimize-table td { padding:14px 20px; text-align:left; border-bottom:1px solid rgba(255,200,100,0.12); }
+        .optimize-table th { background:rgba(230,160,23,0.2); color:#ffdf9e; font-weight:700; font-size:0.95rem; }
+        .optimize-table td { color:#d4e8ed; font-size:0.95rem; }
         .optimize-table tr:last-child td { border-bottom:none; }
         .optimize-table .memory-cell { font-weight:600; color:#ffcf7a; }
-        .optimize-table .options-cell { font-family:'Inter',monospace; color:#8affaa; font-size:0.75rem; word-break:break-all; }
-        .optimize-table .recommend-badge { background:#2dc653; color:#0a1a12; font-size:0.55rem; font-weight:800; padding:2px 8px; border-radius:30px; margin-left:6px; display:inline-block; }
-        .optimize-note { margin-top:16px; padding:14px 18px; background:rgba(220,53,69,0.1); border-left:4px solid #dc3545; border-radius:14px; color:#ff8a9e; font-size:0.85rem; }
-        .optimize-note i { margin-right:8px; }
+        .optimize-table .options-cell { font-family:'Inter',monospace; color:#8affaa; font-size:0.85rem; word-break:break-all; }
+        .optimize-table .recommend-badge { background:#2dc653; color:#0a1a12; font-size:0.6rem; font-weight:800; padding:2px 10px; border-radius:30px; margin-left:6px; display:inline-block; }
+        .optimize-note { margin-top:18px; padding:16px 20px; background:rgba(220,53,69,0.1); border-left:4px solid #dc3545; border-radius:14px; color:#ff8a9e; font-size:0.95rem; }
+        .optimize-note i { margin-right:10px; }
 
         /* ===== 其他模组 ===== */
-        .othermods-wrapper { display:flex; justify-content:center; align-items:center; min-height:50vh; width:100%; padding:8px 0; }
-        .othermods-list { display:flex; flex-direction:column; align-items:center; width:100%; max-width:460px; padding:8px 0; }
-        .othermods-list .mod-order-item { background:rgba(12,28,36,0.7); padding:12px 20px; margin:3px 0; border-radius:14px; font-size:0.95rem; font-weight:500; color:#d4e8ed; width:100%; text-align:center; border:1px solid transparent; background-clip:padding-box; position:relative; transition:all 0.3s ease; letter-spacing:0.3px; backdrop-filter:blur(4px); }
-        .othermods-list .mod-order-item::before { content:''; position:absolute; inset:-2px; border-radius:16px; padding:2px; background:linear-gradient(135deg,rgba(255,200,100,0.3),rgba(255,200,100,0.05),rgba(255,200,100,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; opacity:0.6; transition:opacity 0.3s ease; }
+        .othermods-wrapper { display:flex; justify-content:center; align-items:center; min-height:50vh; width:100%; padding:10px 0; }
+        .othermods-list { display:flex; flex-direction:column; align-items:center; width:100%; max-width:520px; padding:10px 0; }
+        .othermods-list .mod-order-item { background:rgba(12,28,36,0.7); padding:14px 24px; margin:4px 0; border-radius:16px; font-size:1.05rem; font-weight:500; color:#d4e8ed; width:100%; text-align:center; border:1px solid transparent; background-clip:padding-box; position:relative; transition:all 0.3s ease; letter-spacing:0.5px; backdrop-filter:blur(4px); }
+        .othermods-list .mod-order-item::before { content:''; position:absolute; inset:-2px; border-radius:18px; padding:2px; background:linear-gradient(135deg,rgba(255,200,100,0.3),rgba(255,200,100,0.05),rgba(255,200,100,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; opacity:0.6; transition:opacity 0.3s ease; }
         .othermods-list .mod-order-item:hover::before { opacity:1; }
         .othermods-list .mod-order-item:hover { background:rgba(20,48,58,0.8); transform:scale(1.01); }
-        .othermods-list .mod-order-item.top-label { background:rgba(45,198,83,0.08); color:#8affaa; font-weight:700; font-size:0.7rem; letter-spacing:3px; padding:8px 16px; border-radius:10px; }
+        .othermods-list .mod-order-item.top-label { background:rgba(45,198,83,0.08); color:#8affaa; font-weight:700; font-size:0.8rem; letter-spacing:4px; padding:10px 20px; border-radius:12px; }
         .othermods-list .mod-order-item.top-label::before { background:linear-gradient(135deg,rgba(45,198,83,0.4),rgba(45,198,83,0.1),rgba(45,198,83,0.4)); }
-        .othermods-list .mod-order-item.bottom-label { background:rgba(220,53,69,0.08); color:#ff8a9e; font-weight:700; font-size:0.7rem; letter-spacing:3px; padding:8px 16px; border-radius:10px; }
+        .othermods-list .mod-order-item.bottom-label { background:rgba(220,53,69,0.08); color:#ff8a9e; font-weight:700; font-size:0.8rem; letter-spacing:4px; padding:10px 20px; border-radius:12px; }
         .othermods-list .mod-order-item.bottom-label::before { background:linear-gradient(135deg,rgba(220,53,69,0.4),rgba(220,53,69,0.1),rgba(220,53,69,0.4)); }
         .othermods-list .mod-order-item.highlight-item { color:#ffcf7a; font-weight:600; background:rgba(255,200,100,0.06); }
         .othermods-list .mod-order-item.highlight-item::before { background:linear-gradient(135deg,rgba(255,200,100,0.5),rgba(255,200,100,0.1),rgba(255,200,100,0.5)); opacity:0.8; }
-        .othermods-list .mod-order-item .item-icon { margin-right:10px; opacity:0.4; font-size:0.8rem; color:#8aa8b0; }
+        .othermods-list .mod-order-item .item-icon { margin-right:12px; opacity:0.4; font-size:0.9rem; color:#8aa8b0; }
         .othermods-list .mod-order-item.highlight-item .item-icon { opacity:0.8; color:#ffcf7a; }
-        .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:3px 0; }
+        .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:4px 0; }
 
         /* ===== 下载存档 ===== */
-        .save-group { margin-bottom:22px; background:rgba(0,0,0,0.25); border-radius:28px; overflow:hidden; border:1px solid rgba(255,200,100,0.18); }
-        .save-group-header { background:linear-gradient(135deg,#1f4e3f,#0f3a2e); padding:14px 20px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background 0.2s; }
+        .save-group { margin-bottom:24px; background:rgba(0,0,0,0.25); border-radius:28px; overflow:hidden; border:1px solid rgba(255,200,100,0.18); }
+        .save-group-header { background:linear-gradient(135deg,#1f4e3f,#0f3a2e); padding:16px 24px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background 0.2s; }
         .save-group-header:hover { background:linear-gradient(135deg,#2c6e57,#1a523f); }
-        .save-group-title { font-size:1.1rem; font-weight:800; color:#FFE9B6; display:flex; align-items:center; gap:10px; }
-        .save-group-title i { color:#4cd964; font-size:1rem; }
-        .group-toggle-icon { color:#ffcf7a; transition:transform 0.2s; font-size:0.9rem; }
+        .save-group-title { font-size:1.2rem; font-weight:800; color:#FFE9B6; display:flex; align-items:center; gap:12px; }
+        .save-group-title i { color:#4cd964; font-size:1.1rem; }
+        .group-toggle-icon { color:#ffcf7a; transition:transform 0.2s; font-size:1rem; }
         .save-group-header.collapsed .group-toggle-icon { transform:rotate(-90deg); }
-        .save-subversions { padding:16px 20px; display:flex; flex-wrap:wrap; gap:10px; background:rgba(8,20,24,0.6); }
+        .save-subversions { padding:18px 24px; display:flex; flex-wrap:wrap; gap:12px; background:rgba(8,20,24,0.6); }
         .save-subversions.collapsed { display:none; }
-        .save-version-btn { background:linear-gradient(135deg,#2a5a4a,#1e4638); border:1px solid rgba(77,217,100,0.5); border-radius:40px; padding:8px 16px; font-size:0.8rem; font-weight:700; color:#D4FFD4; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
-        .save-version-btn i { font-size:0.7rem; color:#4cd964; }
+        .save-version-btn { background:linear-gradient(135deg,#2a5a4a,#1e4638); border:1px solid rgba(77,217,100,0.5); border-radius:40px; padding:10px 22px; font-size:0.9rem; font-weight:700; color:#D4FFD4; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .save-version-btn i { font-size:0.8rem; color:#4cd964; }
         .save-version-btn:hover { background:#3a7a62; transform:translateY(-2px); border-color:#7eff9e; }
-        .save-path { background:rgba(0,0,0,0.4); padding:14px 18px; border-radius:16px; margin-top:20px; }
-        .feature-highlight { background:rgba(230,160,23,0.12); border-radius:16px; padding:12px 18px; margin-top:16px; border-left:3px solid #e6a017; color:#FEF7E0; font-size:0.9rem; }
+        .save-path { background:rgba(0,0,0,0.4); padding:16px 22px; border-radius:16px; margin-top:22px; font-size:0.95rem; }
+        .feature-highlight { background:rgba(230,160,23,0.12); border-radius:16px; padding:14px 20px; margin-top:18px; border-left:3px solid #e6a017; color:#FEF7E0; font-size:0.95rem; }
 
         /* ===== 页脚 ===== */
-        footer { text-align:center; font-size:0.65rem; padding:16px 20px 24px; color:#bdd7df; border-top:1px solid rgba(255,200,100,0.15); margin-top:16px; }
+        footer { text-align:center; font-size:0.8rem; padding:20px 24px 28px; color:#bdd7df; border-top:1px solid rgba(255,200,100,0.15); margin-top:20px; line-height:1.6; }
         .highlight { color:#FFD966 !important; font-weight:700; }
-        .back-to-top { position:fixed; bottom:32px; right:32px; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#e6a017,#c4870f); border:2px solid rgba(255,215,0,0.5); color:#121f23; font-size:1.2rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(230,160,23,0.4); transition:all 0.3s ease; z-index:999; backdrop-filter:blur(4px); }
+        .back-to-top { position:fixed; bottom:36px; right:36px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#e6a017,#c4870f); border:2px solid rgba(255,215,0,0.5); color:#121f23; font-size:1.3rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(230,160,23,0.4); transition:all 0.3s ease; z-index:999; backdrop-filter:blur(4px); }
         .back-to-top:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 8px 24px rgba(230,160,23,0.5); background:linear-gradient(135deg,#f5b82e,#d49214); }
         .back-to-top.visible { display:flex; }
 
         /* ===== 响应式 ===== */
         @media (max-width:1024px){
             .sidebar-nav { width:320px; }
-            .content-main .dynamic-area { max-width:100%; }
+            .content-main { padding:16px 24px 28px 24px; }
         }
         @media (max-width:880px){
             .sidebar-nav { width:280px; }
-            .global-header { padding:12px 20px; flex-direction:column; align-items:stretch; gap:8px; }
-            .global-header .brand-area .main-title { font-size:1.3rem; }
-            .global-header .brand-area .main-title i { font-size:1.3rem; }
-            .global-header .header-controls { justify-content:flex-start; }
-            .content-main { padding:12px 16px 20px 16px; }
+            .global-header { padding:12px 20px; flex-direction:column; align-items:center; gap:10px; }
+            .global-header .brand-area .main-title { font-size:1.4rem; }
+            .global-header .brand-area .main-title i { font-size:1.4rem; }
+            .global-header .header-controls { justify-content:center; }
+            .content-main { padding:14px 18px 22px 18px; }
             .mod-card-inner { flex-direction:column; align-items:stretch; }
             .mod-status-area { width:auto; }
             .mod-action-area { align-self:flex-end; }
             .install-step-content { padding-left:0; }
-            .othermods-list { max-width:380px; }
+            .othermods-list { max-width:400px; }
+            .content-main .content-header h2 { font-size:1.3rem; }
         }
         @media (max-width:700px){
             .sidebar-nav { width:100%; max-height:45vh; border-right:none; border-bottom:1px solid rgba(255,215,0,0.2); }
             .app-body { flex-direction:column; }
             .global-header { padding:10px 14px; min-height:auto; }
-            .global-header .brand-area .main-title { font-size:1.1rem; }
-            .global-header .brand-area .main-title i { font-size:1.1rem; }
+            .global-header .brand-area .main-title { font-size:1.2rem; }
+            .global-header .brand-area .main-title i { font-size:1.2rem; }
             .global-header .brand-area .subtitle-row .author-badge,
-            .global-header .brand-area .subtitle-row .date-badge { font-size:0.65rem; padding:3px 10px; }
+            .global-header .brand-area .subtitle-row .date-badge { font-size:0.7rem; padding:3px 12px; }
             .global-header .header-controls .lang-dropdown-btn,
-            .global-header .header-controls .version-dropdown-btn { font-size:0.7rem; padding:4px 12px; height:30px; min-width:56px; }
-            .content-main { padding:10px 12px 16px 12px; max-width:100%; }
-            .filter-bar { border-radius:24px; padding:6px 10px; }
-            .install-step { padding:14px 16px; }
-            .install-step-number { width:30px; height:30px; font-size:0.9rem; }
-            .othermods-list .mod-order-item { padding:8px 12px; font-size:0.8rem; border-radius:10px; }
-            .othermods-list { max-width:320px; }
-            .back-to-top { bottom:16px; right:16px; width:40px; height:40px; font-size:1rem; }
-            .nav-item, .changelog-toggle-btn { padding:10px 14px; font-size:0.8rem; min-height:44px; gap:10px; }
-            .nav-item i, .changelog-toggle-btn i { width:22px; font-size:0.95rem; }
-            .content-main .content-header h2 { font-size:1.1rem; }
-            .mod-title { font-size:0.9rem; }
-            .download-button { padding:6px 14px; font-size:0.65rem; }
+            .global-header .header-controls .version-dropdown-btn { font-size:0.75rem; padding:4px 14px; height:32px; min-width:60px; }
+            .content-main { padding:10px 14px 16px 14px; }
+            .filter-bar { border-radius:24px; padding:6px 12px; }
+            .install-step { padding:16px 18px; }
+            .install-step-number { width:34px; height:34px; font-size:1rem; }
+            .othermods-list .mod-order-item { padding:10px 14px; font-size:0.9rem; border-radius:12px; }
+            .othermods-list { max-width:340px; }
+            .back-to-top { bottom:16px; right:16px; width:44px; height:44px; font-size:1.1rem; }
+            .nav-item, .changelog-toggle-btn { padding:12px 16px; font-size:0.9rem; min-height:48px; gap:12px; }
+            .nav-item i, .changelog-toggle-btn i { width:24px; font-size:1rem; }
+            .content-main .content-header h2 { font-size:1.15rem; }
+            .mod-title { font-size:1rem; }
+            .download-button { padding:8px 18px; font-size:0.8rem; }
+            .mod-card-inner { padding:14px 16px; }
+            .status-badge-large { font-size:0.7rem; padding:4px 12px; }
         }
         @media (max-width:480px){
             .sidebar-nav { max-height:35vh; }
-            .global-header .brand-area .main-title { font-size:0.95rem; }
-            .global-header .brand-area .main-title i { font-size:0.95rem; }
-            .global-header .brand-area .subtitle-row { gap:6px 10px; }
+            .global-header .brand-area .main-title { font-size:1rem; }
+            .global-header .brand-area .main-title i { font-size:1rem; }
+            .global-header .brand-area .subtitle-row { gap:4px 8px; }
             .global-header .brand-area .subtitle-row .author-badge,
-            .global-header .brand-area .subtitle-row .date-badge { font-size:0.55rem; padding:2px 8px; }
+            .global-header .brand-area .subtitle-row .date-badge { font-size:0.6rem; padding:2px 10px; }
             .global-header .header-controls .lang-dropdown-btn,
-            .global-header .header-controls .version-dropdown-btn { font-size:0.6rem; padding:3px 10px; height:26px; min-width:48px; }
-            .content-main .content-header h2 { font-size:0.95rem; }
+            .global-header .header-controls .version-dropdown-btn { font-size:0.65rem; padding:3px 10px; height:28px; min-width:50px; }
+            .content-main .content-header h2 { font-size:1rem; }
             .content-main .content-header h2 i { font-size:0.9rem; }
-            .mod-title { font-size:0.8rem; }
-            .filter-chip { font-size:0.6rem; padding:3px 10px; }
+            .mod-title { font-size:0.85rem; }
+            .filter-chip { font-size:0.65rem; padding:4px 12px; }
+            .filter-label { font-size:0.75rem; padding:4px 12px; }
+            .download-button { padding:6px 14px; font-size:0.7rem; }
+            .install-step-title { font-size:0.95rem; }
+            .install-step-content { font-size:0.85rem; }
+            .othermods-list .mod-order-item { font-size:0.8rem; padding:8px 12px; }
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- ===== 顶部标题栏（跨左右两侧） ===== -->
+    <!-- ===== 顶部标题栏（跨左右两侧，水平居中） ===== -->
     <header class="global-header">
         <div class="brand-area">
             <div class="main-title">
@@ -973,13 +988,13 @@
     }
 
     function renderChangelog() {
-        return `<div class="info-card"><p style="color:#ffdf9e;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
+        return `<div class="info-card"><p style="color:#ffdf9e; font-size:1rem;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
     }
 
     function renderDownloadSave() {
         const groups = getCurrentSaveGroups();
-        let html = `<div class="info-card download-card"><div style="text-align:center"><i class="fas fa-cloud-download-alt" style="font-size:2.5rem; color:#4cd964;"></i></div>
-        <h2 style="text-align:center; color:#FFE9B6; margin-bottom:20px;">${t('download_save_title')} (v${currentVersion})</h2>`;
+        let html = `<div class="info-card download-card"><div style="text-align:center"><i class="fas fa-cloud-download-alt" style="font-size:2.8rem; color:#4cd964;"></i></div>
+        <h2 style="text-align:center; color:#FFE9B6; margin-bottom:22px; font-size:1.4rem;">${t('download_save_title')} (v${currentVersion})</h2>`;
         groups.forEach((group, idx) => {
             const label = t(group.versionLabel);
             html += `<div class="save-group" data-group-idx="${idx}">
@@ -992,7 +1007,7 @@
                 </div>
             </div>`;
         });
-        html += `<div class="save-path"><i class="fas fa-folder-open"></i> ${t('download_save_path')}<br><code>${t('download_save_path_code')}</code></div>
+        html += `<div class="save-path"><i class="fas fa-folder-open"></i> ${t('download_save_path')}<br><code style="font-size:0.9rem;">${t('download_save_path_code')}</code></div>
         <div class="feature-highlight">${t('download_save_note')}</div></div>`;
         return html;
     }
@@ -1037,7 +1052,7 @@
     function renderOptimize() {
         return `
         <div class="info-card">
-            <p style="color: #ffdf9e; font-weight: 600; margin-bottom: 6px;">${t('optimize_title')}</p>
+            <p style="color: #ffdf9e; font-weight: 600; margin-bottom: 8px; font-size:1.05rem;">${t('optimize_title')}</p>
             <div class="optimize-wrapper">
                 <table class="optimize-table">
                     <thead><tr><th>${t('optimize_memory')}</th><th>${t('optimize_options')}</th></tr></thead>
@@ -1069,14 +1084,14 @@
             return `<div class="${cls}"><i class="fas fa-cube item-icon"></i>${item}</div>`;
         }).join('');
         return `
-        <div class="info-card" style="display: flex; justify-content: center; align-items: center; padding: 16px 16px; background: rgba(12, 28, 36, 0.4); border-left: 6px solid rgba(255, 200, 100, 0.4);">
+        <div class="info-card" style="display: flex; justify-content: center; align-items: center; padding: 18px 18px; background: rgba(12, 28, 36, 0.4); border-left: 6px solid rgba(255, 200, 100, 0.4);">
             <div class="othermods-wrapper">
                 <div class="othermods-list">
-                    <div class="mod-order-item top-label"><i class="fas fa-arrow-up" style="margin-right: 6px;"></i> ${t('othermods_top')} <i class="fas fa-arrow-up" style="margin-left: 6px;"></i></div>
-                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 3px 0;"></div>
+                    <div class="mod-order-item top-label"><i class="fas fa-arrow-up" style="margin-right: 8px;"></i> ${t('othermods_top')} <i class="fas fa-arrow-up" style="margin-left: 8px;"></i></div>
+                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 4px 0;"></div>
                     ${itemsHtml}
-                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 3px 0;"></div>
-                    <div class="mod-order-item bottom-label"><i class="fas fa-arrow-down" style="margin-right: 6px;"></i> ${t('othermods_bottom')} <i class="fas fa-arrow-down" style="margin-left: 6px;"></i></div>
+                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 4px 0;"></div>
+                    <div class="mod-order-item bottom-label"><i class="fas fa-arrow-down" style="margin-right: 8px;"></i> ${t('othermods_bottom')} <i class="fas fa-arrow-down" style="margin-left: 8px;"></i></div>
                 </div>
             </div>
         </div>
