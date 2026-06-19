@@ -75,65 +75,6 @@
         .content-main { flex:1; margin-left:300px; background:rgba(8,20,24,0.3); min-height:100vh; }
         .dynamic-area { padding:20px 40px 40px 40px; }
         
-        /* ===== 更新日志折叠按钮 ===== */
-        .changelog-toggle-btn {
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            width:100%;
-            padding:16px 24px;
-            background:linear-gradient(135deg,rgba(230,160,23,0.15),rgba(255,200,100,0.05));
-            border:1px solid rgba(255,200,100,0.3);
-            border-radius:16px;
-            color:#ffdf9e;
-            font-size:1.1rem;
-            font-weight:700;
-            cursor:pointer;
-            transition:all 0.3s ease;
-            font-family:inherit;
-            margin-bottom:0;
-        }
-        .changelog-toggle-btn:hover {
-            background:linear-gradient(135deg,rgba(230,160,23,0.25),rgba(255,200,100,0.1));
-            border-color:#ffcf7a;
-        }
-        .changelog-toggle-btn .toggle-icon {
-            transition:transform 0.3s ease;
-            font-size:0.9rem;
-            color:#ffcf7a;
-        }
-        .changelog-toggle-btn.expanded .toggle-icon {
-            transform:rotate(180deg);
-        }
-        .changelog-toggle-btn .badge-count {
-            background:rgba(45,198,83,0.2);
-            color:#8affaa;
-            padding:2px 12px;
-            border-radius:20px;
-            font-size:0.75rem;
-            margin-left:12px;
-        }
-        
-        /* ===== 更新日志折叠容器 ===== */
-        .changelog-collapsible {
-            overflow:hidden;
-            max-height:0;
-            transition:max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
-            opacity:0;
-            margin-bottom:0;
-        }
-        .changelog-collapsible.open {
-            max-height:3000px;
-            opacity:1;
-            margin-bottom:24px;
-        }
-        .changelog-collapsible .changelog-wrapper {
-            border-radius:0 0 36px 36px;
-            border-top:none;
-            border-left:6px solid #f5b042;
-            padding-top:12px;
-        }
-        
         /* ===== 筛选栏 ===== */
         .filter-bar { background:rgba(16,34,40,0.85); border-radius:60px; padding:6px 12px; margin-bottom:28px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; backdrop-filter:blur(4px); border:1px solid rgba(255,200,100,0.3); }
         .filter-label { display:flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:600; color:#ffdf9e; background:rgba(0,0,0,0.4); padding:6px 16px; border-radius:40px; }
@@ -184,31 +125,122 @@
         .highlight-mod { animation:pulseHighlight 3s ease-in-out; box-shadow:0 0 0 4px #ffbc3c, 0 0 0 8px rgba(255,188,60,0.4); border-radius:28px; transition:box-shadow 0.2s; position:relative; z-index:10; }
         @keyframes pulseHighlight { 0%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0.6);background:rgba(255,188,60,0.05);}15%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}30%{box-shadow:0 0 0 3px #ffbc3c,0 0 0 6px rgba(255,188,60,0.2);background:rgba(255,188,60,0.08);}45%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}60%{box-shadow:0 0 0 2px #ffbc3c,0 0 0 5px rgba(255,188,60,0.15);background:rgba(255,188,60,0.05);}75%{box-shadow:0 0 0 5px #ffbc3c,0 0 0 10px rgba(255,188,60,0.25);background:rgba(255,188,60,0.1);}100%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0);background:transparent;} }
         
-        /* ===== 更新日志（内部样式） ===== */
-        .changelog-wrapper { background:rgba(16,34,40,0.85); border-radius:36px; padding:28px 34px; border-left:6px solid #f5b042; }
-        .changelog-version-header { margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid rgba(255,200,100,0.3); }
-        .changelog-version-title { font-size:1.5rem; font-weight:800; background:linear-gradient(135deg,#FFE6A0,#FFC857); -webkit-background-clip:text; background-clip:text; color:transparent; display:inline-flex; align-items:center; gap:12px; }
-        .changelog-date { font-size:0.85rem; color:#9bb7bf; background:rgba(0,0,0,0.3); padding:4px 12px; border-radius:30px; }
-        .changelog-categories { display:flex; flex-direction:column; gap:16px; }
-        .changelog-category { background:rgba(0,0,0,0.25); border-radius:24px; overflow:hidden; }
-        .category-header { padding:14px 22px; display:flex; align-items:center; gap:12px; font-weight:700; font-size:1rem; cursor:pointer; transition:background 0.2s; user-select:none; }
-        .category-header:hover { background:rgba(255,255,255,0.05); }
-        .category-header i:first-child { width:20px; }
-        .toggle-icon-cat { margin-left:auto; transition:transform 0.2s; }
-        .category-header.collapsed .toggle-icon-cat { transform:rotate(-90deg); }
-        .category-items { padding:16px 22px; display:flex; flex-direction:column; gap:12px; }
-        .category-items.collapsed { display:none; }
-        .category-header.new { background:rgba(45,198,83,0.15); color:#8affaa; border-bottom:1px solid rgba(45,198,83,0.3); }
-        .category-header.updated { background:rgba(58,134,255,0.15); color:#8bbfff; border-bottom:1px solid rgba(58,134,255,0.3); }
-        .category-header.moved { background:rgba(255,188,60,0.15); color:#ffdf7e; border-bottom:1px solid rgba(255,188,60,0.3); }
-        .category-header.deleted { background:rgba(220,53,69,0.15); color:#ff8a9e; border-bottom:1px solid rgba(220,53,69,0.3); }
-        .changelog-mod-item { display:flex; flex-direction:column; gap:4px; padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:20px; transition:all 0.2s; }
-        .changelog-mod-item:hover { background:rgba(0,0,0,0.4); }
-        .changelog-mod-name { font-size:0.95rem; font-weight:600; color:#fef2da; }
-        .changelog-mod-file { font-size:0.7rem; color:#8aa8b0; font-family:'Inter',monospace; display:flex; align-items:center; gap:6px; }
-        .changelog-mod-file i { font-size:0.6rem; color:#4cd964; }
-        .category-header.deleted .changelog-mod-file i { color:#dc3545; }
-        .changelog-note { margin-top:24px; padding:14px 20px; background:rgba(230,160,23,0.1); border-radius:20px; border-left:3px solid #e6a017; color:#FFE3B0; font-size:0.85rem; }
+        /* ===== 更新日志 - 侧边栏内嵌样式 ===== */
+        .changelog-sidebar-wrapper { 
+            padding: 0 20px 12px 20px;
+            border-bottom: 1px solid rgba(255,200,100,0.15);
+            margin-bottom: 8px;
+        }
+        .changelog-toggle-btn {
+            background:rgba(25,50,58,0.6);
+            border:1px solid rgba(255,200,100,0.25);
+            padding:12px 20px;
+            border-radius:44px;
+            font-size:0.95rem;
+            font-weight:600;
+            color:#eef3f5;
+            display:flex;
+            align-items:center;
+            gap:16px;
+            cursor:pointer;
+            transition:all 0.25s;
+            width:100%;
+            text-align:left;
+            font-family:inherit;
+            backdrop-filter:blur(2px);
+        }
+        .changelog-toggle-btn i { width:28px; font-size:1.2rem; color:#ffcf7a; }
+        .changelog-toggle-btn:hover { background:#2f626e; transform:translateX(6px); border-color:#ffcd7e; }
+        .changelog-toggle-btn .toggle-arrow { margin-left:auto; transition:transform 0.3s ease; }
+        .changelog-toggle-btn.open .toggle-arrow { transform:rotate(180deg); }
+        .changelog-sidebar-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+        .changelog-sidebar-content.open {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 10px;
+            overflow-y: auto;
+        }
+        .changelog-sidebar-content::-webkit-scrollbar { width:4px; }
+        .changelog-sidebar-content::-webkit-scrollbar-track { background:#14262c; border-radius:10px; }
+        .changelog-sidebar-content::-webkit-scrollbar-thumb { background:#f5b042; border-radius:10px; }
+        .changelog-sidebar-inner {
+            background:rgba(10,25,35,0.7);
+            border-radius:20px;
+            padding:16px 18px;
+            border:1px solid rgba(255,200,100,0.15);
+        }
+        .changelog-sidebar-inner .changelog-version-title-sm {
+            font-size:0.9rem;
+            font-weight:700;
+            color:#FFE6A0;
+            margin-bottom:10px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .changelog-sidebar-inner .changelog-version-title-sm .date-sm {
+            font-size:0.65rem;
+            color:#9bb7bf;
+            background:rgba(0,0,0,0.3);
+            padding:2px 10px;
+            border-radius:20px;
+            font-weight:400;
+        }
+        .changelog-sidebar-inner .cl-cat {
+            margin-bottom:6px;
+        }
+        .changelog-sidebar-inner .cl-cat-header {
+            font-size:0.7rem;
+            font-weight:700;
+            padding:4px 0 4px 6px;
+            display:flex;
+            align-items:center;
+            gap:6px;
+            cursor:pointer;
+            user-select:none;
+            border-radius:10px;
+            transition:background 0.15s;
+        }
+        .changelog-sidebar-inner .cl-cat-header:hover { background:rgba(255,255,255,0.05); }
+        .changelog-sidebar-inner .cl-cat-header .cl-toggle { margin-left:auto; transition:transform 0.2s; font-size:0.6rem; }
+        .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
+        .changelog-sidebar-inner .cl-cat-items {
+            overflow:hidden;
+            max-height:300px;
+            transition:max-height 0.25s ease, opacity 0.2s ease;
+            opacity:1;
+        }
+        .changelog-sidebar-inner .cl-cat-items.collapsed {
+            max-height:0;
+            opacity:0;
+        }
+        .changelog-sidebar-inner .cl-item {
+            font-size:0.75rem;
+            color:#d4e8ed;
+            padding:3px 0 3px 18px;
+            border-left:2px solid rgba(255,200,100,0.15);
+            margin-left:8px;
+            padding-left:14px;
+            margin-bottom:2px;
+        }
+        .changelog-sidebar-inner .cl-item .cl-file {
+            font-size:0.6rem;
+            color:#8aa8b0;
+            font-family:monospace;
+            display:block;
+            margin-top:1px;
+        }
+        .changelog-sidebar-inner .cl-cat-header.cat-new { color:#8affaa; }
+        .changelog-sidebar-inner .cl-cat-header.cat-updated { color:#8bbfff; }
+        .changelog-sidebar-inner .cl-cat-header.cat-moved { color:#ffdf7e; }
+        .changelog-sidebar-inner .cl-cat-header.cat-deleted { color:#ff8a9e; }
+        .changelog-sidebar-inner .cl-empty { color:#6a8a92; font-size:0.75rem; padding:6px 12px; font-style:italic; }
         
         /* ===== 信息卡片 ===== */
         .info-card { background:rgba(16,34,40,0.85); border-radius:36px; padding:28px 34px; border-left:6px solid #f5b042; }
@@ -317,6 +349,19 @@
         </div>
         <div class="nav-menu-container">
             <div class="nav-menu">
+                <!-- ===== 更新日志 - 折叠按钮（在导航菜单内） ===== -->
+                <div class="changelog-sidebar-wrapper">
+                    <div class="changelog-toggle-btn" id="changelogToggleBtn">
+                        <i class="fas fa-history"></i>
+                        <span data-i18n="nav_changelog">更新日志</span>
+                        <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="changelog-sidebar-content" id="changelogSidebarContent">
+                        <div class="changelog-sidebar-inner" id="changelogSidebarInner">
+                            <!-- 由 js 动态渲染 -->
+                        </div>
+                    </div>
+                </div>
                 <button class="nav-item active" data-nav="loadorder"><i class="fas fa-list-ol"></i> <span data-i18n="nav_loadorder">加载顺序</span><span id="navStatsBadge" class="nav-stats-badge"><i class="fas fa-cubes"></i> <strong>0</strong></span></button>
                 <button class="nav-item" data-nav="install"><i class="fas fa-download"></i> <span data-i18n="nav_install">安装指南</span></button>
                 <button class="nav-item" data-nav="optimize"><i class="fas fa-tachometer-alt"></i> <span data-i18n="nav_optimize">优化设置</span></button>
@@ -385,7 +430,6 @@
     let currentNav = 'loadorder';
     let currentVersion = localStorage.getItem('ets2_version') || '1.59';
     let pendingJumpModId = null;
-    let changelogExpanded = false;
 
     // ================================================================
     //  数据容器（将从外部文件加载）
@@ -497,59 +541,62 @@
     }
 
     // ================================================================
-    //  更新日志渲染（用于折叠面板）
+    //  侧边栏更新日志渲染（精简版）
     // ================================================================
-    function renderChangelogContent() {
+    function renderSidebarChangelog() {
+        const container = document.getElementById('changelogSidebarInner');
+        if (!container) return;
         const mods = getCurrentMods();
         const newMods = mods.filter(m => m.status === 'new');
         const updatedMods = mods.filter(m => m.status === 'updated');
         const movedMods = mods.filter(m => m.status === 'moved');
         const deletedMods = mods.filter(m => m.status === 'deleted');
         const versionLabel = currentVersion;
-        let html = `<div class="changelog-wrapper"><div class="changelog-version-header"><div class="changelog-version-title"><i class="fas fa-tag"></i> ${t('changelog_title').replace('{version}', versionLabel)}<span class="changelog-date">${getCurrentUpdateDate()}</span></div></div><div class="changelog-categories">`;
+        const dateStr = getCurrentUpdateDate();
 
-        if (newMods.length) {
-            html += `<div class="changelog-category"><div class="category-header new collapsed" data-cat-toggle="new"><i class="fas fa-plus-circle"></i> ${t('changelog_new')} (${newMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-new">`;
-            newMods.forEach(m => {
-                html += `<div class="changelog-mod-item">
-                    <span class="changelog-mod-name">${escapeHtml(getModName(m))}</span>
-                    ${m.fileName ? `<span class="changelog-mod-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>` : ''}
-                </div>`;
-            });
+        let html = `<div class="changelog-version-title-sm"><i class="fas fa-tag"></i> ${t('changelog_title').replace('{version}', versionLabel)} <span class="date-sm">${dateStr}</span></div>`;
+
+        const categories = [
+            { key: 'new', label: t('changelog_new'), items: newMods, cls: 'cat-new', icon: 'fa-plus-circle' },
+            { key: 'updated', label: t('changelog_updated'), items: updatedMods, cls: 'cat-updated', icon: 'fa-sync-alt' },
+            { key: 'moved', label: t('changelog_moved'), items: movedMods, cls: 'cat-moved', icon: 'fa-arrows-alt' },
+            { key: 'deleted', label: t('changelog_deleted'), items: deletedMods, cls: 'cat-deleted', icon: 'fa-trash-alt' }
+        ];
+
+        categories.forEach(cat => {
+            html += `<div class="cl-cat">`;
+            html += `<div class="cl-cat-header ${cat.cls} collapsed" data-cl-toggle="${cat.key}">
+                <i class="fas ${cat.icon}"></i> ${cat.label} (${cat.items.length})
+                <i class="fas fa-chevron-down cl-toggle"></i>
+            </div>`;
+            html += `<div class="cl-cat-items collapsed" id="cl-items-${cat.key}">`;
+            if (cat.items.length === 0) {
+                html += `<div class="cl-empty">—</div>`;
+            } else {
+                cat.items.forEach(m => {
+                    html += `<div class="cl-item">${escapeHtml(getModName(m))}`;
+                    if (m.fileName) {
+                        html += `<span class="cl-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>`;
+                    }
+                    html += `</div>`;
+                });
+            }
             html += `</div></div>`;
-        }
-        if (updatedMods.length) {
-            html += `<div class="changelog-category"><div class="category-header updated collapsed" data-cat-toggle="updated"><i class="fas fa-sync-alt"></i> ${t('changelog_updated')} (${updatedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-updated">`;
-            updatedMods.forEach(m => {
-                html += `<div class="changelog-mod-item">
-                    <span class="changelog-mod-name">${escapeHtml(getModName(m))}</span>
-                    ${m.fileName ? `<span class="changelog-mod-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>` : ''}
-                </div>`;
-            });
-            html += `</div></div>`;
-        }
-        if (movedMods.length) {
-            html += `<div class="changelog-category"><div class="category-header moved collapsed" data-cat-toggle="moved"><i class="fas fa-arrows-alt"></i> ${t('changelog_moved')} (${movedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-moved">`;
-            movedMods.forEach(m => {
-                html += `<div class="changelog-mod-item">
-                    <span class="changelog-mod-name">${escapeHtml(getModName(m))}</span>
-                    ${m.fileName ? `<span class="changelog-mod-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>` : ''}
-                </div>`;
-            });
-            html += `</div></div>`;
-        }
-        if (deletedMods.length) {
-            html += `<div class="changelog-category"><div class="category-header deleted collapsed" data-cat-toggle="deleted"><i class="fas fa-trash-alt"></i> ${t('changelog_deleted')} (${deletedMods.length})<i class="fas fa-chevron-down toggle-icon-cat"></i></div><div class="category-items collapsed" id="cat-deleted">`;
-            deletedMods.forEach(m => {
-                html += `<div class="changelog-mod-item">
-                    <span class="changelog-mod-name">${escapeHtml(getModName(m))}</span>
-                    ${m.fileName ? `<span class="changelog-mod-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>` : ''}
-                </div>`;
-            });
-            html += `</div></div>`;
-        }
-        html += `</div><div class="changelog-note"><i class="fas fa-info-circle"></i> ${t('changelog_note')}</div></div>`;
-        return html;
+        });
+
+        container.innerHTML = html;
+
+        // 绑定分类折叠
+        document.querySelectorAll('[data-cl-toggle]').forEach(toggle => {
+            toggle.onclick = () => {
+                const key = toggle.getAttribute('data-cl-toggle');
+                const items = document.getElementById(`cl-items-${key}`);
+                if (items) {
+                    items.classList.toggle('collapsed');
+                    toggle.classList.toggle('collapsed');
+                }
+            };
+        });
     }
 
     // ================================================================
@@ -586,30 +633,12 @@
             </div>`;
         }).join('');
 
-        // 统计变更数量用于徽标
-        const changeCount = counts.new + counts.updated + counts.moved + counts.deleted;
-
-        let changelogToggleHtml = `
-            <button class="changelog-toggle-btn" id="changelogToggleBtn">
-                <span>
-                    <i class="fas fa-history" style="margin-right:12px;"></i>
-                    ${t('nav_changelog')}
-                    <span class="badge-count">${changeCount}</span>
-                </span>
-                <i class="fas fa-chevron-down toggle-icon ${changelogExpanded ? 'expanded' : ''}"></i>
-            </button>
-            <div class="changelog-collapsible ${changelogExpanded ? 'open' : ''}" id="changelogCollapsible">
-                ${renderChangelogContent()}
-            </div>
-        `;
-
         if (filtered.length === 0) {
-            return `${changelogToggleHtml}
-                <div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div>
+            return `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div>
                 <div class="no-mod-message"><i class="fas fa-filter"></i> ${t('no_mods')}</div>`;
         }
 
-        let html = changelogToggleHtml + `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div><div class="mods-grid">`;
+        let html = `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div><div class="mods-grid">`;
         let seqCounter = 0;
         filtered.forEach(mod => {
             const isDeleted = mod.status === 'deleted';
@@ -664,6 +693,11 @@
         });
         html += `</div>`;
         return html;
+    }
+
+    function renderChangelog() {
+        // 主内容区的更新日志已移除，改为侧边栏折叠展示，但保留函数以防万一
+        return `<div class="info-card"><p style="color:#ffdf9e;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
     }
 
     function renderDownloadSave() {
@@ -778,6 +812,7 @@
         install: { titleKey: 'panel_install', render: renderInstall },
         optimize: { titleKey: 'panel_optimize', render: renderOptimize },
         othermods: { titleKey: 'panel_othermods', render: renderOtherMods },
+        changelog: { titleKey: 'panel_changelog', render: renderChangelog },
         downloadsave: { titleKey: 'panel_downloadsave', render: renderDownloadSave }
     };
 
@@ -792,18 +827,19 @@
     function renderPage(navId) {
         const data = contentMap[navId];
         if (!data) return;
-        titleEl.innerHTML = `<i class="fas ${navId === 'loadorder' ? 'fa-list-ol' : navId === 'install' ? 'fa-download' : navId === 'optimize' ? 'fa-tachometer-alt' : navId === 'othermods' ? 'fa-layer-group' : 'fa-cloud-download-alt'}"></i> ${t(data.titleKey)}`;
+        titleEl.innerHTML = `<i class="fas ${navId === 'loadorder' ? 'fa-list-ol' : navId === 'install' ? 'fa-download' : navId === 'optimize' ? 'fa-tachometer-alt' : navId === 'othermods' ? 'fa-layer-group' : navId === 'changelog' ? 'fa-history' : 'fa-cloud-download-alt'}"></i> ${t(data.titleKey)}`;
         if (navId === 'loadorder') {
             currentFilter = 'all';
             container.innerHTML = data.render();
             bindFilterEvents();
             bindDownloadButtons();
             bindModTitleClick();
-            bindChangelogToggle();
             document.querySelectorAll('.filter-chip').forEach(ch => {
                 if (ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
                 else ch.classList.remove('active');
             });
+        } else if (navId === 'changelog') {
+            container.innerHTML = data.render();
         } else if (navId === 'downloadsave') {
             container.innerHTML = data.render();
             setTimeout(bindSaveGroupEvents, 30);
@@ -814,6 +850,8 @@
         updateNavStatsBadge();
         updateStaticTexts();
         updateAllDates();
+        // 侧边栏更新日志同步刷新
+        renderSidebarChangelog();
     }
 
     function updateStaticTexts() {
@@ -822,33 +860,6 @@
             if (key) el.innerHTML = t(key);
         });
         updateAllDates();
-    }
-
-    // ================================================================
-    //  更新日志折叠绑定
-    // ================================================================
-    function bindChangelogToggle() {
-        const toggleBtn = document.getElementById('changelogToggleBtn');
-        const collapsible = document.getElementById('changelogCollapsible');
-        if (!toggleBtn || !collapsible) return;
-
-        // 移除旧监听避免重复
-        const newBtn = toggleBtn.cloneNode(true);
-        toggleBtn.parentNode.replaceChild(newBtn, toggleBtn);
-
-        newBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            changelogExpanded = !changelogExpanded;
-            collapsible.classList.toggle('open', changelogExpanded);
-            this.classList.toggle('expanded', changelogExpanded);
-            const icon = this.querySelector('.toggle-icon');
-            if (icon) {
-                icon.classList.toggle('expanded', changelogExpanded);
-            }
-        });
-
-        // 重新绑定分类切换（在渲染更新日志内容后）
-        setTimeout(bindCategoryToggle, 50);
     }
 
     // ================================================================
@@ -885,7 +896,6 @@
             bindFilterEvents();
             bindDownloadButtons();
             bindModTitleClick();
-            bindChangelogToggle();
         }
         document.querySelectorAll('.filter-chip').forEach(ch => {
             if (ch.getAttribute('data-filter') === currentFilter) ch.classList.add('active');
@@ -942,7 +952,6 @@
         bindFilterEvents();
         bindDownloadButtons();
         bindModTitleClick();
-        bindChangelogToggle();
         document.querySelectorAll('.filter-chip').forEach(ch => {
             if (ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
             else ch.classList.remove('active');
@@ -960,21 +969,6 @@
             targetCard.classList.add('highlight-mod');
             setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000);
         }
-    }
-
-    function bindCategoryToggle() {
-        document.querySelectorAll('[data-cat-toggle]').forEach(toggle => {
-            const newToggle = toggle.cloneNode(true);
-            toggle.parentNode.replaceChild(newToggle, toggle);
-            newToggle.onclick = () => {
-                const key = newToggle.getAttribute('data-cat-toggle');
-                const itemsContainer = document.getElementById(`cat-${key}`);
-                if (itemsContainer) {
-                    itemsContainer.classList.toggle('collapsed');
-                    newToggle.classList.toggle('collapsed');
-                }
-            };
-        });
     }
 
     function bindSaveGroupEvents() {
@@ -1023,6 +1017,25 @@
     });
 
     // ================================================================
+    //  侧边栏更新日志折叠按钮
+    // ================================================================
+    const changelogToggleBtn = document.getElementById('changelogToggleBtn');
+    const changelogContent = document.getElementById('changelogSidebarContent');
+
+    changelogToggleBtn.addEventListener('click', () => {
+        const isOpen = changelogContent.classList.contains('open');
+        if (isOpen) {
+            changelogContent.classList.remove('open');
+            changelogToggleBtn.classList.remove('open');
+        } else {
+            changelogContent.classList.add('open');
+            changelogToggleBtn.classList.add('open');
+            // 展开时刷新内容
+            renderSidebarChangelog();
+        }
+    });
+
+    // ================================================================
     //  语言下拉菜单事件（互斥）
     // ================================================================
     langDropdownBtn.addEventListener('click', (e) => {
@@ -1066,8 +1079,6 @@
             currentVersion = ver;
             localStorage.setItem('ets2_version', ver);
             currentFilter = 'all';
-            // 切换版本时重置更新日志折叠状态
-            changelogExpanded = false;
             renderPage(currentNav);
             updateNavStatsBadge();
             updateAllDates();
@@ -1142,11 +1153,12 @@
 
         updateNavStatsBadge();
         currentFilter = 'all';
-        changelogExpanded = false;
         renderPage('loadorder');
         setActiveNav('loadorder');
         updateStaticTexts();
         updateAllDates();
+        // 初始渲染侧边栏更新日志（默认折叠，内容先渲染好）
+        renderSidebarChangelog();
 
         if (window.innerWidth <= 700) {
             const btn = document.createElement('button');
@@ -1157,9 +1169,6 @@
         }
     }
 
-    // ================================================================
-    //  启动：加载数据
-    // ================================================================
     loadData();
 </script>
 </body>
