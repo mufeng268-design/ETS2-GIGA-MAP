@@ -280,7 +280,7 @@
             color:#0a1a12;
         }
         
-        /* ===== 侧边栏内更新日志折叠（文字放大） ===== */
+        /* ===== 侧边栏内更新日志折叠（文字放大，条目可点击） ===== */
         .changelog-sidebar-wrapper {
             margin-bottom:4px;
         }
@@ -377,6 +377,13 @@
             padding-left:16px;
             margin-bottom:3px;
             line-height:1.5;
+            cursor:pointer;
+            transition:color 0.2s, background 0.15s;
+            border-radius:4px;
+        }
+        .changelog-sidebar-inner .cl-item:hover {
+            color:#ffcf7a;
+            background:rgba(255,200,100,0.06);
         }
         .changelog-sidebar-inner .cl-item .cl-file {
             font-size:0.75rem;
@@ -384,6 +391,11 @@
             font-family:monospace;
             display:block;
             margin-top:2px;
+            cursor:default;
+        }
+        .changelog-sidebar-inner .cl-item .cl-file:hover {
+            color:#8aa8b0;
+            background:transparent;
         }
         .changelog-sidebar-inner .cl-cat-header.cat-new { color:#8affaa; }
         .changelog-sidebar-inner .cl-cat-header.cat-updated { color:#8bbfff; }
@@ -816,6 +828,28 @@
     }
 
     // ================================================================
+    //  跳转函数：从更新日志跳转到模组列表
+    // ================================================================
+    function jumpToModFromChangelog(modId) {
+        // 切换到加载顺序页面
+        if (currentNav !== 'loadorder') {
+            currentNav = 'loadorder';
+            // 更新导航高亮
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-nav') === 'loadorder');
+            });
+        }
+        // 重置筛选为全部
+        currentFilter = 'all';
+        // 重新渲染加载顺序页面
+        renderPage('loadorder');
+        // 延迟执行滚动和高亮
+        setTimeout(() => {
+            performScrollToMod(modId);
+        }, 200);
+    }
+
+    // ================================================================
     //  更新显示
     // ================================================================
     function updateAllDates() {
@@ -846,7 +880,7 @@
     }
 
     // ================================================================
-    //  侧边栏更新日志渲染（文字放大）
+    //  侧边栏更新日志渲染（条目可点击跳转）
     // ================================================================
     function renderSidebarChangelog() {
         const container = document.getElementById('changelogSidebarInner');
@@ -879,7 +913,8 @@
                 html += `<div class="cl-empty">—</div>`;
             } else {
                 cat.items.forEach(m => {
-                    html += `<div class="cl-item">${escapeHtml(getModName(m))}`;
+                    // 为每个条目添加 data-mod-id 属性和点击事件
+                    html += `<div class="cl-item" data-mod-id="${m.id}" data-mod-name="${escapeHtml(getModName(m))}">${escapeHtml(getModName(m))}`;
                     if (m.fileName) {
                         html += `<span class="cl-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>`;
                     }
@@ -891,6 +926,7 @@
 
         container.innerHTML = html;
 
+        // 绑定分类折叠
         document.querySelectorAll('[data-cl-toggle]').forEach(toggle => {
             toggle.onclick = () => {
                 const key = toggle.getAttribute('data-cl-toggle');
@@ -901,6 +937,32 @@
                 }
             };
         });
+
+        // 绑定条目点击跳转
+        document.querySelectorAll('.cl-item').forEach(item => {
+            item.onclick = () => {
+                const modId = parseInt(item.getAttribute('data-mod-id'));
+                const modName = item.getAttribute('data-mod-name');
+                if (modId) {
+                    jumpToModFromChangelog(modId);
+                    showToast(`跳转到: ${modName}`);
+                }
+            };
+        });
+    }
+
+    // ================================================================
+    //  滚动到指定模组并高亮
+    // ================================================================
+    function performScrollToMod(modId) {
+        const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
+        if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetCard.classList.add('highlight-mod');
+            setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000);
+        } else {
+            showToast('未找到该模组，请检查版本是否匹配');
+        }
     }
 
     // ================================================================
@@ -1270,15 +1332,6 @@
             performScrollToMod(pendingJumpModId);
             pendingJumpModId = null;
         }, 150);
-    }
-
-    function performScrollToMod(modId) {
-        const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
-        if (targetCard) {
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            targetCard.classList.add('highlight-mod');
-            setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000);
-        }
     }
 
     function bindSaveGroupEvents() {
