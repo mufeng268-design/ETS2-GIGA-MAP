@@ -481,67 +481,23 @@
         .filter-chip.filter-zero:hover { background:rgba(0,0,0,0.5); transform:none; }
         .filter-count { background:rgba(0,0,0,0.5); border-radius:30px; padding:1px 10px; font-size:0.7rem; margin-left:6px; }
 
-        /* ===== 模组卡片 - 状态颜色对应 ===== */
+        /* ===== 模组卡片 ===== */
         .mods-grid { display:flex; flex-direction:column; gap:18px; width:100%; }
-        .mod-card { 
-            border-radius:24px; 
-            transition:all 0.25s ease; 
-            overflow:hidden; 
-            border-left:6px solid; 
-            box-shadow:0 4px 12px rgba(0,0,0,0.3); 
-            width:100%; 
-        }
-        /* 状态：新增 - 绿色系 */
-        .mod-card.status-new { 
-            border-left-color:#2dc653; 
-            background:linear-gradient(135deg,rgba(45,198,83,0.15),rgba(18,38,44,0.95)); 
-        }
-        .mod-card.status-new:hover { 
-            background:linear-gradient(135deg,rgba(45,198,83,0.25),rgba(28,48,54,0.95)); 
-        }
-        /* 状态：更新 - 蓝色系 */
-        .mod-card.status-updated { 
-            border-left-color:#3a86ff; 
-            background:linear-gradient(135deg,rgba(58,134,255,0.15),rgba(18,38,44,0.95)); 
-        }
-        .mod-card.status-updated:hover { 
-            background:linear-gradient(135deg,rgba(58,134,255,0.25),rgba(28,48,54,0.95)); 
-        }
-        /* 状态：移动 - 黄色系 */
-        .mod-card.status-moved { 
-            border-left-color:#ffbc3c; 
-            background:linear-gradient(135deg,rgba(255,188,60,0.15),rgba(18,38,44,0.95)); 
-        }
-        .mod-card.status-moved:hover { 
-            background:linear-gradient(135deg,rgba(255,188,60,0.25),rgba(28,48,54,0.95)); 
-        }
-        /* 状态：删除 - 红色系 */
-        .mod-card.status-deleted { 
-            border-left-color:#dc3545; 
-            background:linear-gradient(135deg,rgba(220,53,69,0.15),rgba(30,30,40,0.7)); 
-        }
-        .mod-card.status-deleted:hover { 
-            background:linear-gradient(135deg,rgba(220,53,69,0.25),rgba(35,35,45,0.8)); 
-        }
-        /* 状态：普通 - 灰色系 */
-        .mod-card.status-normal { 
-            border-left-color:#5a6e78; 
-            background:linear-gradient(135deg,rgba(90,110,120,0.1),rgba(18,38,44,0.95)); 
-        }
-        .mod-card.status-normal:hover { 
-            background:linear-gradient(135deg,rgba(90,110,120,0.2),rgba(28,48,54,0.95)); 
-        }
-        .mod-card:hover { 
-            transform:translateX(4px); 
-        }
+        .mod-card { background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95)); border-radius:24px; transition:all 0.25s ease; overflow:hidden; border-left:6px solid; box-shadow:0 4px 12px rgba(0,0,0,0.3); width:100%; }
+        .mod-card.status-new { border-left-color:#2dc653; }
+        .mod-card.status-updated { border-left-color:#3a86ff; }
+        .mod-card.status-moved { border-left-color:#ffbc3c; }
+        .mod-card.status-deleted { border-left-color:#dc3545; background:rgba(30,30,40,0.7); }
+        .mod-card.status-normal { border-left-color:#5a6e78; }
+        .mod-card:hover { transform:translateX(4px); background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95)); }
         .mod-card-inner { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
         .mod-status-area { flex-shrink:0; width:100px; }
         .status-badge-large { display:inline-flex; align-items:center; gap:8px; padding:5px 16px; border-radius:40px; font-size:0.8rem; font-weight:700; backdrop-filter:blur(2px); }
-        .status-new-large { background:rgba(45,198,83,0.25); color:#8affaa; border:1px solid rgba(45,198,83,0.5); }
-        .status-updated-large { background:rgba(58,134,255,0.25); color:#8bbfff; border:1px solid rgba(58,134,255,0.5); }
-        .status-moved-large { background:rgba(255,188,60,0.25); color:#ffdf7e; border:1px solid rgba(255,188,60,0.5); }
-        .status-deleted-large { background:rgba(220,53,69,0.25); color:#ff8a9e; border:1px solid rgba(220,53,69,0.5); }
-        .status-normal-large { background:rgba(90,110,120,0.25); color:#b8d0d8; border:1px solid rgba(90,110,120,0.5); }
+        .status-new-large { background:rgba(45,198,83,0.2); color:#8affaa; border:1px solid rgba(45,198,83,0.5); }
+        .status-updated-large { background:rgba(58,134,255,0.2); color:#8bbfff; border:1px solid rgba(58,134,255,0.5); }
+        .status-moved-large { background:rgba(255,188,60,0.2); color:#ffdf7e; border:1px solid rgba(255,188,60,0.5); }
+        .status-deleted-large { background:rgba(220,53,69,0.2); color:#ff8a9e; border:1px solid rgba(220,53,69,0.5); }
+        .status-normal-large { background:rgba(90,110,120,0.3); color:#b8d0d8; border:1px solid rgba(90,110,120,0.5); }
         .mod-content-area { flex:1; min-width:180px; }
         .mod-header { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
         .mod-order { background:rgba(0,0,0,0.5); padding:3px 12px; border-radius:30px; font-size:0.7rem; font-weight:600; color:#ffdd99; }
@@ -603,7 +559,7 @@
         .othermods-list .mod-order-item.highlight-item .item-icon { opacity:0.8; color:#ffcf7a; }
         .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:4px 0; }
 
-        /* ===== 下载存档 ===== */
+        /* ===== 下载存档（增强可读性） ===== */
         .download-card {
             background:rgba(16,34,40,0.92);
             border-left-color:#4cd964;
