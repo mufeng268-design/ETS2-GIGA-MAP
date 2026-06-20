@@ -491,6 +491,65 @@
         .mod-card.status-normal { border-left-color:#5a6e78; }
         .mod-card:hover { transform:translateX(4px); background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95)); }
         .mod-card-inner { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
+        
+        /* ===== 模组图片 ===== */
+        .mod-thumbnail {
+            flex-shrink:0;
+            width:72px;
+            height:72px;
+            border-radius:12px;
+            overflow:hidden;
+            background:rgba(0,0,0,0.4);
+            border:1px solid rgba(255,200,100,0.15);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            transition:all 0.3s ease;
+        }
+        .mod-thumbnail img {
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform 0.3s ease;
+        }
+        .mod-thumbnail img:hover {
+            transform:scale(1.05);
+        }
+        .mod-thumbnail .no-image {
+            color:#6a8a92;
+            font-size:0.55rem;
+            text-align:center;
+            padding:4px;
+            line-height:1.2;
+        }
+        .mod-thumbnail .no-image i {
+            font-size:1.2rem;
+            display:block;
+            margin-bottom:2px;
+            color:#4a6a72;
+        }
+        .mod-thumbnail .image-loading {
+            color:#8aa8b0;
+            font-size:0.6rem;
+            text-align:center;
+        }
+        .mod-thumbnail .image-loading i {
+            font-size:1.2rem;
+            display:block;
+            margin-bottom:2px;
+            color:#f5b042;
+            animation:spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform:rotate(0deg); }
+            to { transform:rotate(360deg); }
+        }
+        .mod-card.status-deleted .mod-thumbnail {
+            opacity:0.5;
+            filter:grayscale(0.8);
+        }
+        
         .mod-status-area { flex-shrink:0; width:100px; }
         .status-badge-large { display:inline-flex; align-items:center; gap:8px; padding:5px 16px; border-radius:40px; font-size:0.8rem; font-weight:700; backdrop-filter:blur(2px); }
         .status-new-large { background:rgba(45,198,83,0.2); color:#8affaa; border:1px solid rgba(45,198,83,0.5); }
@@ -706,6 +765,7 @@
         @media (max-width:1024px){
             .sidebar-nav { width:320px; }
             .content-main { padding:16px 24px 28px 24px; }
+            .mod-thumbnail { width:60px; height:60px; }
         }
         @media (max-width:880px){
             .sidebar-nav { width:280px; }
@@ -717,6 +777,7 @@
             .mod-card-inner { flex-direction:column; align-items:stretch; }
             .mod-status-area { width:auto; }
             .mod-action-area { align-self:flex-end; }
+            .mod-thumbnail { width:56px; height:56px; }
             .install-step-content { padding-left:0; }
             .othermods-list { max-width:400px; }
             .content-main .content-header h2 { font-size:1.3rem; }
@@ -744,6 +805,9 @@
             .mod-title { font-size:1rem; }
             .download-button { padding:8px 18px; font-size:0.8rem; }
             .mod-card-inner { padding:14px 16px; }
+            .mod-thumbnail { width:48px; height:48px; }
+            .mod-thumbnail .no-image { font-size:0.45rem; }
+            .mod-thumbnail .no-image i { font-size:1rem; }
             .status-badge-large { font-size:0.7rem; padding:4px 12px; }
             .download-card .download-card-title { font-size:1.2rem; }
             .save-group-title { font-size:1rem; }
@@ -761,6 +825,9 @@
             .content-main .content-header h2 { font-size:1rem; }
             .content-main .content-header h2 i { font-size:0.9rem; }
             .mod-title { font-size:0.85rem; }
+            .mod-thumbnail { width:40px; height:40px; border-radius:8px; }
+            .mod-thumbnail .no-image { font-size:0.4rem; }
+            .mod-thumbnail .no-image i { font-size:0.8rem; }
             .filter-chip { font-size:0.65rem; padding:4px 12px; }
             .filter-label { font-size:0.75rem; padding:4px 12px; }
             .download-button { padding:6px 14px; font-size:0.7rem; }
@@ -946,6 +1013,10 @@
 
     function getModName(mod) { return mod.name; }
 
+    function getModImage(mod) {
+        return mod.imageUrl || null;
+    }
+
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
@@ -1115,6 +1186,14 @@
     // ================================================================
     //  渲染函数
     // ================================================================
+    function renderThumbnail(mod) {
+        const imageUrl = getModImage(mod);
+        if (imageUrl) {
+            return `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getModName(mod))}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.no-image').style.display='block';">`;
+        }
+        return `<div class="no-image"><i class="fas fa-image"></i>${t('no_preview')}</div>`;
+    }
+
     function renderLoadOrder() {
         const mods = getCurrentMods();
         const filtered = currentFilter === 'all' ? mods : mods.filter(mod => mod.status === currentFilter);
@@ -1192,7 +1271,10 @@
             const fileHtml = mod.fileName ?
                 `<div class="mod-file"><i class="fas fa-file-archive"></i> ${t('file_label')}: ${escapeHtml(mod.fileName)}</div>` :
                 '';
+            const thumbnailHtml = renderThumbnail(mod);
+            
             html += `<div class="mod-card ${mod.status}" data-mod-id="${mod.id}"><div class="mod-card-inner">
+                <div class="mod-thumbnail">${thumbnailHtml}</div>
                 <div class="mod-status-area"><span class="status-badge-large ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span></div>
                 <div class="mod-content-area">
                     <div class="mod-header">

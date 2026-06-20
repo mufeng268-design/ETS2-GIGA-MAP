@@ -73,7 +73,8 @@
     "download_save_path_code": "Documents\\Euro Truck Simulator 2\\profiles\\",
     "download_save_note": "点击版本号即可下载对应存档文件。使用前请备份原存档。",
     "save_group_159": "版本 1.59",
-    "save_group_158": "版本 1.58"
+    "save_group_158": "版本 1.58",
+    "no_preview": "暂无预览图"
   },
   "en": {
     "brand_title": "Euro Truck Simulator 2<br>Global Map Combo",
@@ -149,7 +150,8 @@
     "download_save_path_code": "Documents\\Euro Truck Simulator 2\\profiles\\",
     "download_save_note": "Click version number to download the save file. Please backup your original save before use.",
     "save_group_159": "Version 1.59",
-    "save_group_158": "Version 1.58"
+    "save_group_158": "Version 1.58",
+    "no_preview": "No Preview"
   },
   "ru": {
     "brand_title": "Euro Truck Simulator 2<br>Глобальная карта-комбо",
@@ -225,6 +227,7 @@
     "download_save_path_code": "Documents\\Euro Truck Simulator 2\\profiles\\",
     "download_save_note": "Нажмите на номер версии, чтобы скачать файл сохранения. Перед использованием сделайте резервную копию.",
     "save_group_159": "Версия 1.59",
-    "save_group_158": "Версия 1.58"
+    "save_group_158": "Версия 1.58",
+    "no_preview": "Нет превью"
   }
 }
