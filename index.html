@@ -481,93 +481,17 @@
         .filter-chip.filter-zero:hover { background:rgba(0,0,0,0.5); transform:none; }
         .filter-count { background:rgba(0,0,0,0.5); border-radius:30px; padding:1px 10px; font-size:0.7rem; margin-left:6px; }
 
-        /* ===== 🟢 模组卡片荧光效果（放在前面确保优先级） ===== */
-        /* 新增 - 绿色荧光 */
-        .mod-card.status-new {
-            border-left-color:#2dc653;
-            animation: glowGreen 2.5s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(45, 198, 83, 0.25), 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-        @keyframes glowGreen {
-            0%, 100% { box-shadow: 0 0 20px rgba(45, 198, 83, 0.2), 0 0 40px rgba(45, 198, 83, 0.05), 0 4px 12px rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 35px rgba(45, 198, 83, 0.6), 0 0 70px rgba(45, 198, 83, 0.2), 0 4px 12px rgba(0,0,0,0.3); }
-        }
-
-        /* 更新 - 蓝色荧光 */
-        .mod-card.status-updated {
-            border-left-color:#3a86ff;
-            animation: glowBlue 2.5s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(58, 134, 255, 0.25), 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-        @keyframes glowBlue {
-            0%, 100% { box-shadow: 0 0 20px rgba(58, 134, 255, 0.2), 0 0 40px rgba(58, 134, 255, 0.05), 0 4px 12px rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 35px rgba(58, 134, 255, 0.6), 0 0 70px rgba(58, 134, 255, 0.2), 0 4px 12px rgba(0,0,0,0.3); }
-        }
-
-        /* 移动 - 黄色荧光 */
-        .mod-card.status-moved {
-            border-left-color:#ffbc3c;
-            animation: glowYellow 2.5s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(255, 188, 60, 0.25), 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-        @keyframes glowYellow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 188, 60, 0.2), 0 0 40px rgba(255, 188, 60, 0.05), 0 4px 12px rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 35px rgba(255, 188, 60, 0.6), 0 0 70px rgba(255, 188, 60, 0.2), 0 4px 12px rgba(0,0,0,0.3); }
-        }
-
-        /* 删除 - 红色荧光 */
-        .mod-card.status-deleted {
-            border-left-color:#dc3545;
-            animation: glowRed 2.5s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(220, 53, 69, 0.25), 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-            background:rgba(30,30,40,0.7);
-        }
-        @keyframes glowRed {
-            0%, 100% { box-shadow: 0 0 20px rgba(220, 53, 69, 0.2), 0 0 40px rgba(220, 53, 69, 0.05), 0 4px 12px rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 35px rgba(220, 53, 69, 0.6), 0 0 70px rgba(220, 53, 69, 0.2), 0 4px 12px rgba(0,0,0,0.3); }
-        }
-
-        /* 暂停动画 - hover时暂停，提升交互体验 */
-        .mod-card.status-new:hover,
-        .mod-card.status-updated:hover,
-        .mod-card.status-moved:hover,
-        .mod-card.status-deleted:hover {
-            animation-play-state: paused;
-        }
-
-        /* 普通状态 - 无荧光，但保留基础样式 */
-        .mod-card.status-normal {
-            border-left-color:#5a6e78;
-            background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95));
-        }
-
-        /* 卡片基础样式（放在荧光之后，避免覆盖） */
-        .mod-card {
-            border-radius:24px;
-            transition:all 0.25s ease;
-            overflow:hidden;
-            width:100%;
-            background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95));
-        }
-        .mod-card:hover {
-            transform:translateX(4px);
-            background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95));
-        }
-        /* 删除状态hover不改变背景 */
-        .mod-card.status-deleted:hover {
-            background:rgba(30,30,40,0.7);
-        }
-
+        /* ===== 模组卡片 ===== */
+        .mods-grid { display:flex; flex-direction:column; gap:18px; width:100%; }
+        .mod-card { background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95)); border-radius:24px; transition:all 0.25s ease; overflow:hidden; border-left:6px solid; box-shadow:0 4px 12px rgba(0,0,0,0.3); width:100%; }
+        .mod-card.status-new { border-left-color:#2dc653; }
+        .mod-card.status-updated { border-left-color:#3a86ff; }
+        .mod-card.status-moved { border-left-color:#ffbc3c; }
+        .mod-card.status-deleted { border-left-color:#dc3545; background:rgba(30,30,40,0.7); }
+        .mod-card.status-normal { border-left-color:#5a6e78; }
+        .mod-card:hover { transform:translateX(4px); background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95)); }
         .mod-card-inner { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
-
+        
         /* ===== 模组图片 ===== */
         .mod-thumbnail {
             flex-shrink:0;
@@ -1091,12 +1015,14 @@
 
     function getModImage(mod) {
         if (!mod.imageUrl) return null;
+        // 如果已经是完整路径或URL，直接返回
         if (mod.imageUrl.startsWith('http://') || 
             mod.imageUrl.startsWith('https://') || 
             mod.imageUrl.startsWith('data/') ||
             mod.imageUrl.startsWith('/')) {
             return mod.imageUrl;
         }
+        // 否则拼接 data/images/ 前缀
         return 'data/images/' + mod.imageUrl;
     }
 
