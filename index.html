@@ -1014,7 +1014,16 @@
     function getModName(mod) { return mod.name; }
 
     function getModImage(mod) {
-        return mod.imageUrl || null;
+        if (!mod.imageUrl) return null;
+        // 如果已经是完整路径或URL，直接返回
+        if (mod.imageUrl.startsWith('http://') || 
+            mod.imageUrl.startsWith('https://') || 
+            mod.imageUrl.startsWith('data/') ||
+            mod.imageUrl.startsWith('/')) {
+            return mod.imageUrl;
+        }
+        // 否则拼接 data/images/ 前缀
+        return 'data/images/' + mod.imageUrl;
     }
 
     function escapeHtml(str) {
