@@ -1719,8 +1719,6 @@
         toggleDropdown(versionDropdownMenu, versionDropdownBtn);
     });
 
-    // 版本选项的点击事件在 renderVersionOptions 中绑定
-
     document.addEventListener('click', () => { closeAllDropdowns(); });
 
     // ================================================================
@@ -1759,9 +1757,9 @@
             VERSION_DATA = await modsRes.json();
             i18n = await i18nRes.json();
 
-            // 确保当前版本存在，如果不存在则使用最新版本
+            // 如果本地没有保存版本，或者保存的版本在数据中不存在，则使用最新版本
             const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
-            if (!VERSION_DATA[currentVersion]) {
+            if (!localStorage.getItem('ets2_version') || !VERSION_DATA[currentVersion]) {
                 currentVersion = versions[0] || '1.59';
                 localStorage.setItem('ets2_version', currentVersion);
             }
@@ -1794,7 +1792,6 @@
             const l = opt.getAttribute('data-lang');
             opt.classList.toggle('active-opt', l === currentLang);
         });
-        // 版本选项的激活状态由 renderVersionOptions 和 updateAllDates 管理
 
         updateNavStatsBadge();
         currentFilter = 'all';
