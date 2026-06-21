@@ -865,8 +865,7 @@
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div class="version-dropdown-menu" id="versionDropdownMenu">
-                    <button class="version-opt active-opt" data-version="1.59">1.59 <span class="opt-badge" data-i18n="badge_latest">最新</span></button>
-                    <button class="version-opt" data-version="1.58">1.58</button>
+                    <!-- 由 JavaScript 动态生成 -->
                 </div>
             </span>
             <span class="lang-dropdown-wrapper" id="langDropdownWrapper">
@@ -1015,14 +1014,12 @@
 
     function getModImage(mod) {
         if (!mod.imageUrl) return null;
-        // 如果已经是完整路径或URL，直接返回
         if (mod.imageUrl.startsWith('http://') || 
             mod.imageUrl.startsWith('https://') || 
             mod.imageUrl.startsWith('data/') ||
             mod.imageUrl.startsWith('/')) {
             return mod.imageUrl;
         }
-        // 否则拼接 data/images/ 前缀
         return 'data/images/' + mod.imageUrl;
     }
 
@@ -1046,6 +1043,43 @@
         }
         window.open(downloadUrl, '_blank');
         showToast(`正在打开: ${modName}`);
+    }
+
+    // ================================================================
+    //  动态渲染版本选项
+    // ================================================================
+    function renderVersionOptions() {
+        const menu = document.getElementById('versionDropdownMenu');
+        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+        
+        let html = '';
+        versions.forEach((v, index) => {
+            const isActive = v === currentVersion;
+            const isLatest = index === 0;
+            const badge = isLatest ? `<span class="opt-badge">${t('badge_latest')}</span>` : '';
+            html += `<button class="version-opt ${isActive ? 'active-opt' : ''}" data-version="${v}">${v} ${badge}</button>`;
+        });
+        
+        menu.innerHTML = html;
+        
+        // 绑定点击事件
+        document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const ver = opt.getAttribute('data-version');
+                if (ver === currentVersion) {
+                    closeAllDropdowns();
+                    return;
+                }
+                currentVersion = ver;
+                localStorage.setItem('ets2_version', ver);
+                currentFilter = 'all';
+                renderPage(currentNav);
+                updateNavStatsBadge();
+                updateAllDates();
+                closeAllDropdowns();
+            });
+        });
     }
 
     // ================================================================
@@ -1086,22 +1120,32 @@
         if (labelEl) {
             labelEl.textContent = 'v' + currentVersion;
         }
+        
+        // 更新版本选项 - 使用动态渲染
+        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
         document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
             const v = opt.getAttribute('data-version');
             opt.classList.toggle('active-opt', v === currentVersion);
+            
+            // 更新最新徽章
+            const badge = opt.querySelector('.opt-badge');
+            if (badge) {
+                const isLatest = v === versions[0];
+                badge.textContent = isLatest ? t('badge_latest') : '';
+                badge.style.display = isLatest ? 'inline' : 'none';
+            }
         });
-        document.querySelectorAll('.version-dropdown-menu .opt-badge').forEach(el => {
-            el.textContent = t('badge_latest');
+        
+        document.querySelectorAll('.lang-dropdown-menu .lang-opt').forEach(opt => {
+            const l = opt.getAttribute('data-lang');
+            opt.classList.toggle('active-opt', l === currentLang);
         });
+        
         const langLabel = document.getElementById('currentLangLabel');
         if (langLabel) {
             const langMap = { zh: '中文', en: 'EN', ru: 'RU' };
             langLabel.textContent = langMap[currentLang] || '中文';
         }
-        document.querySelectorAll('.lang-dropdown-menu .lang-opt').forEach(opt => {
-            const l = opt.getAttribute('data-lang');
-            opt.classList.toggle('active-opt', l === currentLang);
-        });
     }
 
     // ================================================================
@@ -1675,23 +1719,7 @@
         toggleDropdown(versionDropdownMenu, versionDropdownBtn);
     });
 
-    document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const ver = opt.getAttribute('data-version');
-            if (ver === currentVersion) {
-                closeAllDropdowns();
-                return;
-            }
-            currentVersion = ver;
-            localStorage.setItem('ets2_version', ver);
-            currentFilter = 'all';
-            renderPage(currentNav);
-            updateNavStatsBadge();
-            updateAllDates();
-            closeAllDropdowns();
-        });
-    });
+    // 版本选项的点击事件在 renderVersionOptions 中绑定
 
     document.addEventListener('click', () => { closeAllDropdowns(); });
 
@@ -1731,6 +1759,16 @@
             VERSION_DATA = await modsRes.json();
             i18n = await i18nRes.json();
 
+            // 确保当前版本存在，如果不存在则使用最新版本
+            const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+            if (!VERSION_DATA[currentVersion]) {
+                currentVersion = versions[0] || '1.59';
+                localStorage.setItem('ets2_version', currentVersion);
+            }
+
+            // 渲染版本选项
+            renderVersionOptions();
+
             if (loadingIndicator) loadingIndicator.style.display = 'none';
             initApp();
 
@@ -1756,10 +1794,7 @@
             const l = opt.getAttribute('data-lang');
             opt.classList.toggle('active-opt', l === currentLang);
         });
-        document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
-            const v = opt.getAttribute('data-version');
-            opt.classList.toggle('active-opt', v === currentVersion);
-        });
+        // 版本选项的激活状态由 renderVersionOptions 和 updateAllDates 管理
 
         updateNavStatsBadge();
         currentFilter = 'all';
