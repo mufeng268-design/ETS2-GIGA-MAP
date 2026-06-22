@@ -290,7 +290,7 @@
             color:#0a1a12;
         }
         
-        /* ===== 侧边栏内更新日志 ===== */
+        /* ===== 侧边栏内更新日志 - 修复滚动问题 ===== */
         .changelog-sidebar-wrapper {
             margin-bottom:4px;
             flex-shrink:0;
@@ -304,21 +304,30 @@
             transform:rotate(180deg);
         }
         .changelog-sidebar-content {
-            max-height:0;
-            overflow:hidden;
-            transition:max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
-            opacity:0;
-            margin-top:0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            margin-top: 0;
         }
         .changelog-sidebar-content.open {
-            max-height:600px;
-            opacity:1;
-            margin-top:10px;
-            overflow-y:auto;
+            max-height: 65vh;  /* 使用视口高度，更灵活 */
+            opacity: 1;
+            margin-top: 10px;
+            overflow-y: auto;   /* 关键：启用垂直滚动 */
+            overflow-x: hidden;
         }
-        .changelog-sidebar-content::-webkit-scrollbar { width:4px; }
-        .changelog-sidebar-content::-webkit-scrollbar-track { background:#14262c; border-radius:10px; }
-        .changelog-sidebar-content::-webkit-scrollbar-thumb { background:#f5b042; border-radius:10px; }
+        .changelog-sidebar-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .changelog-sidebar-content::-webkit-scrollbar-track {
+            background: #14262c;
+            border-radius: 10px;
+        }
+        .changelog-sidebar-content::-webkit-scrollbar-thumb {
+            background: #f5b042;
+            border-radius: 10px;
+        }
         .changelog-sidebar-inner {
             background:rgba(10,25,35,0.7);
             border-radius:16px;
@@ -363,16 +372,31 @@
             font-size:0.7rem;
         }
         .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
+        
+        /* 分类内部项目容器 - 支持独立滚动 */
         .changelog-sidebar-inner .cl-cat-items {
-            overflow:hidden;
-            max-height:400px;
-            transition:max-height 0.25s ease, opacity 0.2s ease;
-            opacity:1;
+            overflow-y: auto;
+            max-height: 350px;  /* 单个分类的最大高度，超过则滚动 */
+            transition: max-height 0.25s ease, opacity 0.2s ease;
+            opacity: 1;
         }
         .changelog-sidebar-inner .cl-cat-items.collapsed {
-            max-height:0;
-            opacity:0;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar {
+            width: 3px;
+        }
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-track {
+            background: #0a1a22;
+            border-radius: 10px;
+        }
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-thumb {
+            background: #f5b042;
+            border-radius: 10px;
+        }
+        
         .changelog-sidebar-inner .cl-item {
             font-size:0.9rem;
             color:#d4e8ed;
@@ -1149,7 +1173,7 @@
     }
 
     // ================================================================
-    //  侧边栏更新日志渲染
+    //  侧边栏更新日志渲染 - 修复滚动问题
     // ================================================================
     function renderSidebarChangelog() {
         const container = document.getElementById('changelogSidebarInner');
@@ -1719,6 +1743,8 @@
         toggleDropdown(versionDropdownMenu, versionDropdownBtn);
     });
 
+    // 版本选项的点击事件在 renderVersionOptions 中绑定
+
     document.addEventListener('click', () => { closeAllDropdowns(); });
 
     // ================================================================
@@ -1757,9 +1783,9 @@
             VERSION_DATA = await modsRes.json();
             i18n = await i18nRes.json();
 
-            // 如果本地没有保存版本，或者保存的版本在数据中不存在，则使用最新版本
+            // 确保当前版本存在，如果不存在则使用最新版本
             const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
-            if (!localStorage.getItem('ets2_version') || !VERSION_DATA[currentVersion]) {
+            if (!VERSION_DATA[currentVersion]) {
                 currentVersion = versions[0] || '1.59';
                 localStorage.setItem('ets2_version', currentVersion);
             }
@@ -1792,6 +1818,7 @@
             const l = opt.getAttribute('data-lang');
             opt.classList.toggle('active-opt', l === currentLang);
         });
+        // 版本选项的激活状态由 renderVersionOptions 和 updateAllDates 管理
 
         updateNavStatsBadge();
         currentFilter = 'all';
