@@ -317,6 +317,10 @@
             overflow-y: auto;
             overflow-x: hidden;
         }
+        /* 防止闪烁 - 在跳转期间保持内容可见 */
+        .changelog-sidebar-content.no-transition {
+            transition: none !important;
+        }
         .changelog-sidebar-content::-webkit-scrollbar {
             width: 4px;
         }
@@ -980,6 +984,8 @@
     let pendingJumpModId = null;
     // 存储待恢复的滚动位置
     let pendingScrollRestore = null;
+    // 标记是否正在跳转中
+    let isJumping = false;
 
     // ================================================================
     //  数据容器
@@ -1109,15 +1115,31 @@
     }
 
     // ================================================================
-    //  跳转函数 - 保存滚动位置
+    //  跳转函数 - 保持更新日志打开并恢复滚动位置
     // ================================================================
     function jumpToModFromChangelog(modId, savedScrollPos, savedCatScrollPositions) {
+        if (isJumping) return;
+        isJumping = true;
+        
         // 保存待恢复的滚动位置
         pendingScrollRestore = {
             scrollPos: savedScrollPos || 0,
             catScrollPositions: savedCatScrollPositions || {}
         };
         
+        // 先确保更新日志保持打开状态
+        const changelogContent = document.getElementById('changelogSidebarContent');
+        const toggleBtn = document.getElementById('changelogToggleBtn');
+        if (changelogContent) {
+            // 添加 no-transition 类防止闪烁
+            changelogContent.classList.add('no-transition');
+            if (!changelogContent.classList.contains('open')) {
+                changelogContent.classList.add('open');
+                if (toggleBtn) toggleBtn.classList.add('open');
+            }
+        }
+        
+        // 切换到加载顺序页面
         if (currentNav !== 'loadorder') {
             currentNav = 'loadorder';
             document.querySelectorAll('.nav-item').forEach(btn => {
@@ -1126,39 +1148,45 @@
         }
         currentFilter = 'all';
         renderPage('loadorder');
+        
+        // 跳转到目标模组
         setTimeout(() => {
             performScrollToMod(modId);
         }, 200);
+        
+        // 恢复滚动位置
         setTimeout(() => {
-            const changelogContent = document.getElementById('changelogSidebarContent');
-            const toggleBtn = document.getElementById('changelogToggleBtn');
-            if (changelogContent && toggleBtn) {
-                changelogContent.classList.add('open');
-                toggleBtn.classList.add('open');
+            const clContent = document.getElementById('changelogSidebarContent');
+            if (clContent) {
+                // 重新渲染更新日志
                 renderSidebarChangelog();
                 
-                // 恢复滚动位置 - 延迟更长时间确保 DOM 完全渲染
+                // 恢复滚动位置
                 if (pendingScrollRestore) {
-                    setTimeout(() => {
-                        const restore = pendingScrollRestore;
-                        const clContent = document.getElementById('changelogSidebarContent');
-                        if (clContent && restore.scrollPos > 0) {
-                            clContent.scrollTop = restore.scrollPos;
-                        }
-                        // 恢复各分类的滚动位置
-                        if (restore.catScrollPositions) {
-                            Object.keys(restore.catScrollPositions).forEach(key => {
-                                const el = document.getElementById(`cl-items-${key}`);
-                                if (el) {
-                                    el.scrollTop = restore.catScrollPositions[key] || 0;
-                                }
-                            });
-                        }
-                        pendingScrollRestore = null;
-                    }, 200);
+                    const restore = pendingScrollRestore;
+                    if (restore.scrollPos > 0) {
+                        clContent.scrollTop = restore.scrollPos;
+                    }
+                    // 恢复各分类的滚动位置
+                    if (restore.catScrollPositions) {
+                        Object.keys(restore.catScrollPositions).forEach(key => {
+                            const el = document.getElementById(`cl-items-${key}`);
+                            if (el) {
+                                el.scrollTop = restore.catScrollPositions[key] || 0;
+                            }
+                        });
+                    }
+                    pendingScrollRestore = null;
                 }
+                
+                // 移除 no-transition 类
+                setTimeout(() => {
+                    clContent.classList.remove('no-transition');
+                }, 50);
+                
+                isJumping = false;
             }
-        }, 250);
+        }, 350);
     }
 
     // ================================================================
@@ -1202,7 +1230,7 @@
     }
 
     // ================================================================
-    //  侧边栏更新日志渲染 - 修复滚动问题
+    //  侧边栏更新日志渲染
     // ================================================================
     function renderSidebarChangelog() {
         const container = document.getElementById('changelogSidebarInner');
@@ -1262,6 +1290,7 @@
         // 绑定点击事件 - 保存滚动位置
         document.querySelectorAll('.cl-item').forEach(item => {
             item.onclick = () => {
+                if (isJumping) return;
                 const modId = parseInt(item.getAttribute('data-mod-id'));
                 const modName = item.getAttribute('data-mod-name');
                 if (modId) {
@@ -1574,13 +1603,16 @@
             container.innerHTML = data.render();
         }
         const contentMain = document.getElementById('contentMain');
-        if (contentMain) {
+        if (contentMain && !isJumping) {
             contentMain.scrollTop = 0;
         }
         updateNavStatsBadge();
         updateStaticTexts();
         updateAllDates();
-        renderSidebarChangelog();
+        // 只有在非跳转状态才重新渲染更新日志
+        if (!isJumping) {
+            renderSidebarChangelog();
+        }
     }
 
     function updateStaticTexts() {
@@ -1728,6 +1760,7 @@
 
     document.querySelectorAll('.nav-item').forEach(btn => {
         btn.addEventListener('click', () => {
+            if (isJumping) return;
             const target = btn.getAttribute('data-nav');
             if (target === currentNav) return;
             currentNav = target;
@@ -1743,6 +1776,7 @@
     const changelogContent = document.getElementById('changelogSidebarContent');
 
     changelogToggleBtn.addEventListener('click', () => {
+        if (isJumping) return;
         const isOpen = changelogContent.classList.contains('open');
         if (isOpen) {
             changelogContent.classList.remove('open');
