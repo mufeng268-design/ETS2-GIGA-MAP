@@ -1449,8 +1449,17 @@
         let html = `<div class="info-card download-card">
             <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
             <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>`;
+        
         groups.forEach((group, idx) => {
-            const label = t(group.versionLabel);
+            // 🟢 自动生成标签
+            let label = group.versionLabel;
+            if (label.startsWith('save_group_')) {
+                const ver = label.replace('save_group_', '');
+                label = `v${ver} ${t('save_group_suffix') || '存档'}`;
+            } else {
+                label = t(label);
+            }
+            
             html += `<div class="save-group" data-group-idx="${idx}">
                 <div class="save-group-header" data-group-toggle="${idx}">
                     <div class="save-group-title"><i class="fas ${group.icon}"></i> ${label}</div>
@@ -1461,6 +1470,7 @@
                 </div>
             </div>`;
         });
+        
         html += `<div class="save-path">
             <span class="path-label"><i class="fas fa-folder-open"></i> ${t('download_save_path')}</span>
             <code>${t('download_save_path_code')}</code>
