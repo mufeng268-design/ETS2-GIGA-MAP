@@ -978,6 +978,8 @@
     let currentNav = 'loadorder';
     let currentVersion = localStorage.getItem('ets2_version') || '1.59';
     let pendingJumpModId = null;
+    // 存储待恢复的滚动位置
+    let pendingScrollRestore = null;
 
     // ================================================================
     //  数据容器
@@ -1110,6 +1112,12 @@
     //  跳转函数 - 保存滚动位置
     // ================================================================
     function jumpToModFromChangelog(modId, savedScrollPos, savedCatScrollPositions) {
+        // 保存待恢复的滚动位置
+        pendingScrollRestore = {
+            scrollPos: savedScrollPos || 0,
+            catScrollPositions: savedCatScrollPositions || {}
+        };
+        
         if (currentNav !== 'loadorder') {
             currentNav = 'loadorder';
             document.querySelectorAll('.nav-item').forEach(btn => {
@@ -1129,23 +1137,25 @@
                 toggleBtn.classList.add('open');
                 renderSidebarChangelog();
                 
-                // 恢复整体滚动位置
-                if (savedScrollPos !== undefined && savedScrollPos > 0) {
+                // 恢复滚动位置 - 延迟更长时间确保 DOM 完全渲染
+                if (pendingScrollRestore) {
                     setTimeout(() => {
-                        changelogContent.scrollTop = savedScrollPos;
-                    }, 50);
-                }
-                
-                // 恢复各分类的滚动位置
-                if (savedCatScrollPositions) {
-                    setTimeout(() => {
-                        Object.keys(savedCatScrollPositions).forEach(key => {
-                            const el = document.getElementById(`cl-items-${key}`);
-                            if (el) {
-                                el.scrollTop = savedCatScrollPositions[key] || 0;
-                            }
-                        });
-                    }, 60);
+                        const restore = pendingScrollRestore;
+                        const clContent = document.getElementById('changelogSidebarContent');
+                        if (clContent && restore.scrollPos > 0) {
+                            clContent.scrollTop = restore.scrollPos;
+                        }
+                        // 恢复各分类的滚动位置
+                        if (restore.catScrollPositions) {
+                            Object.keys(restore.catScrollPositions).forEach(key => {
+                                const el = document.getElementById(`cl-items-${key}`);
+                                if (el) {
+                                    el.scrollTop = restore.catScrollPositions[key] || 0;
+                                }
+                            });
+                        }
+                        pendingScrollRestore = null;
+                    }, 200);
                 }
             }
         }, 250);
