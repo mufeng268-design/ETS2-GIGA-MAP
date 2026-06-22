@@ -1,13 +1,13 @@
 {
   "1.60": {
-    "updateDate": "2026.06.21",
+    "updateDate": "2026.06.22",
     "mods": [
       {
         "id": 1,
-        "name": "ChineseLocalization_v1.7",
-        "fileName": "[汉化]ChineseLocalization_v1.7.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/8b49ca4aa39e",
+        "name": "ChineseLocalization_v1.8",
+        "fileName": "[汉化]ChineseLocalization_v1.8.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/a4757d63cffa",
         "imageUrl": "[汉化]ChineseLocalization.jpg"
       },
       {
@@ -836,11 +836,11 @@
       },
       {
         "id": 105,
-        "name": "Road to Caucasus - RusMap RC v.2.0",
-        "fileName": "RTC RusMap RC v.2.0.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/75f00dbabd7d",
-        "imageUrl": "RTC RusMap RC v.2.0.webp"
+        "name": "Road to Caucasus - RusMap RC v.2.1",
+        "fileName": "RTC RusMap RC v.2.1.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/ea3d827d79a9",
+        "imageUrl": "RTC RusMap RC v.2.1.webp"
       },
       {
         "id": 106,
@@ -1276,11 +1276,11 @@
       },
       {
         "id": 160,
-        "name": "Trucksmap UK v1.4.1.58",
-        "fileName": "Trucksmap UK 1.4.pa1.1.58.scs.zip",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/1d1cde0b0d85",
-        "imageUrl": "Trucksmap UK 1.4.pa1.1.58.scs.webp"
+        "name": "Trucksmap UK v1.4.1.60",
+        "fileName": "Trucksmap UK 1.4.pa1.1.60.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/1c5cf0bfe091",
+        "imageUrl": "Trucksmap UK 1.4.pa1.1.60.webp"
       },
       {
         "id": 161,
@@ -1804,11 +1804,11 @@
       },
       {
         "id": 226,
-        "name": "Rhineland Map",
-        "fileName": "Rhineland_Map_142_for_159.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/59bb59df8dba",
-        "imageUrl": "Rhineland_Map_142_for_159.webp"
+        "name": "German Regions Map",
+        "fileName": "GermanRegions1.0.2_1.60.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/cc253313367d",
+        "imageUrl": "GermanRegions1.0.2_1.60.webp"
       },
       {
         "id": 227,
@@ -2068,51 +2068,51 @@
       },
       {
         "id": 259,
-        "name": "ROEX50SR131 RC",
-        "fileName": "ROEX50SR131.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/01e6afca9127",
-        "imageUrl": "ROEX50SR131.webp"
+        "name": "ROEX52SR131 RC",
+        "fileName": "ROEX52SR131.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/aa31e1a0b628",
+        "imageUrl": "ROEX52SR131.webp"
       },
       {
         "id": 260,
-        "name": "51ROEXCore",
-        "fileName": "51ROEXcore.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/900991edc912",
-        "imageUrl": "51ROEXcore.webp"
+        "name": "ROEX52core",
+        "fileName": "ROEX52core.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/05baf54e3c18",
+        "imageUrl": "ROEX52core.webp"
       },
       {
         "id": 261,
-        "name": "51ROEXMain1",
-        "fileName": "51ROEXmain1.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/05d84ae63f58",
-        "imageUrl": "51ROEXmain1.webp"
+        "name": "ROEX52Main1",
+        "fileName": "ROEX52main1.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/cc8fb6f6323b",
+        "imageUrl": "ROEX52main1.webp"
       },
       {
         "id": 262,
-        "name": "51ROEXMain2",
-        "fileName": "51ROEXmain2.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/81e829d98344",
-        "imageUrl": "51ROEXmain2.webp"
+        "name": "ROEX52Main2",
+        "fileName": "ROEX52main2.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/7604e6ba446b",
+        "imageUrl": "ROEX52main2.webp"
       },
       {
         "id": 263,
-        "name": "51ROEXMain3",
-        "fileName": "51ROEXmain3.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/ccf2fbd2f5d2",
-        "imageUrl": "51ROEXmain3.webp"
+        "name": "ROEX52Main3",
+        "fileName": "ROEX52main3.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/2da6e88394a3",
+        "imageUrl": "ROEX52main3.webp"
       },
       {
         "id": 264,
-        "name": "51ROEXMain4",
-        "fileName": "51ROEXmain4.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/a01b700f3dae",
-        "imageUrl": "51ROEXmain4.webp"
+        "name": "ROEX52Main4",
+        "fileName": "ROEX52main4.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/54ea94d8783a",
+        "imageUrl": "ROEX52main4.webp"
       },
       {
         "id": 265,
@@ -2718,8 +2718,8 @@
         "id": 340,
         "name": "EAA Rescaled",
         "fileName": "EAA Rescaled.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/5add08e440ea",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/ed430b586914",
         "imageUrl": "EAA Rescaled.webp"
       },
       {
@@ -3501,25 +3501,25 @@
       {
         "id": 438,
         "name": "EAA Map - SEM EUROPA",
-        "fileName": "eaa_map_semeuropa_v1.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/9d65cf964891",
+        "fileName": "eaa_map_semeuropa_v3.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/9f974740b576",
         "imageUrl": "eaa_map_semeuropa_v1.webp"
       },
       {
         "id": 439,
         "name": "EAA Base",
-        "fileName": "eaa_base_v1.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/f8c04359c8e0",
+        "fileName": "eaa_base_v3.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/74dec8ee16d7",
         "imageUrl": "eaa_base_v1.webp"
       },
       {
         "id": 440,
         "name": "EAA Share",
-        "fileName": "eaa_base_share_v1.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/ac904cba7c65",
+        "fileName": "eaa_base_share_v3.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/0761448cada7",
         "imageUrl": "eaa_base_share_v1.webp"
       },
       {
