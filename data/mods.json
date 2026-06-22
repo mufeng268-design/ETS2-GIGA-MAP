@@ -4,17 +4,17 @@
     "mods": [
       {
         "id": 1,
-        "name": "ChineseLocalization_v1.8",
-        "fileName": "[汉化]ChineseLocalization_v1.8.scs",
+        "name": "ChineseLocalization_v2.0",
+        "fileName": "[汉化]ChineseLocalization_v2.0.scs",
         "status": "updated",
-        "downloadUrl": "https://pan.quark.cn/s/a4757d63cffa",
+        "downloadUrl": "https://pan.quark.cn/s/e7db4a992270",
         "imageUrl": "[汉化]ChineseLocalization.jpg"
       },
       {
         "id": 2,
         "name": "ETS2 Global Background Map - Grand Utopia+",
         "fileName": "ETS2 Global Background Map - Grand Utopia+.scs",
-        "status": "",
+        "status": "deleted",
         "downloadUrl": "https://pan.quark.cn/s/9bff61867eb1",
         "imageUrl": "ETS2 Global Background Map - Grand Utopia+.webp"
       },
@@ -78,7 +78,7 @@
         "id": 10,
         "name": "ProMods Loading Screen",
         "fileName": "Promods Loading Screen.scs",
-        "status": "",
+        "status": "deleted",
         "downloadUrl": "https://pan.quark.cn/s/4e597060096e",
         "imageUrl": "Promods Loading Screen.webp"
       },
