@@ -3,2071 +3,1600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>欧卡2 · 全球组合地图 · 重制版</title>
+    <title>欧卡2 · 全球组合地图</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== 全局重置 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ===== 全局重置与基础样式 ===== */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { 
+            height:100%; 
+            overflow:hidden;
         }
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
+        body { 
+            background:#0a1219; 
+            font-family:'Inter','Segoe UI',system-ui,sans-serif; 
+            font-size:17px;
+            line-height:1.5;
         }
-        body {
-            background: #0b141a;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #e4edf0;
+        .app-wrapper { 
+            display:flex; 
+            flex-direction:column; 
+            height:100vh;
+            overflow:hidden;
         }
-        .app {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+        
+        /* ===== 顶部标题栏 ===== */
+        .global-header {
+            background:linear-gradient(135deg,rgba(0,0,0,0.7),rgba(10,25,35,0.9));
+            border-bottom:2px solid rgba(255,200,100,0.4);
+            padding:14px 40px;
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            justify-content:center;
+            gap:12px 30px;
+            flex-shrink:0;
+            backdrop-filter:blur(6px);
+            position:relative;
+            z-index:50;
+            min-height:76px;
         }
-
-        /* ===== 头部 - 全新设计 ===== */
-        .header {
-            background: rgba(8, 18, 24, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 200, 100, 0.2);
-            padding: 12px 32px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-            z-index: 30;
-            gap: 12px 20px;
+        .global-header .brand-area {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:2px;
+            text-align:center;
         }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 18px;
+        .global-header .brand-area .main-title {
+            font-size:1.8rem;
+            font-weight:800;
+            background:linear-gradient(135deg,#FFE6A0 0%,#FFC857 100%);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            text-shadow:0 2px 10px rgba(255,200,50,0.4);
+            display:flex;
+            align-items:center;
+            gap:10px;
+            line-height:1.2;
         }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .global-header .brand-area .main-title i {
+            color:#ffbc3c;
+            font-size:1.8rem;
+            text-shadow:0 0 6px #ffb347;
         }
-        .brand-icon {
-            font-size: 1.8rem;
-            color: #f5b042;
-            filter: drop-shadow(0 0 6px #f5b04266);
+        .global-header .brand-area .subtitle-row {
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            justify-content:center;
+            gap:8px 16px;
         }
-        .brand-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffe6a0, #f5b042);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
+        .global-header .brand-area .subtitle-row .author-badge,
+        .global-header .brand-area .subtitle-row .date-badge {
+            background:linear-gradient(120deg,#0f2f46,#07212e);
+            padding:4px 16px;
+            border-radius:48px;
+            font-size:0.85rem;
+            font-weight:700;
+            backdrop-filter:blur(2px);
+            display:flex;
+            align-items:center;
+            gap:6px;
         }
-        .brand-sub {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #9bb7c4;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 4px 14px 4px 16px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 200, 100, 0.15);
+        .global-header .brand-area .subtitle-row .author-badge { color:#9bc5ff; border:1px solid #3a86ff; }
+        .global-header .brand-area .subtitle-row .date-badge { color:#b3ffcf; border:1px solid #2dc653; }
+        .global-header .header-controls {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+            flex-shrink:0;
         }
-        .brand-sub i {
-            color: #f5b042;
-            font-size: 0.7rem;
+        .global-header .header-controls .lang-dropdown-wrapper,
+        .global-header .header-controls .version-dropdown-wrapper {
+            position:relative;
+            display:inline-block;
         }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .global-header .header-controls .lang-dropdown-btn,
+        .global-header .header-controls .version-dropdown-btn {
+            background:rgba(0,0,0,0.5);
+            border:1px solid rgba(255,200,100,0.4);
+            border-radius:30px;
+            padding:6px 18px 6px 16px;
+            color:#ffdf9e;
+            font-size:0.9rem;
+            font-weight:700;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:6px;
+            transition:all 0.2s;
+            font-family:inherit;
+            height:38px;
+            min-width:76px;
         }
-        .dropdown-wrap {
-            position: relative;
+        .global-header .header-controls .lang-dropdown-btn:hover,
+        .global-header .header-controls .version-dropdown-btn:hover {
+            background:rgba(255,200,100,0.15);
+            border-color:#ffcf7a;
         }
-        .dropdown-btn {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 200, 100, 0.3);
-            border-radius: 60px;
-            padding: 6px 18px 6px 16px;
-            color: #ffdf9e;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            font-family: inherit;
-            height: 36px;
+        .global-header .header-controls .lang-dropdown-btn i,
+        .global-header .header-controls .version-dropdown-btn i {
+            font-size:0.7rem;
+            transition:transform 0.25s;
+            color:#ffcf7a;
         }
-        .dropdown-btn:hover {
-            background: rgba(255, 200, 100, 0.08);
-            border-color: #f5b042;
+        .global-header .header-controls .lang-dropdown-btn.open i,
+        .global-header .header-controls .version-dropdown-btn.open i {
+            transform:rotate(180deg);
         }
-        .dropdown-btn i {
-            font-size: 0.65rem;
-            transition: transform 0.25s;
+        .global-header .header-controls .lang-dropdown-menu,
+        .global-header .header-controls .version-dropdown-menu {
+            position:absolute;
+            top:calc(100% + 4px);
+            right:0;
+            background:rgba(10,25,35,0.96);
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(255,200,100,0.3);
+            border-radius:14px;
+            padding:4px 0;
+            min-width:100px;
+            box-shadow:0 12px 40px rgba(0,0,0,0.6);
+            display:none;
+            z-index:200;
+            overflow:hidden;
         }
-        .dropdown-btn.open i {
-            transform: rotate(180deg);
+        .global-header .header-controls .lang-dropdown-menu.open,
+        .global-header .header-controls .version-dropdown-menu.open {
+            display:block;
+            animation:dropdownFade 0.2s ease;
         }
-        .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 6px);
-            right: 0;
-            background: rgba(10, 25, 35, 0.96);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 200, 100, 0.25);
-            border-radius: 16px;
-            padding: 6px 0;
-            min-width: 120px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-            display: none;
-            z-index: 200;
-            overflow: hidden;
+        @keyframes dropdownFade { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+        .global-header .header-controls .lang-dropdown-menu .lang-opt,
+        .global-header .header-controls .version-dropdown-menu .version-opt {
+            display:block;
+            width:100%;
+            padding:8px 18px;
+            background:transparent;
+            border:none;
+            color:#cde5ea;
+            font-size:0.85rem;
+            font-weight:600;
+            text-align:left;
+            cursor:pointer;
+            transition:all 0.15s;
+            font-family:inherit;
         }
-        .dropdown-menu.open {
-            display: block;
-            animation: fadeDown 0.2s ease;
+        .global-header .header-controls .lang-dropdown-menu .lang-opt:hover,
+        .global-header .header-controls .version-dropdown-menu .version-opt:hover {
+            background:rgba(255,200,100,0.1);
+            color:#ffcf7a;
         }
-        @keyframes fadeDown {
-            from {
-                opacity: 0;
-                transform: translateY(-6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .global-header .header-controls .lang-dropdown-menu .lang-opt.active-opt,
+        .global-header .header-controls .version-dropdown-menu .version-opt.active-opt {
+            background:rgba(230,160,23,0.2);
+            color:#ffdf9e;
+            font-weight:700;
         }
-        .dropdown-menu .opt {
-            display: block;
-            width: 100%;
-            padding: 8px 20px;
-            background: transparent;
-            border: none;
-            color: #cde5ea;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
+        .global-header .header-controls .lang-dropdown-menu .lang-opt.active-opt::after,
+        .global-header .header-controls .version-dropdown-menu .version-opt.active-opt::after {
+            content:" ✓";
+            color:#4cd964;
         }
-        .dropdown-menu .opt:hover {
-            background: rgba(255, 200, 100, 0.08);
-            color: #ffcf7a;
-        }
-        .dropdown-menu .opt.active-opt {
-            background: rgba(230, 160, 23, 0.2);
-            color: #ffdf9e;
-        }
-        .dropdown-menu .opt.active-opt::after {
-            content: " ✓";
-            color: #4cd964;
-        }
-        .opt-badge {
-            float: right;
-            font-size: 0.6rem;
-            background: rgba(45, 198, 83, 0.2);
-            color: #8affaa;
-            padding: 1px 10px;
-            border-radius: 40px;
-            margin-left: 8px;
-        }
-
-        /* ===== 主体 ===== */
-        .body {
-            display: flex;
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
-        }
-
-        /* ===== 侧边栏 - 更清爽 ===== */
-        .sidebar {
-            width: 340px;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(8px);
-            border-right: 1px solid rgba(255, 215, 0, 0.12);
-            overflow-y: auto;
-            flex-shrink: 0;
-            padding: 18px 20px 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .sidebar::-webkit-scrollbar {
-            width: 3px;
-        }
-        .sidebar::-webkit-scrollbar-track {
-            background: #14262c;
-            border-radius: 10px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #f5b042;
-            border-radius: 10px;
+        .global-header .header-controls .version-dropdown-menu .version-opt .opt-badge {
+            float:right;
+            font-size:0.6rem;
+            background:rgba(45,198,83,0.2);
+            color:#8affaa;
+            padding:1px 8px;
+            border-radius:20px;
+            margin-left:8px;
         }
 
-        .nav-btn {
-            background: rgba(25, 50, 58, 0.4);
-            border: 1px solid rgba(255, 200, 100, 0.12);
-            padding: 12px 18px;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #eef3f5;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            text-align: left;
-            font-family: inherit;
-            backdrop-filter: blur(2px);
-            min-height: 50px;
-        }
-        .nav-btn i {
-            width: 24px;
-            font-size: 1.1rem;
-            color: #f5b042;
-            flex-shrink: 0;
-            text-align: center;
-        }
-        .nav-btn:hover {
-            background: #2a5a66;
-            border-color: #f5b042;
-            transform: translateX(4px);
-        }
-        .nav-btn.active {
-            background: #e6a017;
-            color: #121f23;
-            border-color: #ffeaaf;
-        }
-        .nav-btn.active i {
-            color: #262216;
-        }
-        .nav-btn.download-btn {
-            background: linear-gradient(135deg, #1f5e4a, #0f3e30);
-            border-color: #4cd964;
-        }
-        .nav-btn.download-btn i {
-            color: #4cd964;
-        }
-        .badge-stats {
-            background: rgba(45, 198, 83, 0.15);
-            border: 1px solid rgba(45, 198, 83, 0.3);
-            border-radius: 40px;
-            padding: 1px 14px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #8affaa;
-            margin-left: auto;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .nav-btn.active .badge-stats {
-            background: rgba(18, 30, 18, 0.5);
-            border-color: #0a1a12;
-            color: #0a1a12;
-        }
-        .nav-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 200, 100, 0.15), transparent);
-            margin: 6px 0 10px 0;
+        /* ===== 主体：侧边栏 + 内容区 ===== */
+        .app-body {
+            display:flex;
+            flex:1;
+            min-height:0;
+            overflow:hidden;
         }
 
-        /* ===== 更新日志折叠 ===== */
-        .changelog-toggle {
-            margin-bottom: 2px;
+        /* ===== 侧边栏 ===== */
+        .sidebar-nav {
+            width:380px;
+            background:rgba(0,0,0,0.55);
+            backdrop-filter:blur(10px);
+            border-right:1px solid rgba(255,215,0,0.25);
+            overflow-y:auto;
+            overflow-x:hidden;
+            scrollbar-width:thin;
+            display:flex;
+            flex-direction:column;
+            flex-shrink:0;
+            padding:16px 22px 24px 22px;
+            height:100%;
         }
-        .changelog-toggle .toggle-arrow {
-            margin-left: auto;
-            transition: transform 0.3s;
+        .sidebar-nav::-webkit-scrollbar { width:4px; }
+        .sidebar-nav::-webkit-scrollbar-track { background:#14262c; border-radius:10px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background:#f5b042; border-radius:10px; }
+        
+        .nav-menu { display:flex; flex-direction:column; gap:10px; }
+        .nav-menu-bottom { padding-top:16px; border-top:1px solid rgba(255,200,100,0.15); margin-top:8px; }
+        
+        .nav-item,
+        .changelog-toggle-btn {
+            background:rgba(25,50,58,0.6);
+            border:1px solid rgba(255,200,100,0.25);
+            padding:14px 20px;
+            border-radius:44px;
+            font-size:1rem;
+            font-weight:600;
+            color:#eef3f5;
+            display:flex;
+            align-items:center;
+            gap:16px;
+            cursor:pointer;
+            transition:all 0.25s;
+            width:100%;
+            text-align:left;
+            font-family:inherit;
+            backdrop-filter:blur(2px);
+            min-height:56px;
+            line-height:1.3;
         }
-        .changelog-toggle.open .toggle-arrow {
-            transform: rotate(180deg);
+        .nav-item i,
+        .changelog-toggle-btn i {
+            width:28px;
+            font-size:1.2rem;
+            color:#ffcf7a;
+            flex-shrink:0;
+            text-align:center;
         }
-        .changelog-body {
+        .nav-item:hover,
+        .changelog-toggle-btn:hover {
+            background:#2f626e;
+            transform:translateX(4px);
+            border-color:#ffcd7e;
+        }
+        .nav-item.active {
+            background:#e6a017;
+            color:#121f23;
+            border-color:#ffeaaf;
+        }
+        .nav-item.active i { color:#262216; }
+        .nav-item.download-btn {
+            background:linear-gradient(135deg,#1f5e4a,#0f3e30);
+            border-color:#4cd964;
+        }
+        .nav-item.download-btn i { color:#4cd964; }
+        .nav-stats-badge {
+            background:rgba(45,198,83,0.2);
+            border:1px solid rgba(45,198,83,0.5);
+            border-radius:30px;
+            padding:2px 12px;
+            font-size:0.75rem;
+            font-weight:700;
+            color:#8affaa;
+            margin-left:auto;
+            white-space:nowrap;
+            flex-shrink:0;
+        }
+        .nav-item.active .nav-stats-badge {
+            background:rgba(18,30,18,0.6);
+            border-color:#0a1a12;
+            color:#0a1a12;
+        }
+        
+        /* ===== 侧边栏内更新日志 - 修复滚动问题 ===== */
+        .changelog-sidebar-wrapper {
+            margin-bottom:4px;
+            flex-shrink:0;
+        }
+        .changelog-toggle-btn .toggle-arrow {
+            margin-left:auto;
+            transition:transform 0.3s ease;
+            flex-shrink:0;
+        }
+        .changelog-toggle-btn.open .toggle-arrow {
+            transform:rotate(180deg);
+        }
+        .changelog-sidebar-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
             opacity: 0;
             margin-top: 0;
         }
-        .changelog-body.open {
-            max-height: 70vh;
+        .changelog-sidebar-content.open {
+            max-height: 65vh;
             opacity: 1;
             margin-top: 10px;
             overflow-y: auto;
             overflow-x: hidden;
         }
-        .changelog-body::-webkit-scrollbar {
-            width: 3px;
+        /* 防止闪烁 - 在跳转期间保持内容可见 */
+        .changelog-sidebar-content.no-transition {
+            transition: none !important;
         }
-        .changelog-body::-webkit-scrollbar-track {
+        .changelog-sidebar-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .changelog-sidebar-content::-webkit-scrollbar-track {
             background: #14262c;
             border-radius: 10px;
         }
-        .changelog-body::-webkit-scrollbar-thumb {
+        .changelog-sidebar-content::-webkit-scrollbar-thumb {
             background: #f5b042;
             border-radius: 10px;
         }
-        .changelog-inner {
-            background: rgba(10, 25, 35, 0.6);
-            border-radius: 20px;
-            padding: 16px 18px;
-            border: 1px solid rgba(255, 200, 100, 0.08);
+        .changelog-sidebar-inner {
+            background:rgba(10,25,35,0.7);
+            border-radius:16px;
+            padding:16px 18px;
+            border:1px solid rgba(255,200,100,0.12);
         }
-        .cl-version-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #ffe6a0;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+        .changelog-sidebar-inner .changelog-version-title-sm {
+            font-size:1rem;
+            font-weight:700;
+            color:#FFE6A0;
+            margin-bottom:12px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
         }
-        .cl-version-title .date-sm {
-            font-size: 0.7rem;
-            color: #9bb7bf;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 14px;
-            border-radius: 40px;
-            font-weight: 400;
+        .changelog-sidebar-inner .changelog-version-title-sm .date-sm {
+            font-size:0.75rem;
+            color:#9bb7bf;
+            background:rgba(0,0,0,0.3);
+            padding:2px 12px;
+            border-radius:20px;
+            font-weight:400;
         }
-        .cl-cat {
-            margin-bottom: 6px;
+        .changelog-sidebar-inner .cl-cat { margin-bottom:8px; }
+        .changelog-sidebar-inner .cl-cat-header {
+            font-size:0.9rem;
+            font-weight:700;
+            padding:6px 0 6px 8px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            cursor:pointer;
+            user-select:none;
+            border-radius:8px;
+            transition:background 0.15s;
         }
-        .cl-cat-header {
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 0 6px 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.15s;
+        .changelog-sidebar-inner .cl-cat-header:hover { background:rgba(255,255,255,0.06); }
+        .changelog-sidebar-inner .cl-cat-header .cl-toggle {
+            margin-left:auto;
+            transition:transform 0.2s;
+            font-size:0.7rem;
         }
-        .cl-cat-header:hover {
-            background: rgba(255, 255, 255, 0.04);
-        }
-        .cl-cat-header .cl-toggle {
-            margin-left: auto;
-            transition: transform 0.2s;
-            font-size: 0.65rem;
-        }
-        .cl-cat-header.collapsed .cl-toggle {
-            transform: rotate(-90deg);
-        }
-        .cl-cat-header.cat-new {
-            color: #8affaa;
-        }
-        .cl-cat-header.cat-updated {
-            color: #8bbfff;
-        }
-        .cl-cat-header.cat-moved {
-            color: #ffdf7e;
-        }
-        .cl-cat-header.cat-deleted {
-            color: #ff8a9e;
-        }
-        .cl-cat-items {
+        .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
+        
+        /* 分类内部项目容器 - 支持独立滚动 */
+        .changelog-sidebar-inner .cl-cat-items {
             overflow-y: auto;
-            max-height: 300px;
+            max-height: 350px;
             transition: max-height 0.25s ease, opacity 0.2s ease;
             opacity: 1;
         }
-        .cl-cat-items.collapsed {
+        .changelog-sidebar-inner .cl-cat-items.collapsed {
             max-height: 0;
             opacity: 0;
             overflow: hidden;
         }
-        .cl-cat-items::-webkit-scrollbar {
-            width: 2px;
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar {
+            width: 3px;
         }
-        .cl-cat-items::-webkit-scrollbar-track {
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-track {
             background: #0a1a22;
             border-radius: 10px;
         }
-        .cl-cat-items::-webkit-scrollbar-thumb {
+        .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-thumb {
             background: #f5b042;
             border-radius: 10px;
         }
-        .cl-item {
-            font-size: 0.85rem;
-            color: #d4e8ed;
-            padding: 4px 0 4px 18px;
-            border-left: 2px solid rgba(255, 200, 100, 0.12);
-            margin-left: 6px;
-            padding-left: 16px;
-            margin-bottom: 3px;
-            cursor: pointer;
-            transition: 0.2s;
-            border-radius: 4px;
+        
+        .changelog-sidebar-inner .cl-item {
+            font-size:0.9rem;
+            color:#d4e8ed;
+            padding:4px 0 4px 18px;
+            border-left:2px solid rgba(255,200,100,0.15);
+            margin-left:8px;
+            padding-left:16px;
+            margin-bottom:3px;
+            line-height:1.5;
+            cursor:pointer;
+            transition:color 0.2s, background 0.15s;
+            border-radius:4px;
         }
-        .cl-item:hover {
-            color: #ffcf7a;
-            background: rgba(255, 200, 100, 0.05);
+        .changelog-sidebar-inner .cl-item:hover {
+            color:#ffcf7a;
+            background:rgba(255,200,100,0.06);
         }
-        .cl-item .cl-file {
-            font-size: 0.7rem;
-            color: #8aa8b0;
-            font-family: monospace;
-            display: block;
-            margin-top: 2px;
+        .changelog-sidebar-inner .cl-item .cl-file {
+            font-size:0.75rem;
+            color:#8aa8b0;
+            font-family:monospace;
+            display:block;
+            margin-top:2px;
+            cursor:default;
         }
-        .cl-empty {
-            color: #6a8a92;
-            font-size: 0.8rem;
-            padding: 4px 14px;
-            font-style: italic;
+        .changelog-sidebar-inner .cl-item .cl-file:hover {
+            color:#8aa8b0;
+            background:transparent;
         }
-
-        /* ===== 主内容 ===== */
-        .main {
-            flex: 1;
-            min-width: 0;
-            background: rgba(8, 20, 24, 0.15);
-            padding: 22px 36px 30px 36px;
-            overflow-y: auto;
-            height: 100%;
-        }
-        .main::-webkit-scrollbar {
-            width: 5px;
-        }
-        .main::-webkit-scrollbar-track {
-            background: #14262c;
-            border-radius: 10px;
-        }
-        .main::-webkit-scrollbar-thumb {
-            background: #f5b042;
-            border-radius: 10px;
+        .changelog-sidebar-inner .cl-cat-header.cat-new { color:#8affaa; }
+        .changelog-sidebar-inner .cl-cat-header.cat-updated { color:#8bbfff; }
+        .changelog-sidebar-inner .cl-cat-header.cat-moved { color:#ffdf7e; }
+        .changelog-sidebar-inner .cl-cat-header.cat-deleted { color:#ff8a9e; }
+        .changelog-sidebar-inner .cl-empty { 
+            color:#6a8a92; 
+            font-size:0.85rem; 
+            padding:6px 14px; 
+            font-style:italic; 
         }
 
-        .main-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(255, 200, 100, 0.15);
-            margin-bottom: 24px;
+        /* ===== 主内容区 ===== */
+        .content-main {
+            flex:1;
+            min-width:0;
+            background:rgba(8,20,24,0.25);
+            padding:20px 36px 36px 36px;
+            overflow-y:auto;
+            overflow-x:hidden;
+            height:100%;
         }
-        .main-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffde9e, #f5b042);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .content-main::-webkit-scrollbar { width:6px; }
+        .content-main::-webkit-scrollbar-track { background:#14262c; border-radius:10px; }
+        .content-main::-webkit-scrollbar-thumb { background:#f5b042; border-radius:10px; }
+        
+        .content-main .content-header {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:12px;
+            padding-bottom:14px;
+            border-bottom:1px solid rgba(255,200,100,0.2);
+            margin-bottom:24px;
+            flex-shrink:0;
         }
-        .main-header h2 i {
-            color: #f5b042;
-            font-size: 1.3rem;
+        .content-main .content-header h2 {
+            font-size:1.6rem;
+            font-weight:700;
+            background:linear-gradient(135deg,#ffde9e,#ffc057);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            display:flex;
+            align-items:center;
+            gap:14px;
         }
-        .dynamic-area {
-            min-height: 280px;
-            width: 100%;
+        .content-main .content-header h2 i {
+            color:#ffbc3c;
+            font-size:1.5rem;
         }
-        .main-footer {
-            text-align: center;
-            font-size: 0.78rem;
-            padding: 20px 0 6px 0;
-            color: #bdd7df;
-            border-top: 1px solid rgba(255, 200, 100, 0.08);
-            margin-top: 24px;
-            line-height: 1.6;
+        .content-main .dynamic-area {
+            min-height:300px;
+            width:100%;
         }
-
-        /* ===== 过滤器 ===== */
-        .filter-bar {
-            background: rgba(16, 34, 40, 0.7);
-            border-radius: 60px;
-            padding: 6px 16px 6px 20px;
-            margin-bottom: 28px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 200, 100, 0.15);
-        }
-        .filter-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #ffdf9e;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 4px 16px;
-            border-radius: 40px;
-        }
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .filter-chip {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 200, 100, 0.2);
-            color: #cde5ea;
-            padding: 5px 16px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .filter-chip i {
-            font-size: 0.65rem;
-        }
-        .filter-chip.active {
-            background: #e6a017;
-            color: #121f23;
-            border-color: #ffeaaf;
-        }
-        .filter-chip.active i {
-            color: #121f23;
-        }
-        .filter-chip:hover:not(.active):not(.filter-zero) {
-            background: #2f626e;
-            transform: translateY(-1px);
-        }
-        .filter-chip.filter-zero {
-            opacity: 0.4;
-            cursor: default;
-        }
-        .filter-count {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 30px;
-            padding: 0 8px;
-            font-size: 0.6rem;
-            margin-left: 4px;
+        .content-main footer {
+            text-align:center;
+            font-size:0.8rem;
+            padding:20px 0 8px 0;
+            color:#bdd7df;
+            border-top:1px solid rgba(255,200,100,0.15);
+            margin-top:20px;
+            line-height:1.6;
+            flex-shrink:0;
         }
 
-        /* ===== 模组卡片 - 全新风格 ===== */
-        .mods-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-        }
-        .mod-card {
-            background: linear-gradient(145deg, rgba(18, 38, 44, 0.9), rgba(12, 28, 34, 0.9));
-            border-radius: 24px;
-            transition: all 0.25s ease;
-            overflow: hidden;
-            border-left: 6px solid #5a6e78;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-            width: 100%;
-        }
-        .mod-card.status-new {
-            border-left-color: #2dc653;
-        }
-        .mod-card.status-updated {
-            border-left-color: #3a86ff;
-        }
-        .mod-card.status-moved {
-            border-left-color: #ffbc3c;
-        }
-        .mod-card.status-deleted {
-            border-left-color: #dc3545;
-            background: rgba(30, 30, 40, 0.6);
-        }
-        .mod-card:hover {
-            transform: translateX(4px);
-            background: linear-gradient(145deg, rgba(28, 48, 54, 0.95), rgba(18, 34, 40, 0.95));
-        }
-        .mod-card-inner {
-            padding: 16px 22px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 16px;
-        }
+        /* ===== 筛选栏 ===== */
+        .filter-bar { background:rgba(16,34,40,0.85); border-radius:60px; padding:8px 16px; margin-bottom:28px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; backdrop-filter:blur(4px); border:1px solid rgba(255,200,100,0.3); }
+        .filter-label { display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#ffdf9e; background:rgba(0,0,0,0.4); padding:6px 18px; border-radius:40px; }
+        .filter-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+        .filter-chip { background:rgba(0,0,0,0.5); border:1px solid rgba(255,200,100,0.35); color:#cde5ea; padding:6px 18px; border-radius:40px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .filter-chip i { font-size:0.75rem; }
+        .filter-chip.active { background:#e6a017; color:#121f23; border-color:#ffeaaf; }
+        .filter-chip.active i { color:#121f23; }
+        .filter-chip:hover:not(.active):not(.filter-zero) { background:#2f626e; transform:translateY(-1px); }
+        .filter-chip.filter-zero { opacity:0.5; cursor:default; }
+        .filter-chip.filter-zero:hover { background:rgba(0,0,0,0.5); transform:none; }
+        .filter-count { background:rgba(0,0,0,0.5); border-radius:30px; padding:1px 10px; font-size:0.7rem; margin-left:6px; }
 
-        /* 缩略图 */
-        .mod-thumb {
-            flex-shrink: 0;
-            width: 100px;
-            height: 64px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 200, 100, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
+        /* ===== 模组卡片 ===== */
+        .mods-grid { display:flex; flex-direction:column; gap:18px; width:100%; }
+        .mod-card { background:linear-gradient(135deg,rgba(18,38,44,0.95),rgba(12,28,34,0.95)); border-radius:24px; transition:all 0.25s ease; overflow:hidden; border-left:6px solid; box-shadow:0 4px 12px rgba(0,0,0,0.3); width:100%; }
+        .mod-card.status-new { border-left-color:#2dc653; }
+        .mod-card.status-updated { border-left-color:#3a86ff; }
+        .mod-card.status-moved { border-left-color:#ffbc3c; }
+        .mod-card.status-deleted { border-left-color:#dc3545; background:rgba(30,30,40,0.7); }
+        .mod-card.status-normal { border-left-color:#5a6e78; }
+        .mod-card:hover { transform:translateX(4px); background:linear-gradient(135deg,rgba(28,48,54,0.95),rgba(18,34,40,0.95)); }
+        .mod-card-inner { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
+        
+        /* ===== 模组图片 ===== */
+        .mod-thumbnail {
+            flex-shrink:0;
+            width:276px;
+            height:162px;
+            border-radius:12px;
+            overflow:hidden;
+            background:rgba(0,0,0,0.4);
+            border:1px solid rgba(255,200,100,0.15);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            transition:all 0.3s ease;
         }
-        .mod-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
+        .mod-thumbnail img {
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform 0.3s ease;
         }
-        .mod-thumb img:hover {
-            transform: scale(1.05);
+        .mod-thumbnail img:hover {
+            transform:scale(1.05);
         }
-        .mod-thumb .no-img {
-            color: #6a8a92;
-            font-size: 0.5rem;
-            text-align: center;
-            padding: 4px;
+        .mod-thumbnail .no-image {
+            color:#6a8a92;
+            font-size:0.55rem;
+            text-align:center;
+            padding:4px;
+            line-height:1.2;
         }
-        .mod-thumb .no-img i {
-            font-size: 1rem;
-            display: block;
-            margin-bottom: 2px;
-            color: #4a6a72;
+        .mod-thumbnail .no-image i {
+            font-size:1.2rem;
+            display:block;
+            margin-bottom:2px;
+            color:#4a6a72;
         }
-        .mod-card.status-deleted .mod-thumb {
-            opacity: 0.4;
-            filter: grayscale(0.7);
+        .mod-thumbnail .image-loading {
+            color:#8aa8b0;
+            font-size:0.6rem;
+            text-align:center;
         }
-
-        .mod-status-badge {
-            flex-shrink: 0;
-            width: 90px;
+        .mod-thumbnail .image-loading i {
+            font-size:1.2rem;
+            display:block;
+            margin-bottom:2px;
+            color:#f5b042;
+            animation:spin 1s linear infinite;
         }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            backdrop-filter: blur(2px);
+        @keyframes spin {
+            from { transform:rotate(0deg); }
+            to { transform:rotate(360deg); }
         }
-        .status-new-badge {
-            background: rgba(45, 198, 83, 0.15);
-            color: #8affaa;
-            border: 1px solid rgba(45, 198, 83, 0.3);
+        .mod-card.status-deleted .mod-thumbnail {
+            opacity:0.5;
+            filter:grayscale(0.8);
         }
-        .status-updated-badge {
-            background: rgba(58, 134, 255, 0.15);
-            color: #8bbfff;
-            border: 1px solid rgba(58, 134, 255, 0.3);
-        }
-        .status-moved-badge {
-            background: rgba(255, 188, 60, 0.15);
-            color: #ffdf7e;
-            border: 1px solid rgba(255, 188, 60, 0.3);
-        }
-        .status-deleted-badge {
-            background: rgba(220, 53, 69, 0.15);
-            color: #ff8a9e;
-            border: 1px solid rgba(220, 53, 69, 0.3);
-        }
-        .status-normal-badge {
-            background: rgba(90, 110, 120, 0.2);
-            color: #b8d0d8;
-            border: 1px solid rgba(90, 110, 120, 0.3);
-        }
-
-        .mod-content {
-            flex: 1;
-            min-width: 160px;
-        }
-        .mod-title-line {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .mod-order {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #ffdd99;
-        }
-        .mod-order.deleted-order {
-            background: #333355;
-            color: #888;
-        }
-        .mod-name {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #fef2da;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-block;
-        }
-        .mod-name:hover {
-            color: #ffcf7a;
-            text-shadow: 0 0 6px rgba(255, 200, 100, 0.3);
-            text-decoration: underline;
-        }
-        .mod-card.status-deleted .mod-name {
-            text-decoration: line-through;
-            cursor: default;
-            pointer-events: none;
-            color: #9aaeb5;
-        }
-        .mod-file {
-            font-size: 0.7rem;
-            color: #8aa8b0;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 2px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 200, 100, 0.06);
-            display: inline-block;
-            margin-top: 4px;
-            font-family: 'Inter', monospace;
-        }
-        .mod-file i {
-            margin-right: 4px;
-            font-size: 0.55rem;
-            color: #4cd964;
-        }
-        .mod-card.status-deleted .mod-file i {
-            color: #dc3545;
-        }
-
-        .mod-action {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-        }
-        .download-btn-mod {
-            background: linear-gradient(135deg, #2dc653, #1a8f3a);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #0a1a12;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .download-btn-mod.disabled {
-            background: #555;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-        .download-btn-mod:not(.disabled):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(45, 198, 83, 0.3);
-        }
-
-        /* ===== 辅助 ===== */
-        .no-mod-message {
-            background: rgba(16, 34, 40, 0.7);
-            border-radius: 32px;
-            padding: 48px 32px;
-            text-align: center;
-            border-left: 6px solid #f5b042;
-            color: #bcd7df;
-            font-size: 1rem;
-        }
-        .no-mod-message i {
-            font-size: 2.4rem;
-            color: #ffcf7a;
-            margin-bottom: 14px;
-            display: block;
-        }
-        .highlight-mod {
-            animation: pulseHighlight 3s ease-in-out;
-            box-shadow: 0 0 0 4px #ffbc3c, 0 0 0 10px rgba(255, 188, 60, 0.25);
-            border-radius: 24px;
-            position: relative;
-            z-index: 10;
-        }
-        @keyframes pulseHighlight {
-            0% {
-                box-shadow: 0 0 0 0px #ffbc3c, 0 0 0 0px rgba(255, 188, 60, 0.5);
-            }
-            20% {
-                box-shadow: 0 0 0 6px #ffbc3c, 0 0 0 14px rgba(255, 188, 60, 0.25);
-            }
-            40% {
-                box-shadow: 0 0 0 3px #ffbc3c, 0 0 0 6px rgba(255, 188, 60, 0.15);
-            }
-            60% {
-                box-shadow: 0 0 0 6px #ffbc3c, 0 0 0 14px rgba(255, 188, 60, 0.25);
-            }
-            80% {
-                box-shadow: 0 0 0 2px #ffbc3c, 0 0 0 5px rgba(255, 188, 60, 0.1);
-            }
-            100% {
-                box-shadow: 0 0 0 0px #ffbc3c, 0 0 0 0px rgba(255, 188, 60, 0);
-            }
-        }
+        
+        .mod-status-area { flex-shrink:0; width:100px; }
+        .status-badge-large { display:inline-flex; align-items:center; gap:8px; padding:5px 16px; border-radius:40px; font-size:0.8rem; font-weight:700; backdrop-filter:blur(2px); }
+        .status-new-large { background:rgba(45,198,83,0.2); color:#8affaa; border:1px solid rgba(45,198,83,0.5); }
+        .status-updated-large { background:rgba(58,134,255,0.2); color:#8bbfff; border:1px solid rgba(58,134,255,0.5); }
+        .status-moved-large { background:rgba(255,188,60,0.2); color:#ffdf7e; border:1px solid rgba(255,188,60,0.5); }
+        .status-deleted-large { background:rgba(220,53,69,0.2); color:#ff8a9e; border:1px solid rgba(220,53,69,0.5); }
+        .status-normal-large { background:rgba(90,110,120,0.3); color:#b8d0d8; border:1px solid rgba(90,110,120,0.5); }
+        .mod-content-area { flex:1; min-width:180px; }
+        .mod-header { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+        .mod-order { background:rgba(0,0,0,0.5); padding:3px 12px; border-radius:30px; font-size:0.7rem; font-weight:600; color:#ffdd99; }
+        .mod-order.deleted-order { background:#333355; color:#888; }
+        .mod-title { font-size:1.15rem; font-weight:700; color:#fef2da; cursor:pointer; transition:color 0.2s,text-shadow 0.2s; display:inline-block; }
+        .mod-title:hover { color:#ffcf7a; text-shadow:0 0 4px rgba(255,200,100,0.5); text-decoration:underline; }
+        .mod-card.status-deleted .mod-title { text-decoration:line-through; cursor:default; pointer-events:none; color:#9aaeb5; }
+        .mod-file { font-size:0.75rem; color:#8aa8b0; background:rgba(0,0,0,0.3); padding:2px 12px; border-radius:20px; border:1px solid rgba(255,200,100,0.12); font-family:'Inter',monospace; display:inline-block; margin-top:4px; }
+        .mod-card.status-deleted .mod-file { color:#6a7a7f; border-color:rgba(220,53,69,0.3); }
+        .mod-file i { margin-right:4px; font-size:0.6rem; color:#4cd964; }
+        .mod-card.status-deleted .mod-file i { color:#dc3545; }
+        .mod-action-area { flex-shrink:0; display:flex; align-items:center; }
+        .download-button { background:linear-gradient(135deg,#2dc653,#1a8f3a); border:none; padding:10px 22px; border-radius:44px; font-size:0.85rem; font-weight:700; color:#0a1a12; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:10px; }
+        .download-button.disabled { background:#555; cursor:not-allowed; opacity:0.6; }
+        .download-button:not(.disabled):hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(45,198,83,0.4); }
+        .no-mod-message { background:rgba(16,34,40,0.85); border-radius:32px; padding:48px 32px; text-align:center; border-left:6px solid #f5b042; color:#bcd7df; font-size:1rem; }
+        .no-mod-message i { font-size:2.8rem; color:#ffcf7a; margin-bottom:14px; display:block; }
+        .highlight-mod { animation:pulseHighlight 3s ease-in-out; box-shadow:0 0 0 4px #ffbc3c, 0 0 0 8px rgba(255,188,60,0.4); border-radius:24px; transition:box-shadow 0.2s; position:relative; z-index:10; }
+        @keyframes pulseHighlight { 0%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0.6);background:rgba(255,188,60,0.05);}15%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}30%{box-shadow:0 0 0 3px #ffbc3c,0 0 0 6px rgba(255,188,60,0.2);background:rgba(255,188,60,0.08);}45%{box-shadow:0 0 0 6px #ffbc3c,0 0 0 12px rgba(255,188,60,0.3);background:rgba(255,188,60,0.12);}60%{box-shadow:0 0 0 2px #ffbc3c,0 0 0 5px rgba(255,188,60,0.15);background:rgba(255,188,60,0.05);}75%{box-shadow:0 0 0 5px #ffbc3c,0 0 0 10px rgba(255,188,60,0.25);background:rgba(255,188,60,0.1);}100%{box-shadow:0 0 0 0px #ffbc3c,0 0 0 0px rgba(255,188,60,0);background:transparent;} }
 
         /* ===== 信息卡片 ===== */
-        .info-card {
-            background: rgba(16, 34, 40, 0.75);
-            border-radius: 28px;
-            padding: 28px 32px;
-            border-left: 6px solid #f5b042;
-        }
-        .install-step {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 20px 24px;
-            margin-bottom: 14px;
-            border-left: 4px solid #f5b042;
-            transition: 0.2s;
-        }
-        .install-step:hover {
-            background: rgba(0, 0, 0, 0.35);
-        }
-        .install-step-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 8px;
-        }
-        .install-step-number {
-            background: #e6a017;
-            color: #121f23;
-            font-weight: 800;
-            font-size: 1.1rem;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .install-step-title {
-            font-weight: 700;
-            color: #ffdf9e;
-            font-size: 1rem;
-        }
-        .install-step-content {
-            color: #d4e8ed;
-            font-size: 0.9rem;
-            line-height: 1.7;
-            padding-left: 50px;
-        }
-        .install-step-content .highlight {
-            color: #ffd966;
-            font-weight: 700;
-        }
-        .install-step-content code {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 2px 12px;
-            border-radius: 8px;
-            color: #ffcf7a;
-            font-size: 0.85rem;
-        }
+        .info-card { background:rgba(16,34,40,0.85); border-radius:32px; padding:28px 34px; border-left:6px solid #f5b042; font-size:1rem; }
+        .install-guide { display:flex; flex-direction:column; gap:20px; }
+        .install-step { background:rgba(0,0,0,0.3); border-radius:24px; padding:24px 28px; border-left:6px solid #f5b042; transition:background 0.2s; }
+        .install-step:hover { background:rgba(0,0,0,0.45); }
+        .install-step-header { display:flex; align-items:center; gap:16px; margin-bottom:12px; }
+        .install-step-number { background:#e6a017; color:#121f23; font-weight:800; font-size:1.2rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .install-step-title { font-size:1.15rem; font-weight:700; color:#ffdf9e; }
+        .install-step-content { color:#d4e8ed; font-size:0.95rem; line-height:1.7; padding-left:56px; }
+        .install-step-content .highlight { color:#FFD966 !important; font-weight:700; }
+        .install-step-content code { background:rgba(0,0,0,0.4); padding:2px 12px; border-radius:8px; font-family:'Inter',monospace; color:#ffcf7a; font-size:0.9rem; }
 
-        /* ===== 优化表格 ===== */
-        .optimize-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-top: 12px;
-            font-size: 0.9rem;
-        }
-        .optimize-table th,
-        .optimize-table td {
-            padding: 12px 18px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 200, 100, 0.06);
-        }
-        .optimize-table th {
-            background: rgba(230, 160, 23, 0.15);
-            color: #ffdf9e;
-            font-weight: 700;
-        }
-        .optimize-table td {
-            color: #d4e8ed;
-        }
-        .memory-cell {
-            font-weight: 600;
-            color: #ffcf7a;
-        }
-        .options-cell {
-            font-family: 'Inter', monospace;
-            color: #8affaa;
-            font-size: 0.8rem;
-            word-break: break-all;
-        }
-        .recommend-badge {
-            background: #2dc653;
-            color: #0a1a12;
-            font-size: 0.55rem;
-            font-weight: 800;
-            padding: 2px 10px;
-            border-radius: 40px;
-            margin-left: 6px;
-            display: inline-block;
-        }
-        .optimize-note {
-            margin-top: 18px;
-            padding: 14px 20px;
-            background: rgba(220, 53, 69, 0.08);
-            border-left: 4px solid #dc3545;
-            border-radius: 14px;
-            color: #ff8a9e;
-            font-size: 0.9rem;
-        }
+        .optimize-wrapper { overflow-x:auto; }
+        .optimize-table { width:100%; border-collapse:collapse; background:rgba(0,0,0,0.3); border-radius:16px; overflow:hidden; margin-top:14px; font-size:0.95rem; }
+        .optimize-table th, .optimize-table td { padding:14px 20px; text-align:left; border-bottom:1px solid rgba(255,200,100,0.12); }
+        .optimize-table th { background:rgba(230,160,23,0.2); color:#ffdf9e; font-weight:700; font-size:0.95rem; }
+        .optimize-table td { color:#d4e8ed; font-size:0.95rem; }
+        .optimize-table tr:last-child td { border-bottom:none; }
+        .optimize-table .memory-cell { font-weight:600; color:#ffcf7a; }
+        .optimize-table .options-cell { font-family:'Inter',monospace; color:#8affaa; font-size:0.85rem; word-break:break-all; }
+        .optimize-table .recommend-badge { background:#2dc653; color:#0a1a12; font-size:0.6rem; font-weight:800; padding:2px 10px; border-radius:30px; margin-left:6px; display:inline-block; }
+        .optimize-note { margin-top:18px; padding:16px 20px; background:rgba(220,53,69,0.1); border-left:4px solid #dc3545; border-radius:14px; color:#ff8a9e; font-size:0.95rem; }
+        .optimize-note i { margin-right:10px; }
 
         /* ===== 其他模组 ===== */
-        .othermods-list {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 10px 0;
-        }
-        .othermods-list .mod-order-item {
-            background: rgba(12, 28, 36, 0.6);
-            padding: 12px 24px;
-            margin: 3px 0;
-            border-radius: 16px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #d4e8ed;
-            width: 100%;
-            text-align: center;
-            border: 1px solid transparent;
-            position: relative;
-            transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-        .othermods-list .mod-order-item::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 18px;
-            padding: 2px;
-            background: linear-gradient(135deg, rgba(255, 200, 100, 0.2), transparent, rgba(255, 200, 100, 0.2));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 0.4;
-        }
-        .othermods-list .mod-order-item:hover::before {
-            opacity: 0.8;
-        }
-        .othermods-list .mod-order-item:hover {
-            background: rgba(20, 48, 58, 0.7);
-            transform: scale(1.01);
-        }
-        .othermods-list .mod-order-item.top-label {
-            background: rgba(45, 198, 83, 0.06);
-            color: #8affaa;
-            font-weight: 700;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            padding: 8px 20px;
-        }
-        .othermods-list .mod-order-item.bottom-label {
-            background: rgba(220, 53, 69, 0.06);
-            color: #ff8a9e;
-            font-weight: 700;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            padding: 8px 20px;
-        }
-        .othermods-list .mod-order-item.highlight-item {
-            color: #ffcf7a;
-            font-weight: 600;
-            background: rgba(255, 200, 100, 0.04);
-        }
-        .othermods-list .mod-order-item .item-icon {
-            margin-right: 10px;
-            opacity: 0.3;
-            font-size: 0.8rem;
-            color: #8aa8b0;
-        }
-        .othermods-divider {
-            width: 50%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 200, 100, 0.08), transparent);
-            margin: 4px 0;
-        }
+        .othermods-wrapper { display:flex; justify-content:center; align-items:center; min-height:50vh; width:100%; padding:10px 0; }
+        .othermods-list { display:flex; flex-direction:column; align-items:center; width:100%; max-width:520px; padding:10px 0; }
+        .othermods-list .mod-order-item { background:rgba(12,28,36,0.7); padding:14px 24px; margin:4px 0; border-radius:16px; font-size:1.05rem; font-weight:500; color:#d4e8ed; width:100%; text-align:center; border:1px solid transparent; background-clip:padding-box; position:relative; transition:all 0.3s ease; letter-spacing:0.5px; backdrop-filter:blur(4px); }
+        .othermods-list .mod-order-item::before { content:''; position:absolute; inset:-2px; border-radius:18px; padding:2px; background:linear-gradient(135deg,rgba(255,200,100,0.3),rgba(255,200,100,0.05),rgba(255,200,100,0.3)); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; opacity:0.6; transition:opacity 0.3s ease; }
+        .othermods-list .mod-order-item:hover::before { opacity:1; }
+        .othermods-list .mod-order-item:hover { background:rgba(20,48,58,0.8); transform:scale(1.01); }
+        .othermods-list .mod-order-item.top-label { background:rgba(45,198,83,0.08); color:#8affaa; font-weight:700; font-size:0.8rem; letter-spacing:4px; padding:10px 20px; border-radius:12px; }
+        .othermods-list .mod-order-item.top-label::before { background:linear-gradient(135deg,rgba(45,198,83,0.4),rgba(45,198,83,0.1),rgba(45,198,83,0.4)); }
+        .othermods-list .mod-order-item.bottom-label { background:rgba(220,53,69,0.08); color:#ff8a9e; font-weight:700; font-size:0.8rem; letter-spacing:4px; padding:10px 20px; border-radius:12px; }
+        .othermods-list .mod-order-item.bottom-label::before { background:linear-gradient(135deg,rgba(220,53,69,0.4),rgba(220,53,69,0.1),rgba(220,53,69,0.4)); }
+        .othermods-list .mod-order-item.highlight-item { color:#ffcf7a; font-weight:600; background:rgba(255,200,100,0.06); }
+        .othermods-list .mod-order-item.highlight-item::before { background:linear-gradient(135deg,rgba(255,200,100,0.5),rgba(255,200,100,0.1),rgba(255,200,100,0.5)); opacity:0.8; }
+        .othermods-list .mod-order-item .item-icon { margin-right:12px; opacity:0.4; font-size:0.9rem; color:#8aa8b0; }
+        .othermods-list .mod-order-item.highlight-item .item-icon { opacity:0.8; color:#ffcf7a; }
+        .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:4px 0; }
 
-        /* ===== 下载存档 ===== */
-        .download-card .download-icon-wrap {
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .download-card .download-icon-wrap i {
-            font-size: 2.8rem;
-            color: #4cd964;
-            text-shadow: 0 0 24px rgba(76, 217, 100, 0.2);
+        /* ===== 下载存档（增强可读性） ===== */
+        .download-card {
+            background:rgba(16,34,40,0.92);
+            border-left-color:#4cd964;
         }
         .download-card .download-card-title {
-            text-align: center;
-            color: #ffe9b6;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            font-weight: 700;
+            text-align:center;
+            color:#FFE9B6;
+            margin-bottom:22px;
+            font-size:1.5rem;
+            font-weight:700;
+            text-shadow:0 2px 8px rgba(0,0,0,0.5);
         }
-        .save-group {
-            margin-bottom: 18px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(76, 217, 100, 0.1);
+        .download-card .download-icon-wrap {
+            text-align:center;
+            margin-bottom:10px;
         }
-        .save-group-header {
-            background: linear-gradient(135deg, #1a4a3a, #0f3328);
-            padding: 14px 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: 0.2s;
+        .download-card .download-icon-wrap i {
+            font-size:3rem;
+            color:#4cd964;
+            text-shadow:0 0 20px rgba(76,217,100,0.3);
         }
-        .save-group-header:hover {
-            background: linear-gradient(135deg, #2a6a52, #1a4a3a);
+        .save-group { 
+            margin-bottom:24px; 
+            background:rgba(0,0,0,0.35); 
+            border-radius:28px; 
+            overflow:hidden; 
+            border:1px solid rgba(76,217,100,0.2);
         }
-        .save-group-title {
-            font-weight: 800;
-            color: #ffe9b6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.05rem;
+        .save-group-header { 
+            background:linear-gradient(135deg,#1a4a3a,#0f3328); 
+            padding:16px 24px; 
+            cursor:pointer; 
+            display:flex; 
+            align-items:center; 
+            justify-content:space-between; 
+            transition:background 0.2s; 
         }
-        .save-group-title i {
-            color: #4cd964;
+        .save-group-header:hover { 
+            background:linear-gradient(135deg,#2a6a52,#1a4a3a); 
         }
-        .group-toggle-icon {
-            color: #ffcf7a;
-            transition: transform 0.2s;
+        .save-group-title { 
+            font-size:1.2rem; 
+            font-weight:800; 
+            color:#FFE9B6; 
+            display:flex; 
+            align-items:center; 
+            gap:12px; 
+            text-shadow:0 1px 4px rgba(0,0,0,0.4);
         }
-        .save-group-header.collapsed .group-toggle-icon {
-            transform: rotate(-90deg);
+        .save-group-title i { 
+            color:#4cd964; 
+            font-size:1.2rem; 
         }
-        .save-subversions {
-            padding: 14px 22px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: rgba(8, 20, 24, 0.3);
+        .group-toggle-icon { 
+            color:#ffcf7a; 
+            transition:transform 0.2s; 
+            font-size:1rem; 
         }
-        .save-subversions.collapsed {
-            display: none;
+        .save-group-header.collapsed .group-toggle-icon { 
+            transform:rotate(-90deg); 
         }
-        .save-version-btn {
-            background: linear-gradient(135deg, #2a6a52, #1a4a3a);
-            border: 1px solid rgba(76, 217, 100, 0.25);
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #d4ffd4;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+        .save-subversions { 
+            padding:18px 24px; 
+            display:flex; 
+            flex-wrap:wrap; 
+            gap:12px; 
+            background:rgba(8,20,24,0.5); 
         }
-        .save-version-btn i {
-            color: #4cd964;
-            font-size: 0.8rem;
+        .save-subversions.collapsed { 
+            display:none; 
         }
-        .save-version-btn:hover {
-            background: #3a8a72;
-            transform: translateY(-2px);
-            border-color: #7eff9e;
+        .save-version-btn { 
+            background:linear-gradient(135deg,#2a6a52,#1a4a3a); 
+            border:1px solid rgba(76,217,100,0.4); 
+            border-radius:40px; 
+            padding:10px 24px; 
+            font-size:0.95rem; 
+            font-weight:700; 
+            color:#D4FFD4; 
+            cursor:pointer; 
+            transition:all 0.2s; 
+            display:inline-flex; 
+            align-items:center; 
+            gap:8px; 
+            text-shadow:0 1px 3px rgba(0,0,0,0.3);
         }
-        .save-path {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 14px 22px;
-            border-radius: 16px;
-            margin-top: 18px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 200, 100, 0.06);
+        .save-version-btn i { 
+            font-size:0.85rem; 
+            color:#4cd964; 
+        }
+        .save-version-btn:hover { 
+            background:#3a8a72; 
+            transform:translateY(-2px); 
+            border-color:#7eff9e; 
+            box-shadow:0 4px 16px rgba(76,217,100,0.2);
+        }
+        .save-path { 
+            background:rgba(0,0,0,0.45); 
+            padding:16px 22px; 
+            border-radius:16px; 
+            margin-top:22px; 
+            font-size:0.95rem; 
+            border:1px solid rgba(255,200,100,0.1);
         }
         .save-path .path-label {
-            color: #8aa8b0;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
+            color:#8aa8b0;
+            font-weight:600;
+            display:block;
+            margin-bottom:4px;
         }
-        .save-path code {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 3px 14px;
-            border-radius: 8px;
-            color: #ffcf7a;
-            font-size: 0.85rem;
-            display: inline-block;
-            border: 1px solid rgba(255, 200, 100, 0.06);
+        .save-path code { 
+            background:rgba(0,0,0,0.5); 
+            padding:4px 14px; 
+            border-radius:8px; 
+            color:#ffcf7a; 
+            font-size:0.9rem; 
+            display:inline-block;
+            font-family:'Inter',monospace;
+            word-break:break-all;
+            border:1px solid rgba(255,200,100,0.1);
         }
-        .feature-highlight {
-            background: rgba(230, 160, 23, 0.08);
-            border-radius: 16px;
-            padding: 14px 20px;
-            margin-top: 16px;
-            border-left: 3px solid #e6a017;
-            color: #fef7e0;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .feature-highlight { 
+            background:rgba(230,160,23,0.12); 
+            border-radius:16px; 
+            padding:14px 20px; 
+            margin-top:18px; 
+            border-left:3px solid #e6a017; 
+            color:#FEF7E0; 
+            font-size:0.95rem; 
+            line-height:1.6;
+        }
+        .feature-highlight strong {
+            color:#ffcf7a;
         }
 
         /* ===== 返回顶部 ===== */
-        .back-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e6a017, #c4870f);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            color: #121f23;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 16px rgba(230, 160, 23, 0.3);
-            transition: 0.3s;
-            z-index: 999;
-            backdrop-filter: blur(4px);
-        }
-        .back-top:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 8px 24px rgba(230, 160, 23, 0.4);
-        }
-        .back-top.visible {
-            display: flex;
-        }
+        .back-to-top { position:fixed; bottom:36px; right:36px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#e6a017,#c4870f); border:2px solid rgba(255,215,0,0.5); color:#121f23; font-size:1.3rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(230,160,23,0.4); transition:all 0.3s ease; z-index:999; backdrop-filter:blur(4px); }
+        .back-to-top:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 8px 24px rgba(230,160,23,0.5); background:linear-gradient(135deg,#f5b82e,#d49214); }
+        .back-to-top.visible { display:flex; }
+
+        .highlight { color:#FFD966 !important; font-weight:700; }
 
         /* ===== 响应式 ===== */
-        @media (max-width:1024px) {
-            .sidebar {
-                width: 290px;
-            }
-            .main {
-                padding: 16px 24px 24px 24px;
-            }
+        @media (max-width:1024px){
+            .sidebar-nav { width:320px; }
+            .content-main { padding:16px 24px 28px 24px; }
+            .mod-thumbnail { width:60px; height:60px; }
         }
-        @media (max-width:880px) {
-            .sidebar {
-                width: 250px;
-                padding: 14px 14px 20px 14px;
-            }
-            .header {
-                padding: 10px 20px;
-            }
-            .brand-title {
-                font-size: 1.2rem;
-            }
-            .main {
-                padding: 14px 18px 20px 18px;
-            }
-            .mod-thumb {
-                width: 72px;
-                height: 48px;
-            }
-            .mod-card-inner {
-                padding: 14px 16px;
-                gap: 12px;
-            }
-            .mod-status-badge {
-                width: 70px;
-            }
-            .install-step-content {
-                padding-left: 0;
-            }
-            .othermods-list {
-                max-width: 380px;
-            }
+        @media (max-width:880px){
+            .sidebar-nav { width:280px; }
+            .global-header { padding:12px 20px; flex-direction:column; align-items:center; gap:10px; }
+            .global-header .brand-area .main-title { font-size:1.4rem; }
+            .global-header .brand-area .main-title i { font-size:1.4rem; }
+            .global-header .header-controls { justify-content:center; }
+            .content-main { padding:14px 18px 22px 18px; }
+            .mod-card-inner { flex-direction:column; align-items:stretch; }
+            .mod-status-area { width:auto; }
+            .mod-action-area { align-self:flex-end; }
+            .mod-thumbnail { width:56px; height:56px; }
+            .install-step-content { padding-left:0; }
+            .othermods-list { max-width:400px; }
+            .content-main .content-header h2 { font-size:1.3rem; }
         }
-        @media (max-width:700px) {
-            .sidebar {
-                width: 100%;
-                max-height: 40vh;
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-                padding: 12px 14px 16px 14px;
-            }
-            .body {
-                flex-direction: column;
-            }
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-                padding: 10px 16px;
-            }
-            .header-left {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .header-right {
-                justify-content: center;
-            }
-            .brand-sub {
-                font-size: 0.65rem;
-                padding: 2px 12px;
-            }
-            .brand-title {
-                font-size: 1.1rem;
-            }
-            .main {
-                padding: 10px 14px 16px 14px;
-            }
-            .main-header h2 {
-                font-size: 1.15rem;
-            }
-            .filter-bar {
-                border-radius: 30px;
-                padding: 4px 12px;
-            }
-            .filter-chip {
-                font-size: 0.65rem;
-                padding: 3px 12px;
-            }
-            .mod-thumb {
-                width: 56px;
-                height: 40px;
-            }
-            .mod-name {
-                font-size: 0.9rem;
-            }
-            .mod-status-badge {
-                width: 60px;
-            }
-            .status-badge {
-                font-size: 0.6rem;
-                padding: 2px 10px;
-            }
-            .download-btn-mod {
-                font-size: 0.7rem;
-                padding: 6px 14px;
-            }
-            .install-step {
-                padding: 14px 16px;
-            }
-            .install-step-number {
-                width: 30px;
-                height: 30px;
-                font-size: 0.9rem;
-            }
-            .othermods-list .mod-order-item {
-                font-size: 0.8rem;
-                padding: 8px 14px;
-            }
-            .back-top {
-                bottom: 16px;
-                right: 16px;
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            .save-group-title {
-                font-size: 0.9rem;
-            }
-            .save-version-btn {
-                font-size: 0.75rem;
-                padding: 6px 14px;
-            }
-            .download-card .download-card-title {
-                font-size: 1.1rem;
-            }
+        @media (max-width:700px){
+            .sidebar-nav { width:100%; max-height:45vh; border-right:none; border-bottom:1px solid rgba(255,215,0,0.2); }
+            .app-body { flex-direction:column; }
+            .global-header { padding:10px 14px; min-height:auto; }
+            .global-header .brand-area .main-title { font-size:1.2rem; }
+            .global-header .brand-area .main-title i { font-size:1.2rem; }
+            .global-header .brand-area .subtitle-row .author-badge,
+            .global-header .brand-area .subtitle-row .date-badge { font-size:0.7rem; padding:3px 12px; }
+            .global-header .header-controls .lang-dropdown-btn,
+            .global-header .header-controls .version-dropdown-btn { font-size:0.75rem; padding:4px 14px; height:32px; min-width:60px; }
+            .content-main { padding:10px 14px 16px 14px; }
+            .filter-bar { border-radius:24px; padding:6px 12px; }
+            .install-step { padding:16px 18px; }
+            .install-step-number { width:34px; height:34px; font-size:1rem; }
+            .othermods-list .mod-order-item { padding:10px 14px; font-size:0.9rem; border-radius:12px; }
+            .othermods-list { max-width:340px; }
+            .back-to-top { bottom:16px; right:16px; width:44px; height:44px; font-size:1.1rem; }
+            .nav-item, .changelog-toggle-btn { padding:12px 16px; font-size:0.9rem; min-height:48px; gap:12px; }
+            .nav-item i, .changelog-toggle-btn i { width:24px; font-size:1rem; }
+            .content-main .content-header h2 { font-size:1.15rem; }
+            .mod-title { font-size:1rem; }
+            .download-button { padding:8px 18px; font-size:0.8rem; }
+            .mod-card-inner { padding:14px 16px; }
+            .mod-thumbnail { width:48px; height:48px; }
+            .mod-thumbnail .no-image { font-size:0.45rem; }
+            .mod-thumbnail .no-image i { font-size:1rem; }
+            .status-badge-large { font-size:0.7rem; padding:4px 12px; }
+            .download-card .download-card-title { font-size:1.2rem; }
+            .save-group-title { font-size:1rem; }
+            .save-version-btn { font-size:0.85rem; padding:8px 18px; }
         }
-        @media (max-width:480px) {
-            .sidebar {
-                max-height: 32vh;
-            }
-            .brand-title {
-                font-size: 0.95rem;
-            }
-            .brand-icon {
-                font-size: 1.3rem;
-            }
-            .brand-sub {
-                font-size: 0.55rem;
-                padding: 1px 10px;
-            }
-            .dropdown-btn {
-                font-size: 0.7rem;
-                padding: 4px 12px;
-                height: 30px;
-            }
-            .main-header h2 {
-                font-size: 1rem;
-            }
-            .mod-thumb {
-                width: 44px;
-                height: 32px;
-                border-radius: 8px;
-            }
-            .mod-name {
-                font-size: 0.8rem;
-            }
-            .mod-file {
-                font-size: 0.6rem;
-                padding: 1px 10px;
-            }
-            .filter-label {
-                font-size: 0.65rem;
-                padding: 2px 10px;
-            }
-            .filter-chip {
-                font-size: 0.6rem;
-                padding: 2px 10px;
-            }
-            .download-btn-mod {
-                font-size: 0.65rem;
-                padding: 4px 12px;
-            }
-            .mod-card-inner {
-                padding: 10px 12px;
-                gap: 8px;
-            }
-            .install-step-content {
-                font-size: 0.8rem;
-            }
-            .install-step-title {
-                font-size: 0.85rem;
-            }
-            .othermods-list .mod-order-item {
-                font-size: 0.7rem;
-                padding: 6px 12px;
-            }
-            .save-path code {
-                font-size: 0.7rem;
-                padding: 2px 10px;
-            }
-            .feature-highlight {
-                font-size: 0.8rem;
-            }
+        @media (max-width:480px){
+            .sidebar-nav { max-height:35vh; }
+            .global-header .brand-area .main-title { font-size:1rem; }
+            .global-header .brand-area .main-title i { font-size:1rem; }
+            .global-header .brand-area .subtitle-row { gap:4px 8px; }
+            .global-header .brand-area .subtitle-row .author-badge,
+            .global-header .brand-area .subtitle-row .date-badge { font-size:0.6rem; padding:2px 10px; }
+            .global-header .header-controls .lang-dropdown-btn,
+            .global-header .header-controls .version-dropdown-btn { font-size:0.65rem; padding:3px 10px; height:28px; min-width:50px; }
+            .content-main .content-header h2 { font-size:1rem; }
+            .content-main .content-header h2 i { font-size:0.9rem; }
+            .mod-title { font-size:0.85rem; }
+            .mod-thumbnail { width:40px; height:40px; border-radius:8px; }
+            .mod-thumbnail .no-image { font-size:0.4rem; }
+            .mod-thumbnail .no-image i { font-size:0.8rem; }
+            .filter-chip { font-size:0.65rem; padding:4px 12px; }
+            .filter-label { font-size:0.75rem; padding:4px 12px; }
+            .download-button { padding:6px 14px; font-size:0.7rem; }
+            .install-step-title { font-size:0.95rem; }
+            .install-step-content { font-size:0.85rem; }
+            .othermods-list .mod-order-item { font-size:0.8rem; padding:8px 12px; }
+            .download-card .download-card-title { font-size:1rem; }
+            .save-group-title { font-size:0.9rem; }
+            .save-version-btn { font-size:0.75rem; padding:6px 14px; }
+            .save-path code { font-size:0.75rem; padding:3px 10px; }
+            .feature-highlight { font-size:0.85rem; }
         }
     </style>
 </head>
 <body>
-    <div class="app">
-        <!-- ===== 头部 ===== -->
-        <header class="header">
-            <div class="header-left">
-                <div class="brand">
-                    <i class="fas fa-globe-americas brand-icon"></i>
-                    <span class="brand-title">欧卡2 · 全球组合</span>
-                </div>
-                <div class="brand-sub">
-                    <i class="fas fa-feather-alt"></i> <span data-i18n="author">瑆泽</span>
-                    <i class="far fa-calendar-alt" style="margin-left:8px;"></i>
-                    <span id="dateDisplay"></span>
-                </div>
+<div class="app-wrapper">
+    <!-- ===== 顶部标题栏 ===== -->
+    <header class="global-header">
+        <div class="brand-area">
+            <div class="main-title">
+                <i class="fas fa-globe-americas"></i>
+                <span data-i18n="brand_title">欧洲卡车模拟2 · 全球组合地图</span>
             </div>
-            <div class="header-right">
-                <div class="dropdown-wrap" id="versionDropdownWrapper">
-                    <button class="dropdown-btn" id="versionDropdownBtn">
-                        <span id="currentVersionLabel">v1.59</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu" id="versionDropdownMenu"></div>
-                </div>
-                <div class="dropdown-wrap" id="langDropdownWrapper">
-                    <button class="dropdown-btn" id="langDropdownBtn">
-                        <span id="currentLangLabel">中文</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu" id="langDropdownMenu">
-                        <button class="opt active-opt" data-lang="zh">中文</button>
-                        <button class="opt" data-lang="en">EN</button>
-                        <button class="opt" data-lang="ru">RU</button>
-                    </div>
-                </div>
+            <div class="subtitle-row">
+                <span class="author-badge"><i class="fas fa-feather-alt"></i> <span data-i18n="author">瑆泽</span></span>
+                <span class="date-badge" id="globalDateBadge">
+                    <i class="far fa-calendar-alt"></i> <span id="dateDisplay"></span>
+                </span>
             </div>
-        </header>
+        </div>
+        <div class="header-controls">
+            <span class="version-dropdown-wrapper" id="versionDropdownWrapper">
+                <button class="version-dropdown-btn" id="versionDropdownBtn">
+                    <span id="currentVersionLabel">v1.59</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="version-dropdown-menu" id="versionDropdownMenu">
+                    <!-- 由 JavaScript 动态生成 -->
+                </div>
+            </span>
+            <span class="lang-dropdown-wrapper" id="langDropdownWrapper">
+                <button class="lang-dropdown-btn" id="langDropdownBtn">
+                    <span id="currentLangLabel">中文</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown-menu" id="langDropdownMenu">
+                    <button class="lang-opt active-opt" data-lang="zh">中文</button>
+                    <button class="lang-opt" data-lang="en">EN</button>
+                    <button class="lang-opt" data-lang="ru">RU</button>
+                </div>
+            </span>
+        </div>
+    </header>
 
-        <!-- ===== 主体 ===== -->
-        <div class="body">
-            <!-- 侧边栏 -->
-            <nav class="sidebar" id="sidebarNav">
-                <div class="changelog-toggle">
-                    <button class="nav-btn" id="changelogToggleBtn">
+    <!-- ===== 主体 ===== -->
+    <div class="app-body">
+        <nav class="sidebar-nav" id="sidebarNav">
+            <div class="nav-menu">
+                <div class="changelog-sidebar-wrapper">
+                    <div class="changelog-toggle-btn" id="changelogToggleBtn">
                         <i class="fas fa-history"></i>
                         <span data-i18n="nav_changelog">更新日志</span>
                         <span class="toggle-arrow"><i class="fas fa-chevron-down"></i></span>
-                    </button>
-                    <div class="changelog-body" id="changelogBody">
-                        <div class="changelog-inner" id="changelogInner"></div>
+                    </div>
+                    <div class="changelog-sidebar-content" id="changelogSidebarContent">
+                        <div class="changelog-sidebar-inner" id="changelogSidebarInner"></div>
                     </div>
                 </div>
-
-                <button class="nav-btn active" data-nav="loadorder">
+                <button class="nav-item active" data-nav="loadorder">
                     <i class="fas fa-list-ol"></i>
                     <span data-i18n="nav_loadorder">加载顺序</span>
-                    <span id="navStatsBadge" class="badge-stats"><i class="fas fa-cubes"></i> <strong>0</strong></span>
+                    <span id="navStatsBadge" class="nav-stats-badge"><i class="fas fa-cubes"></i> <strong>0</strong></span>
                 </button>
-                <button class="nav-btn" data-nav="install">
+                <button class="nav-item" data-nav="install">
                     <i class="fas fa-download"></i>
                     <span data-i18n="nav_install">安装指南</span>
                 </button>
-                <button class="nav-btn" data-nav="optimize">
+                <button class="nav-item" data-nav="optimize">
                     <i class="fas fa-tachometer-alt"></i>
                     <span data-i18n="nav_optimize">优化设置</span>
                 </button>
-                <button class="nav-btn" data-nav="othermods">
+                <button class="nav-item" data-nav="othermods">
                     <i class="fas fa-layer-group"></i>
-                    <span data-i18n="nav_othermods">其他模组顺序</span>
+                    <span data-i18n="nav_othermods">其他模组加载顺序</span>
                 </button>
-
-                <div class="nav-divider"></div>
-
-                <button class="nav-btn download-btn" data-nav="downloadsave">
+            </div>
+            <div class="nav-menu-bottom">
+                <button class="nav-item download-btn" data-nav="downloadsave">
                     <i class="fas fa-cloud-download-alt"></i>
                     <span data-i18n="nav_downloadsave">下载存档</span>
                 </button>
-            </nav>
+            </div>
+        </nav>
 
-            <!-- 主内容 -->
-            <main class="main" id="contentMain">
-                <div class="main-header">
-                    <h2 id="panelTitle"><i class="fas fa-list-ol"></i> <span data-i18n="panel_loadorder">推荐加载顺序</span></h2>
+        <main class="content-main" id="contentMain">
+            <div class="content-header">
+                <h2 id="panelTitle"><i class="fas fa-list-ol"></i> <span data-i18n="panel_loadorder">推荐加载顺序</span></h2>
+            </div>
+            <div id="dynamicContent" class="dynamic-area">
+                <div class="no-mod-message" id="loadingIndicator">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                    正在加载数据...
                 </div>
-                <div id="dynamicContent" class="dynamic-area">
-                    <div class="no-mod-message" id="loadingIndicator">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                        正在加载数据...
-                    </div>
-                </div>
-                <footer class="main-footer">
-                    <span data-i18n="footer_tip">💡 推荐严格遵守「加载顺序」从上到下激活模组，道路连接补丁与修复包置于列表底部，确保全球地图稳定运行。</span>
-                    <br>
-                    <span data-i18n="footer_jump">✨ 点击「新增」或「移动」状态模组的名称，自动跳转并高亮其在完整列表中的位置（高亮持续3秒）</span>
-                </footer>
-            </main>
-        </div>
+            </div>
+            <footer>
+                <span data-i18n="footer_tip">💡 推荐严格遵守「加载顺序」从上到下激活模组，道路连接补丁与修复包置于列表底部，确保全球地图稳定运行。</span>
+                <br>
+                <span data-i18n="footer_jump">✨ 点击「新增」或「移动」状态模组的名称，自动跳转并高亮其在完整列表中的位置（高亮持续3秒）</span>
+            </footer>
+        </main>
     </div>
+</div>
 
-    <button class="back-top" id="backToTop" aria-label="返回顶部">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+<button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <i class="fas fa-chevron-up"></i>
+</button>
 
-    <script>
-        // ================================================================
-        //  全局状态
-        // ================================================================
-        let currentLang = localStorage.getItem('ets2_lang') || 'zh';
-        let currentFilter = 'all';
-        let currentNav = 'loadorder';
-        let currentVersion = localStorage.getItem('ets2_version') || '1.59';
-        let pendingJumpModId = null;
-        let pendingScrollRestore = null;
-        let isJumping = false;
+<script>
+    // ================================================================
+    //  全局状态
+    // ================================================================
+    let currentLang = localStorage.getItem('ets2_lang') || 'zh';
+    let currentFilter = 'all';
+    let currentNav = 'loadorder';
+    let currentVersion = localStorage.getItem('ets2_version') || '1.59';
+    let pendingJumpModId = null;
+    // 存储待恢复的滚动位置
+    let pendingScrollRestore = null;
+    // 标记是否正在跳转中
+    let isJumping = false;
 
-        let VERSION_DATA = {};
-        let i18n = {};
+    // ================================================================
+    //  数据容器
+    // ================================================================
+    let VERSION_DATA = {};
+    let i18n = {};
 
-        // ================================================================
-        //  工具
-        // ================================================================
-        function t(key) { return i18n[currentLang]?.[key] || key; }
+    // ================================================================
+    //  下拉菜单管理
+    // ================================================================
+    const langDropdownBtn = document.getElementById('langDropdownBtn');
+    const langDropdownMenu = document.getElementById('langDropdownMenu');
+    const versionDropdownBtn = document.getElementById('versionDropdownBtn');
+    const versionDropdownMenu = document.getElementById('versionDropdownMenu');
 
-        function getCurrentMods() { return VERSION_DATA[currentVersion]?.mods || []; }
+    function closeAllDropdowns() {
+        langDropdownMenu.classList.remove('open');
+        langDropdownBtn.classList.remove('open');
+        versionDropdownMenu.classList.remove('open');
+        versionDropdownBtn.classList.remove('open');
+    }
 
-        function getCurrentSaveGroups() { return VERSION_DATA[currentVersion]?.saveGroups || []; }
-
-        function getCurrentUpdateDate() { return VERSION_DATA[currentVersion]?.updateDate || '2026.06.18'; }
-
-        function getActiveModsCount(version) {
-            const data = VERSION_DATA[version];
-            if (!data) return 0;
-            return data.mods.filter(mod => mod.status !== 'deleted').length;
+    function toggleDropdown(menu, btn) {
+        const isOpen = menu.classList.contains('open');
+        closeAllDropdowns();
+        if (!isOpen) {
+            menu.classList.add('open');
+            btn.classList.add('open');
         }
+    }
 
-        function getModName(mod) { return mod.name; }
+    // ================================================================
+    //  工具函数
+    // ================================================================
+    function t(key) {
+        return i18n[currentLang]?.[key] || key;
+    }
 
-        function getModImage(mod) {
-            if (!mod.imageUrl) return null;
-            if (mod.imageUrl.startsWith('http://') || mod.imageUrl.startsWith('https://') ||
-                mod.imageUrl.startsWith('data/') || mod.imageUrl.startsWith('/')) {
-                return mod.imageUrl;
-            }
-            return 'data/images/' + mod.imageUrl;
+    function getCurrentMods() {
+        return VERSION_DATA[currentVersion]?.mods || [];
+    }
+
+    function getCurrentSaveGroups() {
+        return VERSION_DATA[currentVersion]?.saveGroups || [];
+    }
+
+    function getCurrentUpdateDate() {
+        return VERSION_DATA[currentVersion]?.updateDate || '2026.06.18';
+    }
+
+    function getActiveModsCount(version) {
+        const data = VERSION_DATA[version];
+        if (!data) return 0;
+        return data.mods.filter(mod => mod.status !== 'deleted').length;
+    }
+
+    function getModName(mod) { return mod.name; }
+
+    function getModImage(mod) {
+        if (!mod.imageUrl) return null;
+        if (mod.imageUrl.startsWith('http://') || 
+            mod.imageUrl.startsWith('https://') || 
+            mod.imageUrl.startsWith('data/') ||
+            mod.imageUrl.startsWith('/')) {
+            return mod.imageUrl;
         }
+        return 'data/images/' + mod.imageUrl;
+    }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.innerText = msg;
+        toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1f2c;color:#ffdd99;padding:10px 20px;border-radius:40px;z-index:9999;font-size:0.8rem;border-left:4px solid #4cd964;box-shadow:0 4px 12px black;pointer-events:none;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+
+    function handleModDownload(modId, modName, downloadUrl) {
+        if (!downloadUrl || downloadUrl.trim() === "") {
+            alert(`“${modName}” 暂无可用下载链接。`);
+            return;
         }
+        window.open(downloadUrl, '_blank');
+        showToast(`正在打开: ${modName}`);
+    }
 
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.innerText = msg;
-            toast.style.cssText =
-                'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1f2c;color:#ffdd99;padding:10px 20px;border-radius:40px;z-index:9999;font-size:0.8rem;border-left:4px solid #4cd964;box-shadow:0 4px 12px black;pointer-events:none;';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-        }
-
-        function handleModDownload(modId, modName, downloadUrl) {
-            if (!downloadUrl || downloadUrl.trim() === "") {
-                alert(`“${modName}” 暂无可用下载链接。`);
-                return;
-            }
-            window.open(downloadUrl, '_blank');
-            showToast(`正在打开: ${modName}`);
-        }
-
-        // ================================================================
-        //  渲染版本选项
-        // ================================================================
-        function renderVersionOptions() {
-            const menu = document.getElementById('versionDropdownMenu');
-            const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
-            let html = '';
-            versions.forEach((v, index) => {
-                const isActive = v === currentVersion;
-                const isLatest = index === 0;
-                const badge = isLatest ? `<span class="opt-badge">${t('badge_latest')}</span>` : '';
-                html +=
-                    `<button class="opt ${isActive ? 'active-opt' : ''}" data-version="${v}">${v} ${badge}</button>`;
-            });
-            menu.innerHTML = html;
-            document.querySelectorAll('#versionDropdownMenu .opt').forEach(opt => {
-                opt.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const ver = opt.getAttribute('data-version');
-                    if (ver === currentVersion) { closeAllDropdowns(); return; }
-                    currentVersion = ver;
-                    localStorage.setItem('ets2_version', ver);
-                    currentFilter = 'all';
-                    renderPage(currentNav);
-                    updateNavStatsBadge();
-                    updateAllDates();
+    // ================================================================
+    //  动态渲染版本选项
+    // ================================================================
+    function renderVersionOptions() {
+        const menu = document.getElementById('versionDropdownMenu');
+        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+        
+        let html = '';
+        versions.forEach((v, index) => {
+            const isActive = v === currentVersion;
+            const isLatest = index === 0;
+            const badge = isLatest ? `<span class="opt-badge">${t('badge_latest')}</span>` : '';
+            html += `<button class="version-opt ${isActive ? 'active-opt' : ''}" data-version="${v}">${v} ${badge}</button>`;
+        });
+        
+        menu.innerHTML = html;
+        
+        // 绑定点击事件
+        document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const ver = opt.getAttribute('data-version');
+                if (ver === currentVersion) {
                     closeAllDropdowns();
-                });
+                    return;
+                }
+                currentVersion = ver;
+                localStorage.setItem('ets2_version', ver);
+                currentFilter = 'all';
+                renderPage(currentNav);
+                updateNavStatsBadge();
+                updateAllDates();
+                closeAllDropdowns();
+            });
+        });
+    }
+
+    // ================================================================
+    //  跳转函数 - 保持更新日志打开并恢复滚动位置
+    // ================================================================
+    function jumpToModFromChangelog(modId, savedScrollPos, savedCatScrollPositions) {
+        if (isJumping) return;
+        isJumping = true;
+        
+        // 保存待恢复的滚动位置
+        pendingScrollRestore = {
+            scrollPos: savedScrollPos || 0,
+            catScrollPositions: savedCatScrollPositions || {}
+        };
+        
+        // 先确保更新日志保持打开状态
+        const changelogContent = document.getElementById('changelogSidebarContent');
+        const toggleBtn = document.getElementById('changelogToggleBtn');
+        if (changelogContent) {
+            // 添加 no-transition 类防止闪烁
+            changelogContent.classList.add('no-transition');
+            if (!changelogContent.classList.contains('open')) {
+                changelogContent.classList.add('open');
+                if (toggleBtn) toggleBtn.classList.add('open');
+            }
+        }
+        
+        // 切换到加载顺序页面
+        if (currentNav !== 'loadorder') {
+            currentNav = 'loadorder';
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-nav') === 'loadorder');
             });
         }
-
-        // ================================================================
-        //  跳转函数
-        // ================================================================
-        function jumpToModFromChangelog(modId, savedScrollPos, savedCatScrollPositions) {
-            if (isJumping) return;
-            isJumping = true;
-            pendingScrollRestore = { scrollPos: savedScrollPos || 0, catScrollPositions: savedCatScrollPositions || {} };
-
-            const clBody = document.getElementById('changelogBody');
-            const toggleBtn = document.getElementById('changelogToggleBtn');
-            if (clBody) {
-                clBody.classList.add('no-transition');
-                if (!clBody.classList.contains('open')) {
-                    clBody.classList.add('open');
-                    if (toggleBtn) toggleBtn.classList.add('open');
-                }
-            }
-
-            if (currentNav !== 'loadorder') {
-                currentNav = 'loadorder';
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.getAttribute('data-nav') === 'loadorder');
-                });
-            }
-            currentFilter = 'all';
-            renderPage('loadorder');
-
-            setTimeout(() => { performScrollToMod(modId); }, 200);
-            setTimeout(() => {
-                const clBody2 = document.getElementById('changelogBody');
-                if (clBody2) {
-                    renderSidebarChangelog();
-                    if (pendingScrollRestore) {
-                        const restore = pendingScrollRestore;
-                        if (restore.scrollPos > 0) clBody2.scrollTop = restore.scrollPos;
-                        if (restore.catScrollPositions) {
-                            Object.keys(restore.catScrollPositions).forEach(key => {
-                                const el = document.getElementById(`cl-items-${key}`);
-                                if (el) el.scrollTop = restore.catScrollPositions[key] || 0;
-                            });
-                        }
-                        pendingScrollRestore = null;
+        currentFilter = 'all';
+        renderPage('loadorder');
+        
+        // 跳转到目标模组
+        setTimeout(() => {
+            performScrollToMod(modId);
+        }, 200);
+        
+        // 恢复滚动位置
+        setTimeout(() => {
+            const clContent = document.getElementById('changelogSidebarContent');
+            if (clContent) {
+                // 重新渲染更新日志
+                renderSidebarChangelog();
+                
+                // 恢复滚动位置
+                if (pendingScrollRestore) {
+                    const restore = pendingScrollRestore;
+                    if (restore.scrollPos > 0) {
+                        clContent.scrollTop = restore.scrollPos;
                     }
-                    setTimeout(() => { clBody2.classList.remove('no-transition'); }, 50);
-                    isJumping = false;
-                }
-            }, 350);
-        }
-
-        function performScrollToMod(modId) {
-            const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
-            const main = document.getElementById('contentMain');
-            if (targetCard && main) {
-                const cardRect = targetCard.getBoundingClientRect();
-                const containerRect = main.getBoundingClientRect();
-                const scrollOffset = cardRect.top - containerRect.top + main.scrollTop - 80;
-                main.scrollTo({ top: scrollOffset, behavior: 'smooth' });
-                targetCard.classList.add('highlight-mod');
-                setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000);
-            } else {
-                showToast('未找到该模组，请检查版本是否匹配');
-            }
-        }
-
-        // ================================================================
-        //  更新显示
-        // ================================================================
-        function updateAllDates() {
-            const dateDisplay = document.getElementById('dateDisplay');
-            if (dateDisplay) dateDisplay.textContent = t('update_date_label') + getCurrentUpdateDate();
-            const labelEl = document.getElementById('currentVersionLabel');
-            if (labelEl) labelEl.textContent = 'v' + currentVersion;
-
-            const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
-            document.querySelectorAll('#versionDropdownMenu .opt').forEach(opt => {
-                const v = opt.getAttribute('data-version');
-                opt.classList.toggle('active-opt', v === currentVersion);
-                const badge = opt.querySelector('.opt-badge');
-                if (badge) {
-                    const isLatest = v === versions[0];
-                    badge.textContent = isLatest ? t('badge_latest') : '';
-                    badge.style.display = isLatest ? 'inline' : 'none';
-                }
-            });
-            document.querySelectorAll('#langDropdownMenu .opt').forEach(opt => {
-                const l = opt.getAttribute('data-lang');
-                opt.classList.toggle('active-opt', l === currentLang);
-            });
-            const langLabel = document.getElementById('currentLangLabel');
-            if (langLabel) {
-                const langMap = { zh: '中文', en: 'EN', ru: 'RU' };
-                langLabel.textContent = langMap[currentLang] || '中文';
-            }
-        }
-
-        // ================================================================
-        //  侧边栏更新日志
-        // ================================================================
-        function renderSidebarChangelog() {
-            const container = document.getElementById('changelogInner');
-            if (!container) return;
-            const mods = getCurrentMods();
-            const newMods = mods.filter(m => m.status === 'new');
-            const updatedMods = mods.filter(m => m.status === 'updated');
-            const movedMods = mods.filter(m => m.status === 'moved');
-            const deletedMods = mods.filter(m => m.status === 'deleted');
-            const versionLabel = currentVersion;
-            const dateStr = getCurrentUpdateDate();
-
-            let html =
-                `<div class="cl-version-title"><i class="fas fa-tag"></i> ${t('changelog_title').replace('{version}', versionLabel)} <span class="date-sm">${dateStr}</span></div>`;
-
-            const categories = [
-                { key: 'new', label: t('changelog_new'), items: newMods, cls: 'cat-new', icon: 'fa-plus-circle' },
-                { key: 'updated', label: t('changelog_updated'), items: updatedMods, cls: 'cat-updated',
-                    icon: 'fa-sync-alt' },
-                { key: 'moved', label: t('changelog_moved'), items: movedMods, cls: 'cat-moved', icon: 'fa-arrows-alt' },
-                { key: 'deleted', label: t('changelog_deleted'), items: deletedMods, cls: 'cat-deleted',
-                    icon: 'fa-trash-alt' }
-            ];
-
-            categories.forEach(cat => {
-                const shouldExpand = cat.items.length > 0;
-                html += `<div class="cl-cat">`;
-                html +=
-                    `<div class="cl-cat-header ${cat.cls} ${shouldExpand ? '' : 'collapsed'}" data-cl-toggle="${cat.key}">
-                    <i class="fas ${cat.icon}"></i> ${cat.label} (${cat.items.length})
-                    <i class="fas fa-chevron-down cl-toggle"></i>
-                </div>`;
-                html += `<div class="cl-cat-items ${shouldExpand ? '' : 'collapsed'}" id="cl-items-${cat.key}">`;
-                if (cat.items.length === 0) {
-                    html += `<div class="cl-empty">—</div>`;
-                } else {
-                    cat.items.forEach(m => {
-                        html +=
-                            `<div class="cl-item" data-mod-id="${m.id}" data-mod-name="${escapeHtml(getModName(m))}">${escapeHtml(getModName(m))}`;
-                        if (m.fileName) {
-                            html += `<span class="cl-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>`;
-                        }
-                        html += `</div>`;
-                    });
-                }
-                html += `</div></div>`;
-            });
-
-            container.innerHTML = html;
-
-            document.querySelectorAll('[data-cl-toggle]').forEach(toggle => {
-                toggle.onclick = () => {
-                    const key = toggle.getAttribute('data-cl-toggle');
-                    const items = document.getElementById(`cl-items-${key}`);
-                    if (items) { items.classList.toggle('collapsed');
-                        toggle.classList.toggle('collapsed'); }
-                };
-            });
-
-            document.querySelectorAll('.cl-item').forEach(item => {
-                item.onclick = () => {
-                    if (isJumping) return;
-                    const modId = parseInt(item.getAttribute('data-mod-id'));
-                    const modName = item.getAttribute('data-mod-name');
-                    if (modId) {
-                        const sidebarContent = document.getElementById('changelogBody');
-                        const scrollPos = sidebarContent ? sidebarContent.scrollTop : 0;
-                        const catScrollPositions = {};
-                        document.querySelectorAll('.cl-cat-items').forEach(el => {
-                            const parts = el.id.split('-');
-                            const key = parts[parts.length - 1];
-                            if (el.scrollTop > 0) catScrollPositions[key] = el.scrollTop;
+                    // 恢复各分类的滚动位置
+                    if (restore.catScrollPositions) {
+                        Object.keys(restore.catScrollPositions).forEach(key => {
+                            const el = document.getElementById(`cl-items-${key}`);
+                            if (el) {
+                                el.scrollTop = restore.catScrollPositions[key] || 0;
+                            }
                         });
-                        jumpToModFromChangelog(modId, scrollPos, catScrollPositions);
-                        showToast(`跳转到: ${modName}`);
                     }
-                };
-            });
-        }
-
-        // ================================================================
-        //  渲染函数
-        // ================================================================
-        function renderThumbnail(mod) {
-            const imageUrl = getModImage(mod);
-            if (imageUrl) {
-                return `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getModName(mod))}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.no-img').style.display='block';">`;
-            }
-            return `<div class="no-img"><i class="fas fa-image"></i>${t('no_preview')}</div>`;
-        }
-
-        function renderLoadOrder() {
-            const mods = getCurrentMods();
-            const filtered = currentFilter === 'all' ? mods : mods.filter(mod => mod.status === currentFilter);
-            const counts = {
-                all: mods.length,
-                new: mods.filter(m => m.status === 'new').length,
-                updated: mods.filter(m => m.status === 'updated').length,
-                moved: mods.filter(m => m.status === 'moved').length,
-                deleted: mods.filter(m => m.status === 'deleted').length
-            };
-            const filterConfigs = [
-                { key: 'all', icon: 'fa-globe', label: 'filter_all' },
-                { key: 'new', icon: 'fa-plus-circle', label: 'filter_new' },
-                { key: 'updated', icon: 'fa-sync-alt', label: 'filter_updated' },
-                { key: 'moved', icon: 'fa-arrows-alt', label: 'filter_moved' },
-                { key: 'deleted', icon: 'fa-trash-alt', label: 'filter_deleted' }
-            ];
-            let filterButtonsHtml = filterConfigs.map(cfg => {
-                const count = counts[cfg.key] || 0;
-                const isActive = currentFilter === cfg.key;
-                const isZero = count === 0 && cfg.key !== 'all';
-                return `<div class="filter-chip ${isActive ? 'active' : ''} ${isZero ? 'filter-zero' : ''}" data-filter="${cfg.key}" ${isZero ? 'style="cursor:default;"' : ''}>
-                    <i class="fas ${cfg.icon}"></i> ${t(cfg.label)} <span class="filter-count">${count}</span>
-                </div>`;
-            }).join('');
-
-            if (filtered.length === 0) {
-                return `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div>
-                        <div class="no-mod-message"><i class="fas fa-filter"></i> ${t('no_mods')}</div>`;
-            }
-
-            let html =
-                `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div><div class="mods-grid">`;
-            let seqCounter = 0;
-            filtered.forEach(mod => {
-                const isDeleted = mod.status === 'deleted';
-                let statusClass = '',
-                    statusLabel = '',
-                    statusIcon = '';
-                const statusKey = mod.status === 'new' ? 'status_new' : mod.status === 'updated' ? 'status_updated' :
-                    mod.status === 'moved' ? 'status_moved' : mod.status === 'deleted' ? 'status_deleted' :
-                    'status_normal';
-                statusLabel = t(statusKey);
-                switch (mod.status) {
-                    case 'new':
-                        statusClass = 'status-new-badge';
-                        statusIcon = 'fa-plus-circle';
-                        break;
-                    case 'updated':
-                        statusClass = 'status-updated-badge';
-                        statusIcon = 'fa-sync-alt';
-                        break;
-                    case 'moved':
-                        statusClass = 'status-moved-badge';
-                        statusIcon = 'fa-arrows-alt';
-                        break;
-                    case 'deleted':
-                        statusClass = 'status-deleted-badge';
-                        statusIcon = 'fa-trash-alt';
-                        break;
-                    default:
-                        statusClass = 'status-normal-badge';
-                        statusIcon = 'fa-check-circle';
+                    pendingScrollRestore = null;
                 }
-                let seqDisplay = '',
-                    seqClass = 'mod-order';
-                if (!isDeleted) { seqCounter++;
-                    seqDisplay = `#${seqCounter.toString().padStart(2, '0')}`; } else { seqDisplay = '—';
-                    seqClass += ' deleted-order'; }
-                const isClickable = (mod.status === 'new' || mod.status === 'moved') && !isDeleted;
-                const clickAttr = isClickable ? `style="cursor:pointer;" data-mod-id="${mod.id}" data-mod-status="${mod.status}"` :
-                    `style="cursor:default;" data-mod-id="${mod.id}"`;
-                const hasValidUrl = mod.downloadUrl && mod.downloadUrl.trim() !== "";
-                const downloadDisabled = isDeleted || !hasValidUrl;
-                const downloadDataAttr =
-                    `data-mod-id="${mod.id}" data-mod-name="${escapeHtml(getModName(mod))}" data-download-url="${escapeHtml(mod.downloadUrl || '')}"`;
-                const fileHtml = mod.fileName ?
-                    `<div class="mod-file"><i class="fas fa-file-archive"></i> ${t('file_label')}: ${escapeHtml(mod.fileName)}</div>` :
-                    '';
-                const thumbHtml = renderThumbnail(mod);
+                
+                // 移除 no-transition 类
+                setTimeout(() => {
+                    clContent.classList.remove('no-transition');
+                }, 50);
+                
+                isJumping = false;
+            }
+        }, 350);
+    }
 
-                html += `<div class="mod-card ${mod.status}" data-mod-id="${mod.id}"><div class="mod-card-inner">
-                            <div class="mod-thumb">${thumbHtml}</div>
-                            <div class="mod-status-badge"><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span></div>
-                            <div class="mod-content">
-                                <div class="mod-title-line">
-                                    <span class="${seqClass}">${seqDisplay}</span>
-                                    <span class="mod-name" ${clickAttr}>${escapeHtml(getModName(mod))}</span>
-                                </div>
-                                ${fileHtml}
-                            </div>
-                            <div class="mod-action"><button class="download-btn-mod ${downloadDisabled ? 'disabled' : ''}" ${downloadDataAttr} ${downloadDisabled ? 'disabled' : ''}><i class="fas fa-download"></i> ${t('download_btn')}</button></div>
-                        </div></div>`;
-            });
-            html += `</div>`;
-            return html;
+    // ================================================================
+    //  更新显示
+    // ================================================================
+    function updateAllDates() {
+        const dateDisplay = document.getElementById('dateDisplay');
+        if (dateDisplay) {
+            dateDisplay.textContent = t('update_date_label') + getCurrentUpdateDate();
         }
+        const labelEl = document.getElementById('currentVersionLabel');
+        if (labelEl) {
+            labelEl.textContent = 'v' + currentVersion;
+        }
+        
+        // 更新版本选项 - 使用动态渲染
+        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+        document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
+            const v = opt.getAttribute('data-version');
+            opt.classList.toggle('active-opt', v === currentVersion);
+            
+            // 更新最新徽章
+            const badge = opt.querySelector('.opt-badge');
+            if (badge) {
+                const isLatest = v === versions[0];
+                badge.textContent = isLatest ? t('badge_latest') : '';
+                badge.style.display = isLatest ? 'inline' : 'none';
+            }
+        });
+        
+        document.querySelectorAll('.lang-dropdown-menu .lang-opt').forEach(opt => {
+            const l = opt.getAttribute('data-lang');
+            opt.classList.toggle('active-opt', l === currentLang);
+        });
+        
+        const langLabel = document.getElementById('currentLangLabel');
+        if (langLabel) {
+            const langMap = { zh: '中文', en: 'EN', ru: 'RU' };
+            langLabel.textContent = langMap[currentLang] || '中文';
+        }
+    }
 
-        function renderInstall() {
-            return `
-            <div class="info-card">
-                <div class="install-guide">
-                    <div class="install-step"><div class="install-step-header"><div class="install-step-number">1</div><div class="install-step-title">${t('install_step1_title')}</div></div><div class="install-step-content">${t('install_step1_content')}</div></div>
-                    <div class="install-step"><div class="install-step-header"><div class="install-step-number">2</div><div class="install-step-title">${t('install_step2_title')}</div></div><div class="install-step-content">${t('install_step2_content')}</div></div>
-                    <div class="install-step"><div class="install-step-header"><div class="install-step-number">3</div><div class="install-step-title">${t('install_step3_title')}</div></div><div class="install-step-content">${t('install_step3_content')}</div></div>
-                    <div class="install-step"><div class="install-step-header"><div class="install-step-number">4</div><div class="install-step-title">${t('install_step4_title')}</div></div><div class="install-step-content">${t('install_step4_content')}</div></div>
-                </div>
+    // ================================================================
+    //  侧边栏更新日志渲染
+    // ================================================================
+    function renderSidebarChangelog() {
+        const container = document.getElementById('changelogSidebarInner');
+        if (!container) return;
+        const mods = getCurrentMods();
+        const newMods = mods.filter(m => m.status === 'new');
+        const updatedMods = mods.filter(m => m.status === 'updated');
+        const movedMods = mods.filter(m => m.status === 'moved');
+        const deletedMods = mods.filter(m => m.status === 'deleted');
+        const versionLabel = currentVersion;
+        const dateStr = getCurrentUpdateDate();
+
+        let html = `<div class="changelog-version-title-sm"><i class="fas fa-tag"></i> ${t('changelog_title').replace('{version}', versionLabel)} <span class="date-sm">${dateStr}</span></div>`;
+
+        const categories = [
+            { key: 'new', label: t('changelog_new'), items: newMods, cls: 'cat-new', icon: 'fa-plus-circle' },
+            { key: 'updated', label: t('changelog_updated'), items: updatedMods, cls: 'cat-updated', icon: 'fa-sync-alt' },
+            { key: 'moved', label: t('changelog_moved'), items: movedMods, cls: 'cat-moved', icon: 'fa-arrows-alt' },
+            { key: 'deleted', label: t('changelog_deleted'), items: deletedMods, cls: 'cat-deleted', icon: 'fa-trash-alt' }
+        ];
+
+        categories.forEach(cat => {
+            const shouldExpand = cat.items.length > 0;
+            html += `<div class="cl-cat">`;
+            html += `<div class="cl-cat-header ${cat.cls} ${shouldExpand ? '' : 'collapsed'}" data-cl-toggle="${cat.key}">
+                <i class="fas ${cat.icon}"></i> ${cat.label} (${cat.items.length})
+                <i class="fas fa-chevron-down cl-toggle"></i>
             </div>`;
-        }
+            html += `<div class="cl-cat-items ${shouldExpand ? '' : 'collapsed'}" id="cl-items-${cat.key}">`;
+            if (cat.items.length === 0) {
+                html += `<div class="cl-empty">—</div>`;
+            } else {
+                cat.items.forEach(m => {
+                    html += `<div class="cl-item" data-mod-id="${m.id}" data-mod-name="${escapeHtml(getModName(m))}">${escapeHtml(getModName(m))}`;
+                    if (m.fileName) {
+                        html += `<span class="cl-file"><i class="fas fa-file-archive"></i> ${escapeHtml(m.fileName)}</span>`;
+                    }
+                    html += `</div>`;
+                });
+            }
+            html += `</div></div>`;
+        });
 
-        function renderOptimize() {
-            return `
-            <div class="info-card">
-                <p style="color:#ffdf9e;font-weight:600;margin-bottom:8px;font-size:1.05rem;">${t('optimize_title')}</p>
-                <div class="optimize-wrapper">
-                    <table class="optimize-table">
-                        <thead><tr><th>${t('optimize_memory')}</th><th>${t('optimize_options')}</th></tr></thead>
-                        <tbody>
-                            <tr><td class="memory-cell">8GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 4096 -mm_max_tmp_buffers_size 1000</td></tr>
-                            <tr><td class="memory-cell">12GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 6144 -mm_max_tmp_buffers_size 1000</td></tr>
-                            <tr><td class="memory-cell">16GB <span class="recommend-badge">${t('optimize_recommend')}</span></td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 8192 -mm_max_tmp_buffers_size 1000</td></tr>
-                            <tr><td class="memory-cell">32GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 16384 -mm_max_tmp_buffers_size 1000</td></tr>
-                            <tr><td class="memory-cell">64GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 32768 -mm_max_tmp_buffers_size 1000</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="optimize-note"><i class="fas fa-exclamation-triangle"></i> <strong>${t('optimize_note')}</strong></div>
-            </div>`;
-        }
+        container.innerHTML = html;
 
-        function renderOtherMods() {
-            const items = [
-                "othermods_background", "othermods_loading", "othermods_weather", "othermods_quality",
-                "othermods_sound", "othermods_physics", "othermods_functional", "othermods_ui",
-                "othermods_tuning", "othermods_interior", "othermods_traffic", "othermods_cargo",
-                "othermods_paint", "othermods_trailer", "othermods_truck", "othermods_map"
-            ];
-            const translatedItems = items.map(key => t(key));
-            let itemsHtml = translatedItems.map(item => {
-                let cls = "mod-order-item";
-                if (item === t("othermods_map")) cls += " highlight-item";
-                return `<div class="${cls}"><i class="fas fa-cube item-icon"></i>${item}</div>`;
-            }).join('');
-            return `
-            <div class="info-card" style="display:flex;justify-content:center;align-items:center;padding:16px 16px;background:rgba(12,28,36,0.3);border-left:6px solid rgba(255,200,100,0.3);">
-                <div class="othermods-wrapper"><div class="othermods-list">
-                    <div class="mod-order-item top-label"><i class="fas fa-arrow-up" style="margin-right:8px;"></i> ${t('othermods_top')} <i class="fas fa-arrow-up" style="margin-left:8px;"></i></div>
-                    <div class="othermods-divider"></div>
-                    ${itemsHtml}
-                    <div class="othermods-divider"></div>
-                    <div class="mod-order-item bottom-label"><i class="fas fa-arrow-down" style="margin-right:8px;"></i> ${t('othermods_bottom')} <i class="fas fa-arrow-down" style="margin-left:8px;"></i></div>
-                </div></div>
-            </div>`;
-        }
+        document.querySelectorAll('[data-cl-toggle]').forEach(toggle => {
+            toggle.onclick = () => {
+                const key = toggle.getAttribute('data-cl-toggle');
+                const items = document.getElementById(`cl-items-${key}`);
+                if (items) {
+                    items.classList.toggle('collapsed');
+                    toggle.classList.toggle('collapsed');
+                }
+            };
+        });
 
-        function renderDownloadSave() {
-            const groups = getCurrentSaveGroups();
-            let html =
-                `<div class="info-card download-card"><div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div><h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>`;
-            groups.forEach((group, idx) => {
-                let label = group.versionLabel;
-                if (label.startsWith('save_group_')) { const ver = label.replace('save_group_', '');
-                    label = `v${ver} ${t('save_group_suffix') || '存档'}`; } else { label = t(label); }
-                html += `<div class="save-group" data-group-idx="${idx}">
-                            <div class="save-group-header" data-group-toggle="${idx}">
-                                <div class="save-group-title"><i class="fas ${group.icon}"></i> ${label}</div>
-                                <i class="fas fa-chevron-down group-toggle-icon"></i>
-                            </div>
-                            <div class="save-subversions" id="saveSubs-${idx}">
-                                ${group.subVersions.map(sub => `<button class="save-version-btn" data-url="${sub.url}" data-ver="${sub.verNum}"><i class="fas fa-download"></i> ${sub.verNum}</button>`).join('')}
-                            </div>
-                        </div>`;
-            });
-            html += `<div class="save-path"><span class="path-label"><i class="fas fa-folder-open"></i> ${t('download_save_path')}</span><code>${t('download_save_path_code')}</code></div>
-                        <div class="feature-highlight"><strong>💡 ${t('download_save_note')}</strong></div></div>`;
-            return html;
-        }
+        // 绑定点击事件 - 保存滚动位置
+        document.querySelectorAll('.cl-item').forEach(item => {
+            item.onclick = () => {
+                if (isJumping) return;
+                const modId = parseInt(item.getAttribute('data-mod-id'));
+                const modName = item.getAttribute('data-mod-name');
+                if (modId) {
+                    // 保存当前滚动位置
+                    const sidebarContent = document.getElementById('changelogSidebarContent');
+                    const scrollPos = sidebarContent ? sidebarContent.scrollTop : 0;
+                    
+                    // 保存每个分类的滚动位置
+                    const catScrollPositions = {};
+                    document.querySelectorAll('.cl-cat-items').forEach(el => {
+                        const idParts = el.id.split('-');
+                        const key = idParts[idParts.length - 1];
+                        if (el.scrollTop > 0) {
+                            catScrollPositions[key] = el.scrollTop;
+                        }
+                    });
+                    
+                    jumpToModFromChangelog(modId, scrollPos, catScrollPositions);
+                    showToast(`跳转到: ${modName}`);
+                }
+            };
+        });
+    }
 
-        const contentMap = {
-            loadorder: { titleKey: 'panel_loadorder', render: renderLoadOrder },
-            install: { titleKey: 'panel_install', render: renderInstall },
-            optimize: { titleKey: 'panel_optimize', render: renderOptimize },
-            othermods: { titleKey: 'panel_othermods', render: renderOtherMods },
-            downloadsave: { titleKey: 'panel_downloadsave', render: renderDownloadSave }
+    // ================================================================
+    //  滚动到指定模组
+    // ================================================================
+    function performScrollToMod(modId) {
+        const targetCard = document.querySelector(`.mod-card[data-mod-id="${modId}"]`);
+        const contentMain = document.getElementById('contentMain');
+        if (targetCard && contentMain) {
+            const cardRect = targetCard.getBoundingClientRect();
+            const containerRect = contentMain.getBoundingClientRect();
+            const scrollOffset = cardRect.top - containerRect.top + contentMain.scrollTop - 80;
+            contentMain.scrollTo({ top: scrollOffset, behavior: 'smooth' });
+            targetCard.classList.add('highlight-mod');
+            setTimeout(() => targetCard.classList.remove('highlight-mod'), 3000);
+        } else {
+            showToast('未找到该模组，请检查版本是否匹配');
+        }
+    }
+
+    // ================================================================
+    //  渲染函数
+    // ================================================================
+    function renderThumbnail(mod) {
+        const imageUrl = getModImage(mod);
+        if (imageUrl) {
+            return `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getModName(mod))}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.no-image').style.display='block';">`;
+        }
+        return `<div class="no-image"><i class="fas fa-image"></i>${t('no_preview')}</div>`;
+    }
+
+    function renderLoadOrder() {
+        const mods = getCurrentMods();
+        const filtered = currentFilter === 'all' ? mods : mods.filter(mod => mod.status === currentFilter);
+
+        const counts = {
+            all: mods.length,
+            new: mods.filter(m => m.status === 'new').length,
+            updated: mods.filter(m => m.status === 'updated').length,
+            moved: mods.filter(m => m.status === 'moved').length,
+            deleted: mods.filter(m => m.status === 'deleted').length
         };
 
-        const container = document.getElementById('dynamicContent');
-        const titleEl = document.getElementById('panelTitle');
-        const navStatsBadge = document.getElementById('navStatsBadge');
+        const filterConfigs = [
+            { key: 'all', icon: 'fa-globe', label: 'filter_all' },
+            { key: 'new', icon: 'fa-plus-circle', label: 'filter_new' },
+            { key: 'updated', icon: 'fa-sync-alt', label: 'filter_updated' },
+            { key: 'moved', icon: 'fa-arrows-alt', label: 'filter_moved' },
+            { key: 'deleted', icon: 'fa-trash-alt', label: 'filter_deleted' }
+        ];
 
-        function updateNavStatsBadge() {
-            if (navStatsBadge) navStatsBadge.innerHTML =
-                `<i class="fas fa-cubes"></i> <strong>${getActiveModsCount(currentVersion)}</strong>`;
+        let filterButtonsHtml = filterConfigs.map(cfg => {
+            const count = counts[cfg.key] || 0;
+            const isActive = currentFilter === cfg.key;
+            const isZero = count === 0 && cfg.key !== 'all';
+            const zeroClass = isZero ? 'filter-zero' : '';
+            const activeClass = isActive ? 'active' : '';
+            return `<div class="filter-chip ${activeClass} ${zeroClass}" data-filter="${cfg.key}" ${isZero ? 'style="cursor:default;"' : ''}>
+                <i class="fas ${cfg.icon}"></i> ${t(cfg.label)} <span class="filter-count">${count}</span>
+            </div>`;
+        }).join('');
+
+        if (filtered.length === 0) {
+            return `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div>
+                <div class="no-mod-message"><i class="fas fa-filter"></i> ${t('no_mods')}</div>`;
         }
 
-        function renderPage(navId) {
-            const data = contentMap[navId];
-            if (!data) return;
-            const iconMap = {
-                loadorder: 'fa-list-ol',
-                install: 'fa-download',
-                optimize: 'fa-tachometer-alt',
-                othermods: 'fa-layer-group',
-                downloadsave: 'fa-cloud-download-alt'
-            };
-            titleEl.innerHTML = `<i class="fas ${iconMap[navId] || 'fa-list-ol'}"></i> ${t(data.titleKey)}`;
-            if (navId === 'loadorder') {
-                currentFilter = 'all';
-                container.innerHTML = data.render();
-                bindFilterEvents();
-                bindDownloadButtons();
-                bindModTitleClick();
-                document.querySelectorAll('.filter-chip').forEach(ch => {
-                    if (ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
-                    else ch.classList.remove('active');
-                });
-            } else if (navId === 'downloadsave') {
-                container.innerHTML = data.render();
-                setTimeout(bindSaveGroupEvents, 30);
+        let html = `<div class="filter-bar"><div class="filter-label"><i class="fas fa-filter"></i> ${t('filter_all')}</div><div class="filter-buttons" id="filterButtonsContainer">${filterButtonsHtml}</div></div><div class="mods-grid">`;
+        let seqCounter = 0;
+        filtered.forEach(mod => {
+            const isDeleted = mod.status === 'deleted';
+            let statusClass = '', statusLabel = '', statusIcon = '';
+            const statusKey = mod.status === 'new' ? 'status_new' : mod.status === 'updated' ? 'status_updated' : mod.status === 'moved' ? 'status_moved' : mod.status === 'deleted' ? 'status_deleted' : 'status_normal';
+            statusLabel = t(statusKey);
+            switch (mod.status) {
+                case 'new':
+                    statusClass = 'status-new-large';
+                    statusIcon = 'fa-plus-circle';
+                    break;
+                case 'updated':
+                    statusClass = 'status-updated-large';
+                    statusIcon = 'fa-sync-alt';
+                    break;
+                case 'moved':
+                    statusClass = 'status-moved-large';
+                    statusIcon = 'fa-arrows-alt';
+                    break;
+                case 'deleted':
+                    statusClass = 'status-deleted-large';
+                    statusIcon = 'fa-trash-alt';
+                    break;
+                default:
+                    statusClass = 'status-normal-large';
+                    statusIcon = 'fa-check-circle';
+            }
+            let seqDisplay = '',
+                seqClass = 'mod-order';
+            if (!isDeleted) { seqCounter++;
+                seqDisplay = `#${seqCounter.toString().padStart(2, '0')}`; } else { seqDisplay = '—';
+                seqClass += ' deleted-order'; }
+            const isClickable = (mod.status === 'new' || mod.status === 'moved') && !isDeleted;
+            const clickAttr = isClickable ? `style="cursor:pointer;" data-mod-id="${mod.id}" data-mod-status="${mod.status}"` : `style="cursor:default;" data-mod-id="${mod.id}"`;
+            const hasValidUrl = mod.downloadUrl && mod.downloadUrl.trim() !== "";
+            const downloadDisabled = isDeleted || !hasValidUrl;
+            const downloadDataAttr = `data-mod-id="${mod.id}" data-mod-name="${escapeHtml(getModName(mod))}" data-download-url="${escapeHtml(mod.downloadUrl || '')}"`;
+            const fileHtml = mod.fileName ?
+                `<div class="mod-file"><i class="fas fa-file-archive"></i> ${t('file_label')}: ${escapeHtml(mod.fileName)}</div>` :
+                '';
+            const thumbnailHtml = renderThumbnail(mod);
+            
+            html += `<div class="mod-card ${mod.status}" data-mod-id="${mod.id}"><div class="mod-card-inner">
+                <div class="mod-thumbnail">${thumbnailHtml}</div>
+                <div class="mod-status-area"><span class="status-badge-large ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span></div>
+                <div class="mod-content-area">
+                    <div class="mod-header">
+                        <span class="${seqClass}">${seqDisplay}</span>
+                        <span class="mod-title" ${clickAttr}>${escapeHtml(getModName(mod))}</span>
+                    </div>
+                    ${fileHtml}
+                </div>
+                <div class="mod-action-area"><button class="download-button ${downloadDisabled ? 'disabled' : ''}" ${downloadDataAttr} ${downloadDisabled ? 'disabled' : ''}><i class="fas fa-download"></i> ${t('download_btn')}</button></div>
+            </div></div>`;
+        });
+        html += `</div>`;
+        return html;
+    }
+
+    function renderChangelog() {
+        return `<div class="info-card"><p style="color:#ffdf9e; font-size:1rem;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
+    }
+
+    function renderDownloadSave() {
+        const groups = getCurrentSaveGroups();
+        let html = `<div class="info-card download-card">
+            <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
+            <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>`;
+        
+        groups.forEach((group, idx) => {
+            // 🟢 自动生成标签
+            let label = group.versionLabel;
+            if (label.startsWith('save_group_')) {
+                const ver = label.replace('save_group_', '');
+                label = `v${ver} ${t('save_group_suffix') || '存档'}`;
             } else {
-                container.innerHTML = data.render();
+                label = t(label);
             }
-            const main = document.getElementById('contentMain');
-            if (main && !isJumping) main.scrollTop = 0;
-            updateNavStatsBadge();
-            updateStaticTexts();
-            updateAllDates();
-            if (!isJumping) renderSidebarChangelog();
-        }
+            
+            html += `<div class="save-group" data-group-idx="${idx}">
+                <div class="save-group-header" data-group-toggle="${idx}">
+                    <div class="save-group-title"><i class="fas ${group.icon}"></i> ${label}</div>
+                    <i class="fas fa-chevron-down group-toggle-icon"></i>
+                </div>
+                <div class="save-subversions" id="saveSubs-${idx}">
+                    ${group.subVersions.map(sub => `<button class="save-version-btn" data-url="${sub.url}" data-ver="${sub.verNum}"><i class="fas fa-download"></i> ${sub.verNum}</button>`).join('')}
+                </div>
+            </div>`;
+        });
+        
+        html += `<div class="save-path">
+            <span class="path-label"><i class="fas fa-folder-open"></i> ${t('download_save_path')}</span>
+            <code>${t('download_save_path_code')}</code>
+        </div>
+        <div class="feature-highlight"><strong>💡 ${t('download_save_note')}</strong></div></div>`;
+        return html;
+    }
 
-        function updateStaticTexts() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (key) el.innerHTML = t(key);
-            });
-            updateAllDates();
-        }
+    function renderInstall() {
+        return `
+        <div class="info-card">
+            <div class="install-guide">
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">1</div>
+                        <div class="install-step-title">${t('install_step1_title')}</div>
+                    </div>
+                    <div class="install-step-content">${t('install_step1_content')}</div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">2</div>
+                        <div class="install-step-title">${t('install_step2_title')}</div>
+                    </div>
+                    <div class="install-step-content">${t('install_step2_content')}</div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">3</div>
+                        <div class="install-step-title">${t('install_step3_title')}</div>
+                    </div>
+                    <div class="install-step-content">${t('install_step3_content')}</div>
+                </div>
+                <div class="install-step">
+                    <div class="install-step-header">
+                        <div class="install-step-number">4</div>
+                        <div class="install-step-title">${t('install_step4_title')}</div>
+                    </div>
+                    <div class="install-step-content">${t('install_step4_content')}</div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
 
-        // ================================================================
-        //  事件绑定
-        // ================================================================
-        function bindFilterEvents() {
-            document.querySelectorAll('.filter-chip').forEach(ch => {
-                ch.removeEventListener('click', filterClickHandler);
-                const filterKey = ch.getAttribute('data-filter');
-                const mods = getCurrentMods();
-                const count = filterKey === 'all' ? mods.length : mods.filter(m => m.status === filterKey).length;
-                if (count === 0 && filterKey !== 'all') { ch.style.cursor = 'default'; return; }
-                ch.style.cursor = 'pointer';
-                ch.addEventListener('click', filterClickHandler);
-            });
-        }
+    function renderOptimize() {
+        return `
+        <div class="info-card">
+            <p style="color: #ffdf9e; font-weight: 600; margin-bottom: 8px; font-size:1.05rem;">${t('optimize_title')}</p>
+            <div class="optimize-wrapper">
+                <table class="optimize-table">
+                    <thead><tr><th>${t('optimize_memory')}</th><th>${t('optimize_options')}</th></tr></thead>
+                    <tbody>
+                        <tr><td class="memory-cell">8GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 4096 -mm_max_tmp_buffers_size 1000</td></tr>
+                        <tr><td class="memory-cell">12GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 6144 -mm_max_tmp_buffers_size 1000</td></tr>
+                        <tr><td class="memory-cell">16GB <span class="recommend-badge">${t('optimize_recommend')}</span></td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 8192 -mm_max_tmp_buffers_size 1000</td></tr>
+                        <tr><td class="memory-cell">32GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 16384 -mm_max_tmp_buffers_size 1000</td></tr>
+                        <tr><td class="memory-cell">64GB</td><td class="options-cell">-nointro -unlimitedlog -mm_pool_size 32768 -mm_max_tmp_buffers_size 1000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="optimize-note"><i class="fas fa-exclamation-triangle"></i> <strong>${t('optimize_note')}</strong></div>
+        </div>
+        `;
+    }
 
-        function filterClickHandler(e) {
-            const fv = this.getAttribute('data-filter');
-            if (!fv || fv === currentFilter) return;
-            const mods = getCurrentMods();
-            const count = fv === 'all' ? mods.length : mods.filter(m => m.status === fv).length;
-            if (count === 0 && fv !== 'all') { showToast('该分类下没有模组'); return; }
-            currentFilter = fv;
-            if (currentNav === 'loadorder') {
-                const newHtml = renderLoadOrder();
-                container.innerHTML = newHtml;
-                bindFilterEvents();
-                bindDownloadButtons();
-                bindModTitleClick();
-            }
-            document.querySelectorAll('.filter-chip').forEach(ch => {
-                if (ch.getAttribute('data-filter') === currentFilter) ch.classList.add('active');
-                else ch.classList.remove('active');
-            });
-        }
+    function renderOtherMods() {
+        const items = [
+            "othermods_background", "othermods_loading", "othermods_weather", "othermods_quality",
+            "othermods_sound", "othermods_physics", "othermods_functional", "othermods_ui",
+            "othermods_tuning", "othermods_interior", "othermods_traffic", "othermods_cargo",
+            "othermods_paint", "othermods_trailer", "othermods_truck", "othermods_map"
+        ];
+        const translatedItems = items.map(key => t(key));
+        let itemsHtml = translatedItems.map(item => {
+            let cls = "mod-order-item";
+            if (item === t("othermods_map")) cls += " highlight-item";
+            return `<div class="${cls}"><i class="fas fa-cube item-icon"></i>${item}</div>`;
+        }).join('');
+        return `
+        <div class="info-card" style="display: flex; justify-content: center; align-items: center; padding: 18px 18px; background: rgba(12, 28, 36, 0.4); border-left: 6px solid rgba(255, 200, 100, 0.4);">
+            <div class="othermods-wrapper">
+                <div class="othermods-list">
+                    <div class="mod-order-item top-label"><i class="fas fa-arrow-up" style="margin-right: 8px;"></i> ${t('othermods_top')} <i class="fas fa-arrow-up" style="margin-left: 8px;"></i></div>
+                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 4px 0;"></div>
+                    ${itemsHtml}
+                    <div style="width: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.12), transparent); margin: 4px 0;"></div>
+                    <div class="mod-order-item bottom-label"><i class="fas fa-arrow-down" style="margin-right: 8px;"></i> ${t('othermods_bottom')} <i class="fas fa-arrow-down" style="margin-left: 8px;"></i></div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
 
-        function bindDownloadButtons() {
-            document.querySelectorAll('.download-btn-mod:not(.disabled)').forEach(btn => {
-                const nb = btn.cloneNode(true);
-                btn.parentNode.replaceChild(nb, btn);
-                nb.onclick = (e) => {
-                    e.preventDefault();
-                    const mid = parseInt(nb.getAttribute('data-mod-id'));
-                    const mname = nb.getAttribute('data-mod-name');
-                    let url = nb.getAttribute('data-download-url');
-                    if (!url) { const md = getCurrentMods().find(m => m.id === mid); if (md) url = md.downloadUrl; }
-                    handleModDownload(mid, mname, url);
-                };
-            });
-        }
+    const contentMap = {
+        loadorder: { titleKey: 'panel_loadorder', render: renderLoadOrder },
+        install: { titleKey: 'panel_install', render: renderInstall },
+        optimize: { titleKey: 'panel_optimize', render: renderOptimize },
+        othermods: { titleKey: 'panel_othermods', render: renderOtherMods },
+        changelog: { titleKey: 'panel_changelog', render: renderChangelog },
+        downloadsave: { titleKey: 'panel_downloadsave', render: renderDownloadSave }
+    };
 
-        function bindModTitleClick() {
-            document.querySelectorAll('.mod-name').forEach(t => {
-                t.removeEventListener('click', titleClickHandler);
-                t.addEventListener('click', titleClickHandler);
-            });
-        }
+    const container = document.getElementById('dynamicContent');
+    const titleEl = document.getElementById('panelTitle');
+    const navStatsBadge = document.getElementById('navStatsBadge');
 
-        function titleClickHandler(e) {
-            e.stopPropagation();
-            const mid = parseInt(this.getAttribute('data-mod-id'));
-            const status = this.getAttribute('data-mod-status');
-            if (status === 'new' || status === 'moved') jumpToModInFullList(mid);
-        }
+    function updateNavStatsBadge() {
+        if (navStatsBadge) navStatsBadge.innerHTML = `<i class="fas fa-cubes"></i> <strong>${getActiveModsCount(currentVersion)}</strong>`;
+    }
 
-        function jumpToModInFullList(modId) {
-            pendingJumpModId = modId;
-            if (currentFilter !== 'all') { currentFilter = 'all';
-                refreshLoadOrderAndJump(); } else { performScrollToMod(modId);
-                pendingJumpModId = null; }
-        }
-
-        function refreshLoadOrderAndJump() {
-            const newHtml = renderLoadOrder();
-            container.innerHTML = newHtml;
+    function renderPage(navId) {
+        const data = contentMap[navId];
+        if (!data) return;
+        const iconMap = {
+            loadorder: 'fa-list-ol',
+            install: 'fa-download',
+            optimize: 'fa-tachometer-alt',
+            othermods: 'fa-layer-group',
+            changelog: 'fa-history',
+            downloadsave: 'fa-cloud-download-alt'
+        };
+        titleEl.innerHTML = `<i class="fas ${iconMap[navId] || 'fa-list-ol'}"></i> ${t(data.titleKey)}`;
+        if (navId === 'loadorder') {
+            currentFilter = 'all';
+            container.innerHTML = data.render();
             bindFilterEvents();
             bindDownloadButtons();
             bindModTitleClick();
@@ -2075,153 +1604,327 @@
                 if (ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
                 else ch.classList.remove('active');
             });
-            setTimeout(() => { performScrollToMod(pendingJumpModId);
-                pendingJumpModId = null; }, 150);
+        } else if (navId === 'changelog') {
+            container.innerHTML = data.render();
+        } else if (navId === 'downloadsave') {
+            container.innerHTML = data.render();
+            setTimeout(bindSaveGroupEvents, 30);
+        } else {
+            container.innerHTML = data.render();
         }
-
-        function bindSaveGroupEvents() {
-            const groups = getCurrentSaveGroups();
-            groups.forEach((_, idx) => {
-                const header = document.querySelector(`.save-group-header[data-group-toggle="${idx}"]`);
-                const subs = document.getElementById(`saveSubs-${idx}`);
-                if (header && subs) {
-                    const newHeader = header.cloneNode(true);
-                    header.parentNode.replaceChild(newHeader, header);
-                    newHeader.onclick = () => { subs.classList.toggle('collapsed');
-                        newHeader.classList.toggle('collapsed'); };
-                    subs.classList.remove('collapsed');
-                }
-            });
-            document.querySelectorAll('.save-version-btn').forEach(btn => {
-                const nb = btn.cloneNode(true);
-                btn.parentNode.replaceChild(nb, btn);
-                nb.onclick = (e) => {
-                    e.stopPropagation();
-                    const url = nb.getAttribute('data-url');
-                    const ver = nb.getAttribute('data-ver');
-                    if (url) { window.open(url, '_blank');
-                        showToast(`Download save: ${ver}`); } else alert(`Save ${ver} link unavailable`);
-                };
-            });
+        const contentMain = document.getElementById('contentMain');
+        if (contentMain && !isJumping) {
+            contentMain.scrollTop = 0;
         }
-
-        // ================================================================
-        //  导航切换
-        // ================================================================
-        function setActiveNav(navId) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-nav') ===
-                navId));
-        }
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (isJumping) return;
-                const target = btn.getAttribute('data-nav');
-                if (target === currentNav) return;
-                currentNav = target;
-                renderPage(target);
-                setActiveNav(target);
-            });
-        });
-
-        // ================================================================
-        //  更新日志折叠
-        // ================================================================
-        const clToggleBtn = document.getElementById('changelogToggleBtn');
-        const clBody = document.getElementById('changelogBody');
-        clToggleBtn.addEventListener('click', () => {
-            if (isJumping) return;
-            const isOpen = clBody.classList.contains('open');
-            if (isOpen) { clBody.classList.remove('open');
-                clToggleBtn.classList.remove('open'); } else { clBody.classList.add('open');
-                clToggleBtn.classList.add('open');
-                renderSidebarChangelog(); }
-        });
-
-        // ================================================================
-        //  下拉菜单
-        // ================================================================
-        function closeAllDropdowns() {
-            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-            document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
-        }
-
-        function toggleDropdown(menu, btn) {
-            const isOpen = menu.classList.contains('open');
-            closeAllDropdowns();
-            if (!isOpen) { menu.classList.add('open');
-                btn.classList.add('open'); }
-        }
-        document.getElementById('langDropdownBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown(document.getElementById('langDropdownMenu'), document.getElementById('langDropdownBtn'));
-        });
-        document.getElementById('versionDropdownBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown(document.getElementById('versionDropdownMenu'), document.getElementById('versionDropdownBtn'));
-        });
-        document.querySelectorAll('#langDropdownMenu .opt').forEach(opt => {
-            opt.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const lang = opt.getAttribute('data-lang');
-                if (lang === currentLang) { closeAllDropdowns(); return; }
-                currentLang = lang;
-                localStorage.setItem('ets2_lang', lang);
-                renderPage(currentNav);
-                updateNavStatsBadge();
-                updateAllDates();
-                closeAllDropdowns();
-            });
-        });
-        document.addEventListener('click', closeAllDropdowns);
-
-        // ================================================================
-        //  返回顶部
-        // ================================================================
-        const backBtn = document.getElementById('backToTop');
-        const mainEl = document.getElementById('contentMain');
-        mainEl.addEventListener('scroll', () => { backBtn.classList.toggle('visible', mainEl.scrollTop > 300); });
-        backBtn.addEventListener('click', () => { mainEl.scrollTo({ top: 0, behavior: 'smooth' }); });
-
-        // ================================================================
-        //  加载数据
-        // ================================================================
-        async function loadData() {
-            const loader = document.getElementById('loadingIndicator');
-            try {
-                const [modsRes, i18nRes] = await Promise.all([
-                    fetch('data/mods.json?t=' + Date.now()),
-                    fetch('data/i18n.json?t=' + Date.now())
-                ]);
-                if (!modsRes.ok || !i18nRes.ok) throw new Error('数据加载失败');
-                VERSION_DATA = await modsRes.json();
-                i18n = await i18nRes.json();
-                const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
-                if (!VERSION_DATA[currentVersion]) { currentVersion = versions[0] || '1.59';
-                    localStorage.setItem('ets2_version', currentVersion); }
-                renderVersionOptions();
-                if (loader) loader.style.display = 'none';
-                initApp();
-            } catch (err) {
-                console.error(err);
-                if (loader) loader.innerHTML =
-                    `<i class="fas fa-exclamation-triangle"></i> 数据加载失败，请刷新重试。<br><small>${err.message}</small><br><br><button onclick="location.reload()" style="background:#e6a017;border:none;padding:10px 24px;border-radius:30px;color:#121f23;font-weight:700;cursor:pointer;font-family:inherit;">重新加载</button>`;
-            }
-        }
-
-        function initApp() {
-            document.querySelectorAll('#langDropdownMenu .opt').forEach(opt => {
-                opt.classList.toggle('active-opt', opt.getAttribute('data-lang') === currentLang);
-            });
-            updateNavStatsBadge();
-            currentFilter = 'all';
-            renderPage('loadorder');
-            setActiveNav('loadorder');
-            updateStaticTexts();
-            updateAllDates();
+        updateNavStatsBadge();
+        updateStaticTexts();
+        updateAllDates();
+        // 只有在非跳转状态才重新渲染更新日志
+        if (!isJumping) {
             renderSidebarChangelog();
         }
+    }
 
-        loadData();
-    </script>
+    function updateStaticTexts() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (key) el.innerHTML = t(key);
+        });
+        updateAllDates();
+    }
+
+    // ================================================================
+    //  事件绑定
+    // ================================================================
+    function bindFilterEvents() {
+        document.querySelectorAll('.filter-chip').forEach(ch => {
+            ch.removeEventListener('click', filterClickHandler);
+            const filterKey = ch.getAttribute('data-filter');
+            const mods = getCurrentMods();
+            const count = filterKey === 'all' ? mods.length : mods.filter(m => m.status === filterKey).length;
+            if (count === 0 && filterKey !== 'all') {
+                ch.style.cursor = 'default';
+                return;
+            }
+            ch.style.cursor = 'pointer';
+            ch.addEventListener('click', filterClickHandler);
+        });
+    }
+
+    function filterClickHandler(e) {
+        const fv = this.getAttribute('data-filter');
+        if (!fv || fv === currentFilter) return;
+        const mods = getCurrentMods();
+        const count = fv === 'all' ? mods.length : mods.filter(m => m.status === fv).length;
+        if (count === 0 && fv !== 'all') {
+            showToast('该分类下没有模组');
+            return;
+        }
+        currentFilter = fv;
+        if (currentNav === 'loadorder') {
+            const newHtml = renderLoadOrder();
+            container.innerHTML = newHtml;
+            bindFilterEvents();
+            bindDownloadButtons();
+            bindModTitleClick();
+        }
+        document.querySelectorAll('.filter-chip').forEach(ch => {
+            if (ch.getAttribute('data-filter') === currentFilter) ch.classList.add('active');
+            else ch.classList.remove('active');
+        });
+    }
+
+    function bindDownloadButtons() {
+        document.querySelectorAll('.download-button:not(.disabled)').forEach(btn => {
+            const nb = btn.cloneNode(true);
+            btn.parentNode.replaceChild(nb, btn);
+            nb.onclick = (e) => {
+                e.preventDefault();
+                const mid = parseInt(nb.getAttribute('data-mod-id'));
+                const mname = nb.getAttribute('data-mod-name');
+                let url = nb.getAttribute('data-download-url');
+                if (!url) {
+                    const md = getCurrentMods().find(m => m.id === mid);
+                    if (md) url = md.downloadUrl;
+                }
+                handleModDownload(mid, mname, url);
+            };
+        });
+    }
+
+    function bindModTitleClick() {
+        document.querySelectorAll('.mod-title').forEach(t => {
+            t.removeEventListener('click', titleClickHandler);
+            t.addEventListener('click', titleClickHandler);
+        });
+    }
+
+    function titleClickHandler(e) {
+        e.stopPropagation();
+        const mid = parseInt(this.getAttribute('data-mod-id'));
+        const status = this.getAttribute('data-mod-status');
+        if (status === 'new' || status === 'moved') jumpToModInFullList(mid);
+    }
+
+    function jumpToModInFullList(modId) {
+        pendingJumpModId = modId;
+        if (currentFilter !== 'all') {
+            currentFilter = 'all';
+            refreshLoadOrderAndJump();
+        } else {
+            performScrollToMod(modId);
+            pendingJumpModId = null;
+        }
+    }
+
+    function refreshLoadOrderAndJump() {
+        const newHtml = renderLoadOrder();
+        container.innerHTML = newHtml;
+        bindFilterEvents();
+        bindDownloadButtons();
+        bindModTitleClick();
+        document.querySelectorAll('.filter-chip').forEach(ch => {
+            if (ch.getAttribute('data-filter') === 'all') ch.classList.add('active');
+            else ch.classList.remove('active');
+        });
+        setTimeout(() => {
+            performScrollToMod(pendingJumpModId);
+            pendingJumpModId = null;
+        }, 150);
+    }
+
+    function bindSaveGroupEvents() {
+        const groups = getCurrentSaveGroups();
+        groups.forEach((_, idx) => {
+            const header = document.querySelector(`.save-group-header[data-group-toggle="${idx}"]`);
+            const subsContainer = document.getElementById(`saveSubs-${idx}`);
+            if (header && subsContainer) {
+                const newHeader = header.cloneNode(true);
+                header.parentNode.replaceChild(newHeader, header);
+                newHeader.onclick = () => {
+                    subsContainer.classList.toggle('collapsed');
+                    newHeader.classList.toggle('collapsed');
+                };
+                subsContainer.classList.remove('collapsed');
+            }
+        });
+        document.querySelectorAll('.save-version-btn').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.onclick = (e) => {
+                e.stopPropagation();
+                const url = newBtn.getAttribute('data-url');
+                const ver = newBtn.getAttribute('data-ver');
+                if (url) { window.open(url, '_blank');
+                    showToast(`Download save: ${ver}`); } else alert(`Save ${ver} link unavailable`);
+            };
+        });
+    }
+
+    // ================================================================
+    //  导航切换
+    // ================================================================
+    function setActiveNav(navId) {
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-nav') === navId));
+    }
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (isJumping) return;
+            const target = btn.getAttribute('data-nav');
+            if (target === currentNav) return;
+            currentNav = target;
+            renderPage(target);
+            setActiveNav(target);
+        });
+    });
+
+    // ================================================================
+    //  侧边栏更新日志折叠按钮
+    // ================================================================
+    const changelogToggleBtn = document.getElementById('changelogToggleBtn');
+    const changelogContent = document.getElementById('changelogSidebarContent');
+
+    changelogToggleBtn.addEventListener('click', () => {
+        if (isJumping) return;
+        const isOpen = changelogContent.classList.contains('open');
+        if (isOpen) {
+            changelogContent.classList.remove('open');
+            changelogToggleBtn.classList.remove('open');
+        } else {
+            changelogContent.classList.add('open');
+            changelogToggleBtn.classList.add('open');
+            renderSidebarChangelog();
+        }
+    });
+
+    // ================================================================
+    //  语言下拉菜单
+    // ================================================================
+    langDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown(langDropdownMenu, langDropdownBtn);
+    });
+
+    document.querySelectorAll('.lang-dropdown-menu .lang-opt').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const lang = opt.getAttribute('data-lang');
+            if (lang === currentLang) {
+                closeAllDropdowns();
+                return;
+            }
+            currentLang = lang;
+            localStorage.setItem('ets2_lang', lang);
+            renderPage(currentNav);
+            updateNavStatsBadge();
+            updateAllDates();
+            closeAllDropdowns();
+        });
+    });
+
+    // ================================================================
+    //  版本下拉菜单
+    // ================================================================
+    versionDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown(versionDropdownMenu, versionDropdownBtn);
+    });
+
+    // 版本选项的点击事件在 renderVersionOptions 中绑定
+
+    document.addEventListener('click', () => { closeAllDropdowns(); });
+
+    // ================================================================
+    //  返回顶部（针对主内容区）
+    // ================================================================
+    const backToTopBtn = document.getElementById('backToTop');
+    const contentMain = document.getElementById('contentMain');
+
+    contentMain.addEventListener('scroll', () => {
+        if (contentMain.scrollTop > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        contentMain.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ================================================================
+    //  加载外部数据
+    // ================================================================
+    async function loadData() {
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        try {
+            const [modsRes, i18nRes] = await Promise.all([
+                fetch('data/mods.json?t=' + Date.now()),
+                fetch('data/i18n.json?t=' + Date.now())
+            ]);
+
+            if (!modsRes.ok || !i18nRes.ok) {
+                throw new Error('数据文件加载失败 (HTTP ' + (modsRes.status || i18nRes.status) + ')');
+            }
+
+            VERSION_DATA = await modsRes.json();
+            i18n = await i18nRes.json();
+
+            // 确保当前版本存在，如果不存在则使用最新版本
+            const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+            if (!VERSION_DATA[currentVersion]) {
+                currentVersion = versions[0] || '1.59';
+                localStorage.setItem('ets2_version', currentVersion);
+            }
+
+            // 渲染版本选项
+            renderVersionOptions();
+
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
+            initApp();
+
+        } catch (error) {
+            console.error('加载数据失败:', error);
+            if (loadingIndicator) {
+                loadingIndicator.innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    数据加载失败，请检查网络连接或刷新页面重试。
+                    <br><small>${error.message}</small>
+                    <br><br>
+                    <button onclick="location.reload()" style="background:#e6a017;border:none;padding:10px 24px;border-radius:30px;color:#121f23;font-weight:700;cursor:pointer;font-family:inherit;">重新加载</button>
+                `;
+            }
+        }
+    }
+
+    // ================================================================
+    //  初始化
+    // ================================================================
+    function initApp() {
+        document.querySelectorAll('.lang-dropdown-menu .lang-opt').forEach(opt => {
+            const l = opt.getAttribute('data-lang');
+            opt.classList.toggle('active-opt', l === currentLang);
+        });
+
+        updateNavStatsBadge();
+        currentFilter = 'all';
+        renderPage('loadorder');
+        setActiveNav('loadorder');
+        updateStaticTexts();
+        updateAllDates();
+        renderSidebarChangelog();
+
+        if (window.innerWidth <= 700) {
+            const btn = document.createElement('button');
+            btn.innerHTML = '<i class="fas fa-bars"></i>';
+            btn.style.cssText = 'position:fixed;top:12px;left:12px;z-index:101;background:#e6a017;border:none;padding:8px 12px;border-radius:30px;color:#121f23;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.4);';
+            btn.onclick = () => document.getElementById('sidebarNav').classList.toggle('mobile-open');
+            document.body.appendChild(btn);
+        }
+    }
+
+    loadData();
+</script>
 </body>
 </html>
