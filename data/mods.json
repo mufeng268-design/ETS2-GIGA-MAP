@@ -1,6 +1,6 @@
 {
   "1.60": {
-    "updateDate": "2026.06.22",
+    "updateDate": "2026.06.25",
     "mods": [
       {
         "id": 1,
@@ -678,8 +678,8 @@
         "id": 85,
         "name": "2K24 Turkey - ROEX Adaptation",
         "fileName": "2K24 Turkey - ROEX Adaptation.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/385e38333fca",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/b52a3f3c45f2",
         "imageUrl": "2K24 Turkey - ROEX Adaptation.webp"
       },
       {
@@ -1380,18 +1380,18 @@
       },
       {
         "id": 173,
-        "name": "Addon ProMods IMP - 1.58",
+        "name": "Addon ProMods IMP - 1.60",
         "fileName": "Addon_Imp.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/97b938e619ad",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/b440ab08acd8",
         "imageUrl": "Addon_Imp.webp"
       },
       {
         "id": 174,
         "name": "Italy Map Project V15",
         "fileName": "Italy_Map_Project.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/3a854f25d8aa",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/fa029a1f8baa",
         "imageUrl": "Italy_Map_Project.webp"
       },
       {
@@ -2516,10 +2516,10 @@
       },
       {
         "id": 315,
-        "name": "BXP SCS Tunisia 159.0",
-        "fileName": "BXPscsTunisia159.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/1420e6262257",
+        "name": "BXP SCS Tunisia 160.0",
+        "fileName": "BXPscsTunisia160.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/cb2422be220e",
         "imageUrl": "BXPscsTunisia159.webp"
       },
       {
@@ -2900,10 +2900,10 @@
       },
       {
         "id": 363,
-        "name": "BXP Caucasus FIX 159.0",
-        "fileName": "BXPfixCaucasus159.scs",
-        "status": "",
-        "downloadUrl": "https://pan.quark.cn/s/ad72430568c6",
+        "name": "BXP Caucasus FIX 160.0",
+        "fileName": "BXPfixCaucasus160.scs",
+        "status": "updated",
+        "downloadUrl": "https://pan.quark.cn/s/5661cbe0ce81",
         "imageUrl": "BXPfixCaucasus159.webp"
       },
       {
@@ -3575,6 +3575,10 @@
           {
             "verNum": "1.60-1.0.0.2",
             "url": "https://pan.quark.cn/s/1c257463351e"
+          },
+          {
+            "verNum": "1.60-1.0.0.3",
+            "url": "https://pan.quark.cn/s/603359ed7e56"
           }
         ]
       }
