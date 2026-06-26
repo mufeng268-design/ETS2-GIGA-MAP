@@ -1,6 +1,10 @@
 {
   "1.60": {
     "updateDate": "2026.06.25",
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5e56",
+      "package2": "https://share.feijipan.com/s/W8dHtNiI"
+    },
     "mods": [
       {
         "id": 1,
@@ -3594,6 +3598,10 @@
   },
   "1.59": {
     "updateDate": "2026.06.17",
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5e5",
+      "package2": "https://share.feijipan.com/s/W8dHtNi"
+    },
     "mods": [
       {
         "id": 1,
