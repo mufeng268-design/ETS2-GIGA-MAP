@@ -1,10 +1,6 @@
 {
   "1.60": {
     "updateDate": "2026.06.25",
-    "bulkLinks": {
-      "package1": "https://pan.quark.cn/s/03e5889e5e56",
-      "package2": "https://share.feijipan.com/s/W8dHtNiI"
-    },
     "mods": [
       {
         "id": 1,
@@ -3594,14 +3590,14 @@
           }
         ]
       }
-    ]
+    ],
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5e56",
+      "package2": "https://share.feijipan.com/s/W8dHtNiI"
+    }
   },
   "1.59": {
     "updateDate": "2026.06.17",
-    "bulkLinks": {
-      "package1": "https://pan.quark.cn/s/03e5889e5e5",
-      "package2": "https://share.feijipan.com/s/W8dHtNi"
-    },
     "mods": [
       {
         "id": 1,
@@ -7243,14 +7239,14 @@
           }
         ]
       }
-    ]
+    ],
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5e",
+      "package2": "https://share.feijipan.com/s/W8dHtN"
+    }
   },
   "1.58": {
     "updateDate": "2026.04.20",
-    "bulkLinks": {
-      "package1": "https://pan.quark.cn/s/03e5889e5e5",
-      "package2": "https://share.feijipan.com/s/W8dHtNi"
-    },
     "mods": [
       {
         "id": 1,
@@ -10712,6 +10708,10 @@
           }
         ]
       }
-    ]
+    ],
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5",
+      "package2": "https://share.feijipan.com/s/W8dHt"
+    }
   }
 }
