@@ -7247,6 +7247,10 @@
   },
   "1.58": {
     "updateDate": "2026.04.20",
+    "bulkLinks": {
+      "package1": "https://pan.quark.cn/s/03e5889e5e5",
+      "package2": "https://share.feijipan.com/s/W8dHtNi"
+    },
     "mods": [
       {
         "id": 1,
