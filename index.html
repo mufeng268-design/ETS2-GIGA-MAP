@@ -1036,9 +1036,7 @@
     let currentNav = 'loadorder';
     let currentVersion = localStorage.getItem('ets2_version') || '1.59';
     let pendingJumpModId = null;
-    // 存储待恢复的滚动位置
     let pendingScrollRestore = null;
-    // 标记是否正在跳转中
     let isJumping = false;
 
     // ================================================================
@@ -1148,7 +1146,6 @@
         
         menu.innerHTML = html;
         
-        // 绑定点击事件
         document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
             opt.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -1169,23 +1166,20 @@
     }
 
     // ================================================================
-    //  跳转函数 - 保持更新日志打开并恢复滚动位置
+    //  跳转函数
     // ================================================================
     function jumpToModFromChangelog(modId, savedScrollPos, savedCatScrollPositions) {
         if (isJumping) return;
         isJumping = true;
         
-        // 保存待恢复的滚动位置
         pendingScrollRestore = {
             scrollPos: savedScrollPos || 0,
             catScrollPositions: savedCatScrollPositions || {}
         };
         
-        // 先确保更新日志保持打开状态
         const changelogContent = document.getElementById('changelogSidebarContent');
         const toggleBtn = document.getElementById('changelogToggleBtn');
         if (changelogContent) {
-            // 添加 no-transition 类防止闪烁
             changelogContent.classList.add('no-transition');
             if (!changelogContent.classList.contains('open')) {
                 changelogContent.classList.add('open');
@@ -1193,7 +1187,6 @@
             }
         }
         
-        // 切换到加载顺序页面
         if (currentNav !== 'loadorder') {
             currentNav = 'loadorder';
             document.querySelectorAll('.nav-item').forEach(btn => {
@@ -1203,25 +1196,19 @@
         currentFilter = 'all';
         renderPage('loadorder');
         
-        // 跳转到目标模组
         setTimeout(() => {
             performScrollToMod(modId);
         }, 200);
         
-        // 恢复滚动位置
         setTimeout(() => {
             const clContent = document.getElementById('changelogSidebarContent');
             if (clContent) {
-                // 重新渲染更新日志
                 renderSidebarChangelog();
-                
-                // 恢复滚动位置
                 if (pendingScrollRestore) {
                     const restore = pendingScrollRestore;
                     if (restore.scrollPos > 0) {
                         clContent.scrollTop = restore.scrollPos;
                     }
-                    // 恢复各分类的滚动位置
                     if (restore.catScrollPositions) {
                         Object.keys(restore.catScrollPositions).forEach(key => {
                             const el = document.getElementById(`cl-items-${key}`);
@@ -1232,12 +1219,9 @@
                     }
                     pendingScrollRestore = null;
                 }
-                
-                // 移除 no-transition 类
                 setTimeout(() => {
                     clContent.classList.remove('no-transition');
                 }, 50);
-                
                 isJumping = false;
             }
         }, 350);
@@ -1256,13 +1240,10 @@
             labelEl.textContent = 'v' + currentVersion;
         }
         
-        // 更新版本选项 - 使用动态渲染
         const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
         document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
             const v = opt.getAttribute('data-version');
             opt.classList.toggle('active-opt', v === currentVersion);
-            
-            // 更新最新徽章
             const badge = opt.querySelector('.opt-badge');
             if (badge) {
                 const isLatest = v === versions[0];
@@ -1341,18 +1322,14 @@
             };
         });
 
-        // 绑定点击事件 - 保存滚动位置
         document.querySelectorAll('.cl-item').forEach(item => {
             item.onclick = () => {
                 if (isJumping) return;
                 const modId = parseInt(item.getAttribute('data-mod-id'));
                 const modName = item.getAttribute('data-mod-name');
                 if (modId) {
-                    // 保存当前滚动位置
                     const sidebarContent = document.getElementById('changelogSidebarContent');
                     const scrollPos = sidebarContent ? sidebarContent.scrollTop : 0;
-                    
-                    // 保存每个分类的滚动位置
                     const catScrollPositions = {};
                     document.querySelectorAll('.cl-cat-items').forEach(el => {
                         const idParts = el.id.split('-');
@@ -1361,7 +1338,6 @@
                             catScrollPositions[key] = el.scrollTop;
                         }
                     });
-                    
                     jumpToModFromChangelog(modId, scrollPos, catScrollPositions);
                     showToast(`跳转到: ${modName}`);
                 }
@@ -1498,17 +1474,35 @@
         return `<div class="info-card"><p style="color:#ffdf9e; font-size:1rem;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
     }
 
+    // ================================================================
+    //  从版本数据中获取模组包链接 (支持版本差异化)
+    // ================================================================
+    function getBulkLinksForVersion(version) {
+        const defaultLinks = {
+            package1: 'https://pan.quark.cn/s/03e5889e5e56',
+            package2: 'https://share.feijipan.com/s/W8dHtNiI'
+        };
+        const versionData = VERSION_DATA[version];
+        if (versionData && versionData.bulkLinks) {
+            return {
+                package1: versionData.bulkLinks.package1 || defaultLinks.package1,
+                package2: versionData.bulkLinks.package2 || defaultLinks.package2
+            };
+        }
+        return defaultLinks;
+    }
+
     function renderDownloadSave() {
         const groups = getCurrentSaveGroups();
+        const links = getBulkLinksForVersion(currentVersion);
         let html = `<div class="info-card download-card">
             <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
             <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>
-            <!-- 双按钮：模组包① 和 模组包② -->
             <div class="bulk-download-wrap">
-                <button class="bulk-download-btn" id="bulkDownloadBtn1">
+                <button class="bulk-download-btn" id="bulkDownloadBtn1" data-link="${links.package1}">
                     <i class="fas fa-cloud-download-alt"></i> 模组包①
                 </button>
-                <button class="bulk-download-btn secondary" id="bulkDownloadBtn2">
+                <button class="bulk-download-btn secondary" id="bulkDownloadBtn2" data-link="${links.package2}">
                     <i class="fas fa-cloud-download-alt"></i> 模组包②
                 </button>
             </div>
@@ -1517,7 +1511,6 @@
             </div>`;
         
         groups.forEach((group, idx) => {
-            // 🟢 自动生成标签
             let label = group.versionLabel;
             if (label.startsWith('save_group_')) {
                 const ver = label.replace('save_group_', '');
@@ -1675,20 +1668,21 @@
         } else if (navId === 'downloadsave') {
             container.innerHTML = data.render();
             setTimeout(bindSaveGroupEvents, 30);
-            // 绑定模组包① (原一键下载全部模组) 链接: https://pan.quark.cn/s/03e5889e5e56
+            // 绑定模组包① 和 模组包② - 使用 data-link 属性
             const btn1 = document.getElementById('bulkDownloadBtn1');
             if (btn1) {
                 btn1.onclick = function() {
-                    window.open('https://pan.quark.cn/s/03e5889e5e56', '_blank');
-                    showToast('正在打开夸克网盘 · 模组包①');
+                    const link = this.getAttribute('data-link') || 'https://pan.quark.cn/s/03e5889e5e56';
+                    window.open(link, '_blank');
+                    showToast('正在打开 · 模组包①');
                 };
             }
-            // 绑定模组包② 链接: https://share.feijipan.com/s/W8dHtNiI
             const btn2 = document.getElementById('bulkDownloadBtn2');
             if (btn2) {
                 btn2.onclick = function() {
-                    window.open('https://share.feijipan.com/s/W8dHtNiI', '_blank');
-                    showToast('正在打开飞极盘 · 模组包②');
+                    const link = this.getAttribute('data-link') || 'https://share.feijipan.com/s/W8dHtNiI';
+                    window.open(link, '_blank');
+                    showToast('正在打开 · 模组包②');
                 };
             }
         } else {
@@ -1701,7 +1695,6 @@
         updateNavStatsBadge();
         updateStaticTexts();
         updateAllDates();
-        // 只有在非跳转状态才重新渲染更新日志
         if (!isJumping) {
             renderSidebarChangelog();
         }
@@ -1913,12 +1906,10 @@
         toggleDropdown(versionDropdownMenu, versionDropdownBtn);
     });
 
-    // 版本选项的点击事件在 renderVersionOptions 中绑定
-
     document.addEventListener('click', () => { closeAllDropdowns(); });
 
     // ================================================================
-    //  返回顶部（针对主内容区）
+    //  返回顶部
     // ================================================================
     const backToTopBtn = document.getElementById('backToTop');
     const contentMain = document.getElementById('contentMain');
@@ -1953,14 +1944,12 @@
             VERSION_DATA = await modsRes.json();
             i18n = await i18nRes.json();
 
-            // 确保当前版本存在，如果不存在则使用最新版本
             const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
             if (!VERSION_DATA[currentVersion]) {
                 currentVersion = versions[0] || '1.59';
                 localStorage.setItem('ets2_version', currentVersion);
             }
 
-            // 渲染版本选项
             renderVersionOptions();
 
             if (loadingIndicator) loadingIndicator.style.display = 'none';
