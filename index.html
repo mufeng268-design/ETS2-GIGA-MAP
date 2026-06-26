@@ -781,6 +781,40 @@
         .feature-highlight strong {
             color:#ffcf7a;
         }
+        /* 一键下载全部模组按钮 */
+        .bulk-download-wrap {
+            text-align: center;
+            margin: 18px 0 12px 0;
+        }
+        .bulk-download-btn {
+            background:linear-gradient(135deg,#f5b82e,#d49214);
+            border:none;
+            padding:14px 36px;
+            border-radius:60px;
+            font-size:1.15rem;
+            font-weight:800;
+            color:#121f23;
+            cursor:pointer;
+            transition:all 0.25s ease;
+            display:inline-flex;
+            align-items:center;
+            gap:14px;
+            box-shadow:0 4px 20px rgba(230,160,23,0.35);
+            font-family:inherit;
+            border:1px solid rgba(255,215,0,0.3);
+        }
+        .bulk-download-btn i {
+            font-size:1.3rem;
+            color:#0a1a12;
+        }
+        .bulk-download-btn:hover {
+            transform:translateY(-3px) scale(1.02);
+            box-shadow:0 8px 32px rgba(230,160,23,0.5);
+            background:linear-gradient(135deg,#ffc84a,#e6a017);
+        }
+        .bulk-download-btn:active {
+            transform:scale(0.97);
+        }
 
         /* ===== 返回顶部 ===== */
         .back-to-top { position:fixed; bottom:36px; right:36px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#e6a017,#c4870f); border:2px solid rgba(255,215,0,0.5); color:#121f23; font-size:1.3rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(230,160,23,0.4); transition:all 0.3s ease; z-index:999; backdrop-filter:blur(4px); }
@@ -809,6 +843,7 @@
             .install-step-content { padding-left:0; }
             .othermods-list { max-width:400px; }
             .content-main .content-header h2 { font-size:1.3rem; }
+            .bulk-download-btn { padding:12px 28px; font-size:1rem; }
         }
         @media (max-width:700px){
             .sidebar-nav { width:100%; max-height:45vh; border-right:none; border-bottom:1px solid rgba(255,215,0,0.2); }
@@ -840,6 +875,7 @@
             .download-card .download-card-title { font-size:1.2rem; }
             .save-group-title { font-size:1rem; }
             .save-version-btn { font-size:0.85rem; padding:8px 18px; }
+            .bulk-download-btn { padding:10px 22px; font-size:0.9rem; gap:10px; }
         }
         @media (max-width:480px){
             .sidebar-nav { max-height:35vh; }
@@ -867,6 +903,7 @@
             .save-version-btn { font-size:0.75rem; padding:6px 14px; }
             .save-path code { font-size:0.75rem; padding:3px 10px; }
             .feature-highlight { font-size:0.85rem; }
+            .bulk-download-btn { padding:8px 18px; font-size:0.8rem; }
         }
     </style>
 </head>
@@ -1448,7 +1485,16 @@
         const groups = getCurrentSaveGroups();
         let html = `<div class="info-card download-card">
             <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
-            <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>`;
+            <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>
+            <!-- 一键下载全部模组按钮 -->
+            <div class="bulk-download-wrap">
+                <button class="bulk-download-btn" id="bulkDownloadBtn">
+                    <i class="fas fa-cloud-download-alt"></i> 一键下载全部模组
+                </button>
+            </div>
+            <div style="text-align:center; margin-top:-4px; margin-bottom:16px; font-size:0.8rem; color:#9bb7bf;">
+                <i class="fas fa-external-link-alt"></i> 链接由 <strong style="color:#ffcf7a;">瑆泽</strong> 提供
+            </div>`;
         
         groups.forEach((group, idx) => {
             // 🟢 自动生成标签
@@ -1609,6 +1655,14 @@
         } else if (navId === 'downloadsave') {
             container.innerHTML = data.render();
             setTimeout(bindSaveGroupEvents, 30);
+            // 绑定一键下载按钮
+            const bulkBtn = document.getElementById('bulkDownloadBtn');
+            if (bulkBtn) {
+                bulkBtn.onclick = function() {
+                    window.open('https://pan.quark.cn/s/03e5889e5e56', '_blank');
+                    showToast('正在打开夸克网盘 · 全部模组合集');
+                };
+            }
         } else {
             container.innerHTML = data.render();
         }
