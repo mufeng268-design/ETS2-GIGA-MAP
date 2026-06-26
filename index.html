@@ -781,30 +781,34 @@
         .feature-highlight strong {
             color:#ffcf7a;
         }
-        /* 一键下载全部模组按钮 */
+        /* 一键下载全部模组按钮 - 双按钮布局 */
         .bulk-download-wrap {
-            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
             margin: 18px 0 12px 0;
         }
         .bulk-download-btn {
             background:linear-gradient(135deg,#f5b82e,#d49214);
             border:none;
-            padding:14px 36px;
+            padding:14px 32px;
             border-radius:60px;
-            font-size:1.15rem;
+            font-size:1.1rem;
             font-weight:800;
             color:#121f23;
             cursor:pointer;
             transition:all 0.25s ease;
             display:inline-flex;
             align-items:center;
-            gap:14px;
+            gap:12px;
             box-shadow:0 4px 20px rgba(230,160,23,0.35);
             font-family:inherit;
             border:1px solid rgba(255,215,0,0.3);
+            flex: 0 1 auto;
         }
         .bulk-download-btn i {
-            font-size:1.3rem;
+            font-size:1.2rem;
             color:#0a1a12;
         }
         .bulk-download-btn:hover {
@@ -814,6 +818,19 @@
         }
         .bulk-download-btn:active {
             transform:scale(0.97);
+        }
+        /* 第二个按钮微调颜色 */
+        .bulk-download-btn.secondary {
+            background:linear-gradient(135deg,#4a8ab5,#2a6a8a);
+            border-color:rgba(74,138,181,0.5);
+            box-shadow:0 4px 20px rgba(42,106,138,0.35);
+        }
+        .bulk-download-btn.secondary:hover {
+            background:linear-gradient(135deg,#5a9ac5,#3a7a9a);
+            box-shadow:0 8px 32px rgba(42,106,138,0.5);
+        }
+        .bulk-download-btn.secondary i {
+            color:#d4f0ff;
         }
 
         /* ===== 返回顶部 ===== */
@@ -843,7 +860,7 @@
             .install-step-content { padding-left:0; }
             .othermods-list { max-width:400px; }
             .content-main .content-header h2 { font-size:1.3rem; }
-            .bulk-download-btn { padding:12px 28px; font-size:1rem; }
+            .bulk-download-btn { padding:12px 24px; font-size:1rem; }
         }
         @media (max-width:700px){
             .sidebar-nav { width:100%; max-height:45vh; border-right:none; border-bottom:1px solid rgba(255,215,0,0.2); }
@@ -875,7 +892,7 @@
             .download-card .download-card-title { font-size:1.2rem; }
             .save-group-title { font-size:1rem; }
             .save-version-btn { font-size:0.85rem; padding:8px 18px; }
-            .bulk-download-btn { padding:10px 22px; font-size:0.9rem; gap:10px; }
+            .bulk-download-btn { padding:10px 18px; font-size:0.9rem; gap:8px; }
         }
         @media (max-width:480px){
             .sidebar-nav { max-height:35vh; }
@@ -903,7 +920,7 @@
             .save-version-btn { font-size:0.75rem; padding:6px 14px; }
             .save-path code { font-size:0.75rem; padding:3px 10px; }
             .feature-highlight { font-size:0.85rem; }
-            .bulk-download-btn { padding:8px 18px; font-size:0.8rem; }
+            .bulk-download-btn { padding:8px 14px; font-size:0.8rem; gap:6px; }
         }
     </style>
 </head>
@@ -1486,10 +1503,13 @@
         let html = `<div class="info-card download-card">
             <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
             <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>
-            <!-- 一键下载全部模组按钮 -->
+            <!-- 双按钮：模组包① 和 模组包② -->
             <div class="bulk-download-wrap">
-                <button class="bulk-download-btn" id="bulkDownloadBtn">
-                    <i class="fas fa-cloud-download-alt"></i> 一键下载全部模组
+                <button class="bulk-download-btn" id="bulkDownloadBtn1">
+                    <i class="fas fa-cloud-download-alt"></i> 模组包①
+                </button>
+                <button class="bulk-download-btn secondary" id="bulkDownloadBtn2">
+                    <i class="fas fa-cloud-download-alt"></i> 模组包②
                 </button>
             </div>
             <div style="text-align:center; margin-top:-4px; margin-bottom:16px; font-size:0.8rem; color:#9bb7bf;">
@@ -1655,12 +1675,20 @@
         } else if (navId === 'downloadsave') {
             container.innerHTML = data.render();
             setTimeout(bindSaveGroupEvents, 30);
-            // 绑定一键下载按钮
-            const bulkBtn = document.getElementById('bulkDownloadBtn');
-            if (bulkBtn) {
-                bulkBtn.onclick = function() {
+            // 绑定模组包① (原一键下载全部模组) 链接: https://pan.quark.cn/s/03e5889e5e56
+            const btn1 = document.getElementById('bulkDownloadBtn1');
+            if (btn1) {
+                btn1.onclick = function() {
                     window.open('https://pan.quark.cn/s/03e5889e5e56', '_blank');
-                    showToast('正在打开夸克网盘 · 全部模组合集');
+                    showToast('正在打开夸克网盘 · 模组包①');
+                };
+            }
+            // 绑定模组包② 链接: https://share.feijipan.com/s/W8dHtNiI
+            const btn2 = document.getElementById('bulkDownloadBtn2');
+            if (btn2) {
+                btn2.onclick = function() {
+                    window.open('https://share.feijipan.com/s/W8dHtNiI', '_blank');
+                    showToast('正在打开飞极盘 · 模组包②');
                 };
             }
         } else {
