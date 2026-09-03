@@ -290,7 +290,7 @@
             color:#0a1a12;
         }
         
-        /* ===== 侧边栏内更新日志 - 修复滚动问题 ===== */
+        /* ===== 侧边栏内更新日志 ===== */
         .changelog-sidebar-wrapper {
             margin-bottom:4px;
             flex-shrink:0;
@@ -314,12 +314,8 @@
             max-height: 65vh;
             opacity: 1;
             margin-top: 10px;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-        /* 防止闪烁 - 在跳转期间保持内容可见 */
-        .changelog-sidebar-content.no-transition {
-            transition: none !important;
+            overflow-y:auto;
+            overflow-x:hidden;
         }
         .changelog-sidebar-content::-webkit-scrollbar {
             width: 4px;
@@ -376,31 +372,28 @@
             font-size:0.7rem;
         }
         .changelog-sidebar-inner .cl-cat-header.collapsed .cl-toggle { transform:rotate(-90deg); }
-        
-        /* 分类内部项目容器 - 支持独立滚动 */
         .changelog-sidebar-inner .cl-cat-items {
-            overflow-y: auto;
-            max-height: 350px;
-            transition: max-height 0.25s ease, opacity 0.2s ease;
-            opacity: 1;
+            overflow-y:auto;
+            max-height:350px;
+            transition:max-height 0.25s ease, opacity 0.2s ease;
+            opacity:1;
         }
         .changelog-sidebar-inner .cl-cat-items.collapsed {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
+            max-height:0;
+            opacity:0;
+            overflow:hidden;
         }
         .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar {
-            width: 3px;
+            width:3px;
         }
         .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-track {
-            background: #0a1a22;
-            border-radius: 10px;
+            background:#0a1a22;
+            border-radius:10px;
         }
         .changelog-sidebar-inner .cl-cat-items::-webkit-scrollbar-thumb {
-            background: #f5b042;
-            border-radius: 10px;
+            background:#f5b042;
+            border-radius:10px;
         }
-        
         .changelog-sidebar-inner .cl-item {
             font-size:0.9rem;
             color:#d4e8ed;
@@ -425,10 +418,6 @@
             display:block;
             margin-top:2px;
             cursor:default;
-        }
-        .changelog-sidebar-inner .cl-item .cl-file:hover {
-            color:#8aa8b0;
-            background:transparent;
         }
         .changelog-sidebar-inner .cl-cat-header.cat-new { color:#8affaa; }
         .changelog-sidebar-inner .cl-cat-header.cat-updated { color:#8bbfff; }
@@ -646,7 +635,7 @@
         .othermods-list .mod-order-item.highlight-item .item-icon { opacity:0.8; color:#ffcf7a; }
         .othermods-divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,200,100,0.12),transparent); margin:4px 0; }
 
-        /* ===== 下载存档（增强可读性） ===== */
+        /* ===== 下载存档 ===== */
         .download-card {
             background:rgba(16,34,40,0.92);
             border-left-color:#4cd964;
@@ -781,7 +770,6 @@
         .feature-highlight strong {
             color:#ffcf7a;
         }
-        /* 一键下载全部模组按钮 - 双按钮布局 */
         .bulk-download-wrap {
             display: flex;
             flex-wrap: wrap;
@@ -805,7 +793,7 @@
             box-shadow:0 4px 20px rgba(230,160,23,0.35);
             font-family:inherit;
             border:1px solid rgba(255,215,0,0.3);
-            flex: 0 1 auto;
+            flex:0 1 auto;
         }
         .bulk-download-btn i {
             font-size:1.2rem;
@@ -819,7 +807,6 @@
         .bulk-download-btn:active {
             transform:scale(0.97);
         }
-        /* 第二个按钮微调颜色 */
         .bulk-download-btn.secondary {
             background:linear-gradient(135deg,#4a8ab5,#2a6a8a);
             border-color:rgba(74,138,181,0.5);
@@ -1040,10 +1027,11 @@
     let isJumping = false;
 
     // ================================================================
-    //  数据容器
+    //  数据容器 - 现在每个版本独立存储
     // ================================================================
-    let VERSION_DATA = {};
+    let VERSION_DATA = {};      // 格式: { "1.60": { updateDate, mods, saveGroups, bulkLinks }, ... }
     let i18n = {};
+    let availableVersions = [];
 
     // ================================================================
     //  下拉菜单管理
@@ -1077,21 +1065,38 @@
     }
 
     function getCurrentMods() {
-        return VERSION_DATA[currentVersion]?.mods || [];
+        const data = VERSION_DATA[currentVersion];
+        return data?.mods || [];
     }
 
     function getCurrentSaveGroups() {
-        return VERSION_DATA[currentVersion]?.saveGroups || [];
+        const data = VERSION_DATA[currentVersion];
+        return data?.saveGroups || [];
     }
 
     function getCurrentUpdateDate() {
-        return VERSION_DATA[currentVersion]?.updateDate || '2026.06.18';
+        const data = VERSION_DATA[currentVersion];
+        return data?.updateDate || '2026.06.18';
     }
 
-    function getActiveModsCount(version) {
-        const data = VERSION_DATA[version];
-        if (!data) return 0;
-        return data.mods.filter(mod => mod.status !== 'deleted').length;
+    function getCurrentBulkLinks() {
+        const data = VERSION_DATA[currentVersion];
+        const defaultLinks = {
+            package1: 'https://pan.quark.cn/s/03e5889e5e56',
+            package2: 'https://share.feijipan.com/s/W8dHtNiI'
+        };
+        if (data && data.bulkLinks) {
+            return {
+                package1: data.bulkLinks.package1 || defaultLinks.package1,
+                package2: data.bulkLinks.package2 || defaultLinks.package2
+            };
+        }
+        return defaultLinks;
+    }
+
+    function getActiveModsCount() {
+        const mods = getCurrentMods();
+        return mods.filter(mod => mod.status !== 'deleted').length;
     }
 
     function getModName(mod) { return mod.name; }
@@ -1134,7 +1139,7 @@
     // ================================================================
     function renderVersionOptions() {
         const menu = document.getElementById('versionDropdownMenu');
-        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+        const versions = availableVersions.sort((a, b) => parseFloat(b) - parseFloat(a));
         
         let html = '';
         versions.forEach((v, index) => {
@@ -1154,15 +1159,26 @@
                     closeAllDropdowns();
                     return;
                 }
-                currentVersion = ver;
-                localStorage.setItem('ets2_version', ver);
-                currentFilter = 'all';
-                renderPage(currentNav);
-                updateNavStatsBadge();
-                updateAllDates();
-                closeAllDropdowns();
+                // 如果该版本数据尚未加载，先加载
+                if (!VERSION_DATA[ver]) {
+                    loadSingleVersion(ver).then(() => {
+                        switchVersion(ver);
+                    });
+                } else {
+                    switchVersion(ver);
+                }
             });
         });
+    }
+
+    function switchVersion(ver) {
+        currentVersion = ver;
+        localStorage.setItem('ets2_version', ver);
+        currentFilter = 'all';
+        renderPage(currentNav);
+        updateNavStatsBadge();
+        updateAllDates();
+        closeAllDropdowns();
     }
 
     // ================================================================
@@ -1240,13 +1256,12 @@
             labelEl.textContent = 'v' + currentVersion;
         }
         
-        const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
         document.querySelectorAll('.version-dropdown-menu .version-opt').forEach(opt => {
             const v = opt.getAttribute('data-version');
             opt.classList.toggle('active-opt', v === currentVersion);
             const badge = opt.querySelector('.opt-badge');
             if (badge) {
-                const isLatest = v === versions[0];
+                const isLatest = v === availableVersions.sort((a,b) => parseFloat(b)-parseFloat(a))[0];
                 badge.textContent = isLatest ? t('badge_latest') : '';
                 badge.style.display = isLatest ? 'inline' : 'none';
             }
@@ -1453,7 +1468,7 @@
                 '';
             const thumbnailHtml = renderThumbnail(mod);
             
-            html += `<div class="mod-card ${mod.status}" data-mod-id="${mod.id}"><div class="mod-card-inner">
+            html += `<div class="mod-card status-${mod.status || 'normal'}" data-mod-id="${mod.id}"><div class="mod-card-inner">
                 <div class="mod-thumbnail">${thumbnailHtml}</div>
                 <div class="mod-status-area"><span class="status-badge-large ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span></div>
                 <div class="mod-content-area">
@@ -1474,27 +1489,9 @@
         return `<div class="info-card"><p style="color:#ffdf9e; font-size:1rem;">📋 更新日志已在左侧导航栏中折叠展示，点击「更新日志」按钮展开查看。</p></div>`;
     }
 
-    // ================================================================
-    //  从版本数据中获取模组包链接 (支持版本差异化)
-    // ================================================================
-    function getBulkLinksForVersion(version) {
-        const defaultLinks = {
-            package1: 'https://pan.quark.cn/s/03e5889e5e56',
-            package2: 'https://share.feijipan.com/s/W8dHtNiI'
-        };
-        const versionData = VERSION_DATA[version];
-        if (versionData && versionData.bulkLinks) {
-            return {
-                package1: versionData.bulkLinks.package1 || defaultLinks.package1,
-                package2: versionData.bulkLinks.package2 || defaultLinks.package2
-            };
-        }
-        return defaultLinks;
-    }
-
     function renderDownloadSave() {
         const groups = getCurrentSaveGroups();
-        const links = getBulkLinksForVersion(currentVersion);
+        const links = getCurrentBulkLinks();
         let html = `<div class="info-card download-card">
             <div class="download-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
             <h2 class="download-card-title">${t('download_save_title')} (v${currentVersion})</h2>
@@ -1521,7 +1518,7 @@
             
             html += `<div class="save-group" data-group-idx="${idx}">
                 <div class="save-group-header" data-group-toggle="${idx}">
-                    <div class="save-group-title"><i class="fas ${group.icon}"></i> ${label}</div>
+                    <div class="save-group-title"><i class="fas ${group.icon || 'fa-crown'}"></i> ${label}</div>
                     <i class="fas fa-chevron-down group-toggle-icon"></i>
                 </div>
                 <div class="save-subversions" id="saveSubs-${idx}">
@@ -1638,7 +1635,7 @@
     const navStatsBadge = document.getElementById('navStatsBadge');
 
     function updateNavStatsBadge() {
-        if (navStatsBadge) navStatsBadge.innerHTML = `<i class="fas fa-cubes"></i> <strong>${getActiveModsCount(currentVersion)}</strong>`;
+        if (navStatsBadge) navStatsBadge.innerHTML = `<i class="fas fa-cubes"></i> <strong>${getActiveModsCount()}</strong>`;
     }
 
     function renderPage(navId) {
@@ -1668,7 +1665,6 @@
         } else if (navId === 'downloadsave') {
             container.innerHTML = data.render();
             setTimeout(bindSaveGroupEvents, 30);
-            // 绑定模组包① 和 模组包② - 使用 data-link 属性
             const btn1 = document.getElementById('bulkDownloadBtn1');
             if (btn1) {
                 btn1.onclick = function() {
@@ -1912,10 +1908,10 @@
     //  返回顶部
     // ================================================================
     const backToTopBtn = document.getElementById('backToTop');
-    const contentMain = document.getElementById('contentMain');
+    const contentMainEl = document.getElementById('contentMain');
 
-    contentMain.addEventListener('scroll', () => {
-        if (contentMain.scrollTop > 300) {
+    contentMainEl.addEventListener('scroll', () => {
+        if (contentMainEl.scrollTop > 300) {
             backToTopBtn.classList.add('visible');
         } else {
             backToTopBtn.classList.remove('visible');
@@ -1923,30 +1919,59 @@
     });
 
     backToTopBtn.addEventListener('click', () => {
-        contentMain.scrollTo({ top: 0, behavior: 'smooth' });
+        contentMainEl.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // ================================================================
-    //  加载外部数据
+    //  加载独立版本数据
+    // ================================================================
+    async function loadSingleVersion(version) {
+        try {
+            const res = await fetch(`data/versions/${version}.json?t=${Date.now()}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            VERSION_DATA[version] = data;
+            if (!availableVersions.includes(version)) {
+                availableVersions.push(version);
+            }
+            return data;
+        } catch (error) {
+            console.error(`加载版本 ${version} 失败:`, error);
+            throw error;
+        }
+    }
+
+    async function loadAllVersions() {
+        // 首先尝试通过 manifest 或直接扫描已知版本
+        const knownVersions = ['1.60', '1.59', '1.58'];
+        const loadingPromises = knownVersions.map(v => loadSingleVersion(v).catch(() => null));
+        await Promise.all(loadingPromises);
+        
+        // 更新可用版本列表
+        availableVersions = Object.keys(VERSION_DATA);
+        if (availableVersions.length === 0) {
+            throw new Error('没有加载到任何版本数据');
+        }
+    }
+
+    // ================================================================
+    //  加载 i18n 并初始化
     // ================================================================
     async function loadData() {
         const loadingIndicator = document.getElementById('loadingIndicator');
         try {
-            const [modsRes, i18nRes] = await Promise.all([
-                fetch('data/mods.json?t=' + Date.now()),
-                fetch('data/i18n.json?t=' + Date.now())
-            ]);
-
-            if (!modsRes.ok || !i18nRes.ok) {
-                throw new Error('数据文件加载失败 (HTTP ' + (modsRes.status || i18nRes.status) + ')');
-            }
-
-            VERSION_DATA = await modsRes.json();
+            // 加载 i18n
+            const i18nRes = await fetch('data/i18n.json?t=' + Date.now());
+            if (!i18nRes.ok) throw new Error('i18n 文件加载失败');
             i18n = await i18nRes.json();
 
-            const versions = Object.keys(VERSION_DATA).sort((a, b) => parseFloat(b) - parseFloat(a));
+            // 加载所有版本
+            await loadAllVersions();
+
+            // 确保当前版本有效
             if (!VERSION_DATA[currentVersion]) {
-                currentVersion = versions[0] || '1.59';
+                const sorted = availableVersions.sort((a, b) => parseFloat(b) - parseFloat(a));
+                currentVersion = sorted[0] || '1.59';
                 localStorage.setItem('ets2_version', currentVersion);
             }
 
@@ -1995,6 +2020,7 @@
         }
     }
 
+    // 启动应用
     loadData();
 </script>
 </body>
